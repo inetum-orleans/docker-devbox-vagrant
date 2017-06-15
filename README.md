@@ -26,5 +26,26 @@ vagrant ssh
 ```
 ## Paramétrage
 POur travailler, il vous faudra créer un fichier `shared.yaml` qui renseigne les dossier partagés entre l'hôte et la VM. Pour ce faire, il vous suffit de copier le fichier `shared.examples.yaml` et de le modifier selon vos besoins.
+Un redémarrage de la VM sera nécessaire
+```bash
+vagrant reload
+```
+## Commandes vagrant
+Lancement de la vm
+```bash
+vagrant up
+```
+Extinction de la vm
+```bash
+vagrant halt
+```
+Redémarrage de la vm
+```bash
+vagrant reload
+```
+Re-provisionner de la vm
+```bash
+vagrant reload --provision
+```
 ## Informations
 le network et le container nginx-proxy est assuré par le provisionning, vous pourrez y faire référence dans vos fichiers docker-compose.yml.
