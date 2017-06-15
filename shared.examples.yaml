@@ -1,0 +1,10 @@
+folders:
+  patbiodiv:
+    source: "../AFB/PATBiodiv/www"
+    target: "/home/ubuntu/workspace/AFB/PATBiodiv"
+  frr:
+    source: "../FRR/www"
+    target: "/home/ubuntu/workspace/FRR"
+  aref:
+    source: "../AREF/www"
+    target: "/home/ubuntu/workspace/AREF"
