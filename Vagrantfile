@@ -113,29 +113,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Provisionong shell
   config.vm.provision "shell", path: "provision.sh"
 
-  #UNISON
-
-  # Required configs
-   config.unison.host_folder = "../AFB/PATBiodiv/www"  #relative to the folder your Vagrantfile is in
-   config.unison.guest_folder = "/home/vagrant/workspace/AFB/PATBiodiv" #relative to the vagrant home folder (e.g. /home/vagrant)
-
-   # Optional configs
-   # File patterns to ignore when syncing. Ensure you don't have spaces between the commas!
-   config.unison.ignore = "Name {.DS_Store,.git,node_modules,.idea}" # Default: none
-
-   # SSH connection details for Vagrant to communicate with VM.
-  #  config.unison.ssh_host = "127.0.0.1" # Default: '127.0.0.1'
-  #  config.unison.ssh_port = 2222 # Default: 2222
-   config.unison.ssh_user = "ubuntu" # Default: 'vagrant'
-  #  config.unison.perms = 0 # if you get "properties changed on both sides" error
-
-   # `vagrant unison-sync-polling` command will restart unison in VM if memory
-   # usage gets above this threshold (in MB).
-   config.unison.mem_cap_mb = 500 # Default: 200
-
-   # Change polling interval (in seconds) at which to sync changes
-   config.unison.repeat = 5 # Default: 1
-
    # WINNFSD
    config.winnfsd.logging="off"
    config.winnfsd.uid=501
