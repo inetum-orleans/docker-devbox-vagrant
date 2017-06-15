@@ -93,19 +93,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-    # ENV VARS + PROXY GFI
-    echo 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games' > /etc/environment
-    echo 'http_proxy=http://webdefence.global.blackspider.com:80' >> /etc/environment
-    echo 'https_proxy=http://webdefence.global.blackspider.com:80' >> /etc/environment
-    echo 'no_proxy=localhost,127.0.0.1,192.168.99.100,frordvmf002,gitlab,glbaso01.asogfi.fr' >> /etc/environment
-    echo 'HTTP_PROXY=http://webdefence.global.blackspider.com:80' >> /etc/environment
-    echo 'HTTPS_PROXY=http://webdefence.global.blackspider.com:80' >> /etc/environment
-    echo 'NO_PROXY=localhost,127.0.0.1,192.168.99.100,frordvmf002,gitlab,glbaso01.asogfi.fr' >> /etc/environment
-    # GROUP FOR DOCKER
-    sudo groupadd docker
-    sudo usermod -aG docker $USER
-  SHELL
+  # config.vm.provision "shell", inline: <<-SHELL
+  # SHELL
 
   # trigger reload
   # config.vm.provision :reload
