@@ -7,3 +7,6 @@
 
 # IGnore shared folders
 shared.yaml
+
+# Ignore log files
+ubuntu-xenial-16.04-cloudimg-console.log
