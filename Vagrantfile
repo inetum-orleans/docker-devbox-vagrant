@@ -18,7 +18,7 @@ box_memory           = 4096
 box_cpus             = 3
 box_cpu_max_exec_cap = "90"
 
-ip_address = "192.168.1.10"
+ip_address = "192.168.1.100"
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
@@ -149,5 +149,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       type: 'nfs',
       :nfs => { :mount_options => ['dmode=775,fmode=775,nolock,vers=3,udp,noatime,actimeo=1'] }
    end
-   
+
 end
