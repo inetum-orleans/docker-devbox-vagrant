@@ -48,3 +48,7 @@ curl -L https://github.com/docker/compose/releases/download/$dockerComposeVersio
 sudo chmod +x /usr/local/bin/docker-compose
 
 docker-compose --version
+
+docker network create nginx-proxy
+
+docker run -d -p 80:80 --restart unless-stopped --net nginx-proxy -v /var/run/docker.sock:/tmp/docker.sock:ro --name nginx-proxy jwilder/nginx-proxy
