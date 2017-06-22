@@ -59,6 +59,7 @@ echo 'Environment="HTTP_PROXY=http://webdefence.global.blackspider.com:80" "HTTP
 # GROUP FOR DOCKER
 sudo getent group docker || sudo groupadd docker
 sudo usermod -aG docker $USER
+echo "## sudo su -l $USER"
 exec sudo su -l $USER
 
 echo "## Rechargement du daemon"
