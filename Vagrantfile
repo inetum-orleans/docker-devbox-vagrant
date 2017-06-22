@@ -104,8 +104,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
    # WINNFSD
    config.winnfsd.logging="off"
-   config.winnfsd.uid=501
-   config.winnfsd.gid=48
+   config.winnfsd.uid=1000
+   config.winnfsd.gid=1000
    config.winnfsd.halt_on_reload="on"
 
    # Iterate through entries in YAML file
