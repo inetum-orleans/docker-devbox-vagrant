@@ -49,7 +49,7 @@ sudo systemctl restart docker
 # systemctl show --property=Environment docker
 
 # GROUP FOR DOCKER
-sudo groupadd docker
+sudo getent group docker || sudo groupadd docker
 sudo usermod -aG docker $USER
 exec sudo su -l $USER
 
