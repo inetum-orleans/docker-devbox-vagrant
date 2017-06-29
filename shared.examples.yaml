@@ -1,10 +1,1 @@
-folders:
-  patbiodiv:
-    source: "../AFB/PATBiodiv/www"
-    target: "/home/ubuntu/workspace/AFB/PATBiodiv"
-  frr:
-    source: "../FRR/www"
-    target: "/home/ubuntu/workspace/FRR"
-  aref:
-    source: "../AREF/www"
-    target: "/home/ubuntu/workspace/AREF"
+host_network: ~ # Si vagrant demande sur quelle carte attacher le réseau, définir le libellé de la carte ici.

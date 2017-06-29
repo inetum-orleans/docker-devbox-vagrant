@@ -1,14 +1,20 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
 require 'yaml'
 
 current_dir    = File.dirname(File.expand_path(__FILE__))
 shared         = YAML.load_file("#{current_dir}/shared.yaml")
-shared_folders = shared['folders']
 
-# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
-VAGRANTFILE_API_VERSION = "2"
+host_env = ENV.to_h
+env = {
+  "http_proxy" => host_env['http_proxy'],
+  "https_proxy" => host_env['https_proxy'],
+  "no_proxy" => host_env['no_proxy']
+}
 
 ###############################
 # General project settings
@@ -59,7 +65,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Bridged networks make the machine appear as another physical device on
   # your network.
   # config.vm.network "public_network"
-  config.vm.network "public_network", type: "dhcp"
+  config.vm.network "public_network", type: "dhcp", bridge: shared['host_network']
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -96,24 +102,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # config.vm.provision "shell", inline: <<-SHELL
   # SHELL
 
-  # trigger reload
+  # Provisioning from files available in provision directory
+  config.vm.provision "shell", run: "always", path: "provision/01-system-proxy.sh", env: env
+
   # config.vm.provision :reload
 
-  # Provisionong shell
-  config.vm.provision "shell", path: "provision.sh"
+  config.vm.provision "shell", path: "provision/11-docker.sh", env: env
+  config.vm.provision "shell", run: "always", path: "provision/12-docker-proxy.sh", env: env
+  config.vm.provision "shell", path: "provision/13-docker-restart.sh", env: env
 
-   # WINNFSD
-   config.winnfsd.logging="off"
-   config.winnfsd.uid=1000
-   config.winnfsd.gid=1000
-   config.winnfsd.halt_on_reload="on"
+  # config.vm.provision :reload
 
-   # Iterate through entries in YAML file
-   shared_folders.each do |i,folder|
-     config.vm.synced_folder "#{folder['source']}", "#{folder['target']}",
-      id: "#{i}",
-      type: 'nfs',
-      :nfs => { :mount_options => ['dmode=775,fmode=775,nolock,vers=3,udp,noatime,actimeo=1'] }
-   end
-
+  config.vm.provision "shell", path: "provision/21-docker-compose.sh", env: env
+  config.vm.provision "shell", path: "provision/31-container-nginx-proxy.sh", env: env
 end

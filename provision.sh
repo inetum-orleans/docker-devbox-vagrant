@@ -3,10 +3,9 @@
 export DEBIAN_FRONTEND=noninteractive
 
 # Affichage du titre custom
-cat "titre.txt"
+cat ./titre.txt
 printf "\n"
 echo ""
-
 
 # ENV VARS + PROXY GFI
 echo "## Init des Variables d\'environnement"
@@ -17,10 +16,6 @@ echo 'no_proxy=localhost,127.0.0.1,192.168.99.100,frordvmf002,gitlab,glbaso01.as
 echo 'HTTP_PROXY=http://webdefence.global.blackspider.com:80' >> /etc/environment
 echo 'HTTPS_PROXY=http://webdefence.global.blackspider.com:80' >> /etc/environment
 echo 'NO_PROXY=localhost,127.0.0.1,192.168.99.100,frordvmf002,gitlab,glbaso01.asogfi.fr' >> /etc/environment
-
-#unison
-echo "## Installation d'unison"
-sudo apt-get install -y unison
 
 # INSTALL DOCKER
 echo "## Installation de Docker"
