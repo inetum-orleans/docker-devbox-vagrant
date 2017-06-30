@@ -20,7 +20,7 @@ env = {
 # General project settings
 # -----------------------------
 box_name = "ubuntu/xenial64"
-box_memory = config['box_memory'] || 4096
+box_memory = config['box_memory'] || 2048
 box_cpus = config['box_cpus'] || 2
 box_cpu_max_exec_cap = config['box_cpu_max_exec_cap'] || "90"
 host_network = config['host_network']

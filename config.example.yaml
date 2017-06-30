@@ -1,4 +1,4 @@
-box_memory: 4096
+box_memory: 2048
 box_cpus: 2
 box_cpu_max_exec_cap: "90"
 host_network: ~ # Si vagrant demande sur quelle carte attacher le réseau, définir le libellé de la carte ici.
