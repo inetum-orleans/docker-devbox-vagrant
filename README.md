@@ -107,6 +107,8 @@ le besoin, le port doit être différent selon chaque projet).
 
 ```yml
 services:
+  web:
+    ...
   unison:
     image: toilal/unison:2.48.4
     environment:
@@ -131,6 +133,17 @@ Pour plus d'informations sur la configuration de ce container, se référer à l
 [documentation de l'image](https://github.com/Toilal/docker-image-unison).
 
 - Monter le volume du container unison dans les containers nécessitant l'accès à ce dossier partagé.
+
+```
+services:
+  web:
+    environment:
+      - VIRTUAL_HOST=eqo.app
+    volumes_from:
+      - unison
+  unison:
+    ...
+````yml
 
 - Placer le batch `docker-sync.bat` du dossier unison à la racine du projet pour lancer facilement la synchronisation 
 unison (à adapter selon le besoin, le port doit correspondre à celui défini dans `docker-compose.yml`).
