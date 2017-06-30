@@ -2,7 +2,7 @@
 
 echo "## Ajout de l'utilisateur au groupe docker"
 sudo getent group docker || sudo groupadd docker
-sudo usermod -aG docker $USER
+sudo usermod -aG docker ubuntu
 
 echo "## Rechargement du daemon"
 sudo systemctl daemon-reload

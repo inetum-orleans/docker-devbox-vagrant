@@ -23,23 +23,20 @@ Cette solution est construite de zéro ce qui nous permet de garder un grand con
 ## Pré-requis
 
 - [Vagrant](https://www.vagrantup.com/).
-- plugin [vagrant-reload](https://github.com/aidanns/vagrant-reload).
 
-```bash
-vagrant plugin install vagrant-reload
-```
+## Attention aux sauts de ligne des fichiers texte
 
 Pour éviter tout problème lors du partage de fichier entre Linux et Windows, il faut prendre quelques précautions au 
 sujet des caractères de saut de lignes.
 
-* Paramétrer l'option pour git `core.autocrlf false`.
+- Paramétrer l'option pour git `core.autocrlf false`.
 
 ```bash
 # Dans le dossier racine de git
 git config core.autocrlf false
 ```
 
-* Paramétrer l'éditeur de code pour utiliser les sauts de ligne linux uniquement (LF).
+- Paramétrer l'éditeur de code pour utiliser les sauts de ligne linux uniquement (LF).
 
 ## Installation
 
