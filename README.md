@@ -135,10 +135,5 @@ Pour plus d'informations sur la configuration de ce container, se référer à l
 
 - Monter le volume du container unison dans les containers nécessitant l'accès à ce dossier partagé.
 
-- Créer un batch `docker-sync.bat` à la racine du projet pour lancer facilement la synchronisation unison (à adapter 
-selon le besoin, le port doit correspondre à celui défini dans `docker-compose.yml`).
-
-````
-SET UNISON_HOST=192.168.1.100:4250
-unison . socket://%UNISON_HOST%/ -repeat watch -auto -batch -ignore "Path .git" -prefer .
-```
+- Placer le batch `docker-sync.bat` du dossier unison à la racine du projet pour lancer facilement la synchronisation 
+unison (à adapter selon le besoin, le port doit correspondre à celui défini dans `docker-compose.yml`).
