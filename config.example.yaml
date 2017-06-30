@@ -1,4 +1,3 @@
-box_name: "ubuntu/xenial64"
 box_memory: 4096
 box_cpus: 2
 box_cpu_max_exec_cap: "90"

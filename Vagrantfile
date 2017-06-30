@@ -7,7 +7,7 @@ VAGRANTFILE_API_VERSION = "2"
 require 'yaml'
 
 current_dir    = File.dirname(File.expand_path(__FILE__))
-shared         = YAML.load_file("#{current_dir}/shared.yaml")
+config         = YAML.load_file("#{current_dir}/config.yaml")
 
 host_env = ENV.to_h
 env = {
@@ -19,10 +19,11 @@ env = {
 ###############################
 # General project settings
 # -----------------------------
-box_name             = "ubuntu/xenial64"
-box_memory           = 4096
-box_cpus             = 3
-box_cpu_max_exec_cap = "90"
+box_name = "ubuntu/xenial64"
+box_memory = config['box_memory'] || 4096
+box_cpus = config['box_cpus'] || 2
+box_cpu_max_exec_cap = config['box_cpu_max_exec_cap'] || "90"
+host_network = config['host_network']
 
 ip_address = "192.168.1.100"
 
@@ -30,14 +31,14 @@ ip_address = "192.168.1.100"
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |conf|
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = box_name
+  conf.vm.box = box_name
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -58,14 +59,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
   # config.vm.network "private_network", ip: "192.168.33.10"
-  config.vm.network "private_network", ip: ip_address, use_dhcp_assigned_default_route: true
+  conf.vm.network "private_network", ip: ip_address, use_dhcp_assigned_default_route: true
   # config.vm.network "private_network", type: "dhcp"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
   # config.vm.network "public_network"
-  config.vm.network "public_network", type: "dhcp", bridge: shared['host_network']
+  conf.vm.network "public_network", type: "dhcp", bridge: host_network
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -77,7 +78,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  config.vm.provider "virtualbox" do |v|
+  conf.vm.provider "virtualbox" do |v|
     v.memory = box_memory
     v.cpus   = box_cpus
     # v.gui    = true
@@ -103,17 +104,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # SHELL
 
   # Provisioning from files available in provision directory
-  config.vm.provision "shell", run: "always", path: "provision/01-system-proxy.sh", env: env
-  config.vm.provision "shell", path: "provision/02-system-settings.sh", env: env
+  conf.vm.provision "shell", run: "always", path: "provision/01-system-proxy.sh", env: env
+  conf.vm.provision "shell", path: "provision/02-system-settings.sh", env: env
 
   #config.vm.provision :reload
 
-  config.vm.provision "shell", path: "provision/11-docker.sh", env: env
-  config.vm.provision "shell", run: "always", path: "provision/12-docker-proxy.sh", env: env
-  config.vm.provision "shell", path: "provision/13-docker-restart.sh", env: env
+  conf.vm.provision "shell", path: "provision/11-docker.sh", env: env
+  conf.vm.provision "shell", run: "always", path: "provision/12-docker-proxy.sh", env: env
+  conf.vm.provision "shell", path: "provision/13-docker-restart.sh", env: env
 
   #config.vm.provision :reload
 
-  config.vm.provision "shell", path: "provision/21-docker-compose.sh", env: env
-  config.vm.provision "shell", path: "provision/31-container-nginx-proxy.sh", env: env
+  conf.vm.provision "shell", path: "provision/21-docker-compose.sh", env: env
+  conf.vm.provision "shell", path: "provision/31-container-nginx-proxy.sh", env: env
 end
