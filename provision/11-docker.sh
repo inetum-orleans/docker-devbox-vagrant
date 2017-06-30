@@ -24,8 +24,5 @@ sudo apt-get update
 
 sudo apt-get -y install docker-ce
 
-sudo getent group docker || sudo groupadd docker
-sudo usermod -aG docker $USER
-
 echo "## Activation de Docker au démarrage"
 sudo systemctl enable docker
