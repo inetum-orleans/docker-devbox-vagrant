@@ -104,14 +104,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Provisioning from files available in provision directory
   config.vm.provision "shell", run: "always", path: "provision/01-system-proxy.sh", env: env
+  config.vm.provision "shell", path: "provision/02-system-settings.sh", env: env
 
-  # config.vm.provision :reload
+  #config.vm.provision :reload
 
   config.vm.provision "shell", path: "provision/11-docker.sh", env: env
   config.vm.provision "shell", run: "always", path: "provision/12-docker-proxy.sh", env: env
   config.vm.provision "shell", path: "provision/13-docker-restart.sh", env: env
 
-  # config.vm.provision :reload
+  #config.vm.provision :reload
 
   config.vm.provision "shell", path: "provision/21-docker-compose.sh", env: env
   config.vm.provision "shell", path: "provision/31-container-nginx-proxy.sh", env: env

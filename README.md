@@ -1,51 +1,118 @@
 # Docker sous Vagrant
+
 ## Pourquoi ?
-Les problèmes de droits avec Docker for windows, de performances entre hôte et VM que ce soit sous VMWare ou Virtualbox ... que dire d'autre ? Il fallait un moyen de s'affranchir du partage de fichier hôte <-> VM.
+
+Docker for windows pose des problèmes sur les dossiers montés dans le container:
+
+- Performance médiocres.
+- Droits altérés et difficile à maitriser.
+- Liens symboliques absents, rendant l'utilisation de certains container impossibles.
+
+Il faut donc un moyen de s'affranchir du partage de fichier hôte <-> VM.
+
 ## Solution
-Une VM Ubuntu Xenial, provisionné via vagrant et du shell qui contient l'environnement Docker complet et dont le partage de fichier est assuré par un plugin tiers : ici `winnfsd`.
+
+- VM Docker (Ubuntu Xenial).
+- Vagrant pour provisionner Docker, Docker Compose et [nginx-proxy](https://github.com/jwilder/nginx-proxy).
+- Unison pour synchroniser les fichiers entre l'hôte sous windows et la VM Docker.
+
+Cette solution est construite de zéro ce qui nous permet de garder un grand contrôle sur l'environnement technique.
+
+*Note: nginx-proxy permet d'accéder un à container web via `http://monappli.app` plutôt que `http://192.168.1.100:<port>`*
+
 ## Pré-requis
-Il faut au préalable avoir installé  Vagrant voir ce [lien](https://www.vagrantup.com/) et installé le plugin winnfd via la commande :
+
+- [Vagrant](https://www.vagrantup.com/).
+- plugin [vagrant-reload](https://github.com/aidanns/vagrant-reload).
+
 ```bash
-vagrant plugin install vagrant-winnfsd
+vagrant plugin install vagrant-reload
 ```
-Voici un lien vers la documentation du plugin au cas où [ici](https://github.com/winnfsd/vagrant-winnfsd)
-## Première Utilisation
-Il suffit de cloner le repo :
+
+## Installation
+
+- Cloner le repository
+
 ```bash
-git clone http://frordvmf002/PoleDigital/vagrant-docker.git chemin/souhaite
+git clone http://frordvmf002/PoleDigital/vagrant-docker.git
+cd vagrant-docker
 ```
-et de lancer un vagrant up :
+
+- Lancer un vagrant:
+
 ```bash
 vagrant up
 ```
-La machine va être téléchargée depuis le cloud Vagrant (hashicorp) et le provisioning sera assuré par la `vargantfile` et le script `provision.sh`.
+
+Au premier lancement, la box `ubuntu/xenial` est téléchargée depuis le cloud Vagrant, puis provisionnée selon la 
+définition du Vagrantfile. Le vagrantfile provisionne grâce aux scripts présents dans le dossier `provision`.
 
 Une fois la machine provisionnée, vous pouvez vous connecter à celle-ci via la commande :
+
 ```bash
 vagrant ssh
 ```
+
+Les commandes `docker` et `docker-compose` sont disponibles dans cet environnement.
+
 ## Paramétrage
-POur travailler, il vous faudra créer un fichier `shared.yaml` qui renseigne les dossier partagés entre l'hôte et la VM. Pour ce faire, il vous suffit de copier le fichier `shared.examples.yaml` et de le modifier selon vos besoins.
-Un redémarrage de la VM sera nécessaire
-```bash
-vagrant reload
-```
-## Commandes vagrant
+
+Il est possible de paramétrer la VM avec le fichier `config.yaml`. Copier le fichier `config.example.yaml` vers 
+`config.yaml`, et modifier selon vos besoins.
+
+## Commandes Vagrant
+
 Lancement de la vm
+
 ```bash
 vagrant up
 ```
+
 Extinction de la vm
 ```bash
 vagrant halt
 ```
+
 Redémarrage de la vm
 ```bash
 vagrant reload
 ```
+
 Re-provisionner de la vm
 ```bash
 vagrant reload --provision
 ```
-## Informations
-le network et le container nginx-proxy est assuré par le provisionning, vous pourrez y faire référence dans vos fichiers docker-compose.yml.
+
+## Synchronysation des fichiers d'un projet docker-composer via Unison
+
+### Installation du client unison sur le poste de travail
+
+- Copier les fichiers présents dans `unison/bin` dans le dossier `C:/bin`
+
+- Ajouter le dossier `C:/bin` dans la variable d'environnement `PATH`
+
+### Configuration d'un container unison dans un projet docker-compose
+
+- Ajouter un service unison dans `docker-compose.yml`.
+
+```yml
+services:
+  unison:
+    image: toilal/unison
+    environment:
+      - VOLUME=/var/www/html
+      - OWNER_UID=1000
+      - GROUP_UID=1000
+    ports:
+      - "4250:5000"
+    volumes:
+      - ".:/var/www/html"
+```
+
+Cette [image est un fork](https://github.com/Toilal/docker-image-unison) de l'image issue de 
+[docker-sync.io](http://docker-sync.io/), qui ajoute la possibilité de définir la variable `GROUP_UID`.
+
+Pour plus d'informations sur la configuration de ce container, se référer à la 
+[documentation de l'image](https://github.com/Toilal/docker-image-unison).
+
+- Monter les volumes de ce service dans les containers nécessitant l'accès à ce dossier partagé.
