@@ -29,6 +29,18 @@ Cette solution est construite de zéro ce qui nous permet de garder un grand con
 vagrant plugin install vagrant-reload
 ```
 
+Pour éviter tout problème lors du partage de fichier entre Linux et Windows, il faut prendre quelques précautions au 
+sujet des caractères de saut de lignes.
+
+* Paramétrer l'option pour git `core.autocrlf false`.
+
+```bash
+# Dans le dossier racine de git
+git config core.autocrlf false
+```
+
+* Paramétrer l'éditeur de code pour utiliser les sauts de ligne linux uniquement (LF).
+
 ## Installation
 
 - Cloner le repository
@@ -93,7 +105,8 @@ vagrant reload --provision
 
 ### Configuration d'un container unison dans un projet docker-compose
 
-- Ajouter un service unison dans `docker-compose.yml`.
+- Ajouter un service unison dans `docker-compose.override.dev.yml` et son volume de metadata associé (à adapter selon 
+le besoin, le port doit être différent selon chaque projet).
 
 ```yml
 services:
@@ -103,16 +116,29 @@ services:
       - VOLUME=/var/www/html
       - OWNER_UID=1000
       - GROUP_ID=1000
+      - UNISONLOCALHOSTNAME=nom-du-projet
     ports:
       - "4250:5000"
     volumes:
       - ".:/var/www/html"
+      - "unison-volume:/.unison"
+volumes:
+  unison-volume: ~
 ```
 
 Cette [image est un fork](https://github.com/Toilal/docker-image-unison) de l'image issue de 
-[docker-sync.io](http://docker-sync.io/), qui ajoute la possibilité de définir la variable `GROUP_ID`.
+[docker-sync.io](http://docker-sync.io/), qui ajoute la possibilité de définir la variable `GROUP_ID` et conserve
+les métadonnées de unison au sein d'un volume.
 
 Pour plus d'informations sur la configuration de ce container, se référer à la 
 [documentation de l'image](https://github.com/Toilal/docker-image-unison).
 
-- Monter les volumes de ce service dans les containers nécessitant l'accès à ce dossier partagé.
+- Monter le volume du container unison dans les containers nécessitant l'accès à ce dossier partagé.
+
+- Créer un batch `docker-sync.bat` à la racine du projet pour lancer facilement la synchronisation unison (à adapter 
+selon le besoin, le port doit correspondre à celui défini dans `docker-compose.yml`).
+
+````
+SET UNISON_HOST=192.168.1.100:4250
+unison . socket://%UNISON_HOST%/ -repeat watch -auto -batch -ignore "Path .git" -prefer .
+```
