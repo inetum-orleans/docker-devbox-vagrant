@@ -98,11 +98,11 @@ vagrant reload --provision
 ```yml
 services:
   unison:
-    image: toilal/unison
+    image: toilal/unison:2.48.4
     environment:
       - VOLUME=/var/www/html
       - OWNER_UID=1000
-      - GROUP_UID=1000
+      - GROUP_ID=1000
     ports:
       - "4250:5000"
     volumes:
@@ -110,7 +110,7 @@ services:
 ```
 
 Cette [image est un fork](https://github.com/Toilal/docker-image-unison) de l'image issue de 
-[docker-sync.io](http://docker-sync.io/), qui ajoute la possibilité de définir la variable `GROUP_UID`.
+[docker-sync.io](http://docker-sync.io/), qui ajoute la possibilité de définir la variable `GROUP_ID`.
 
 Pour plus d'informations sur la configuration de ce container, se référer à la 
 [documentation de l'image](https://github.com/Toilal/docker-image-unison).

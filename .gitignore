@@ -6,7 +6,7 @@
 .vagrant
 
 # IGnore shared folders
-shared.yaml
+config.yaml
 
 # Ignore log files
 ubuntu-xenial-16.04-cloudimg-console.log
