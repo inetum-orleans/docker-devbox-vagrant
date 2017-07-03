@@ -24,6 +24,8 @@ Cette solution est construite de zéro ce qui nous permet de garder un grand con
 ## Pré-requis
 
 - [Vagrant](https://www.vagrantup.com/).
+- [Acrylic](https://sourceforge.net/projects/acrylic) (Optionnel, ([Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.app` vers 
+l'environnement docker, identique au fichier /etc/host mais supporte les wildcard `*`)
 
 ## Attention aux sauts de ligne des fichiers texte
 
