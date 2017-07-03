@@ -134,7 +134,7 @@ Pour plus d'informations sur la configuration de ce container, se référer à l
 
 - Monter le volume du container unison dans les containers nécessitant l'accès à ce dossier partagé.
 
-```
+```yml
 services:
   web:
     environment:
@@ -143,7 +143,7 @@ services:
       - unison
   unison:
     ...
-```yml
+```
 
 - Placer le batch `docker-sync.bat` du dossier unison à la racine du projet pour lancer facilement la synchronisation 
 unison (à adapter selon le besoin, le port doit correspondre à celui défini dans `docker-compose.yml`).
