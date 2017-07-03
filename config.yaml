@@ -1,4 +1,0 @@
-box_memory: 2096
-box_cpus: 2
-box_cpu_max_exec_cap: "90"
-host_network: Realtek PCIe GBE Family Controller
