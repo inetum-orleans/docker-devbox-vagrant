@@ -143,7 +143,7 @@ services:
       - unison
   unison:
     ...
-````yml
+```yml
 
 - Placer le batch `docker-sync.bat` du dossier unison à la racine du projet pour lancer facilement la synchronisation 
 unison (à adapter selon le besoin, le port doit correspondre à celui défini dans `docker-compose.yml`).
