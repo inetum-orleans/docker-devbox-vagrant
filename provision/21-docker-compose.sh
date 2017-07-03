@@ -1,8 +1,14 @@
 #!/bin/bash
-
-echo "## Installation de Docker-Compose"
 DOCKER_COMPOSE_VERSION=1.13.0
-curl -fsSL -o ./docker-compose https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-`uname -s`-`uname -m`
-sudo mv ./docker-compose /usr/local/bin/docker-compose
+docker-compose --version | grep "docker-compose version $DOCKER_COMPOSE_VERSION"
+VERSION_MATCH=$?
+if [ "$VERSION_MATCH" != "0" ]; then
+    echo "## Installation de docker-Compose $DOCKER_COMPOSE_VERSION"
 
-sudo chmod +x /usr/local/bin/docker-compose
+    curl -sL -o ./docker-compose https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-`uname -s`-`uname -m`
+    mv ./docker-compose /usr/local/bin/docker-compose
+
+    chmod +x /usr/local/bin/docker-compose
+else
+    echo "## docker-compose $DOCKER_COMPOSE_VERSION est déjà installé"
+fi

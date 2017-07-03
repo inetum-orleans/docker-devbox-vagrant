@@ -104,13 +104,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |conf|
   # SHELL
 
   # Provisioning from files available in provision directory
-  conf.vm.provision "shell", run: "always", path: "provision/01-system-proxy.sh", env: env
-  conf.vm.provision "shell", path: "provision/02-system-settings.sh", env: env
+  conf.vm.provision "system-proxy", type: "shell", run: "always", path: "provision/01-system-proxy.sh", env: env
+  conf.vm.provision "system-settings", type: "shell", path: "provision/02-system-settings.sh", env: env
 
-  conf.vm.provision "shell", path: "provision/11-docker.sh", env: env
-  conf.vm.provision "shell", run: "always", path: "provision/12-docker-proxy.sh", env: env
-  conf.vm.provision "shell", path: "provision/13-docker-group.sh", env: env
+  conf.vm.provision "docker", type: "shell", path: "provision/11-docker.sh", env: env
+  conf.vm.provision "docker-proxy", type: "shell", run: "always", path: "provision/12-docker-proxy.sh", env: env
+  conf.vm.provision "docker-group", type: "shell", path: "provision/13-docker-group.sh", env: env
 
-  conf.vm.provision "shell", path: "provision/21-docker-compose.sh", env: env
-  conf.vm.provision "shell", path: "provision/31-container-nginx-proxy.sh", env: env
+  conf.vm.provision "docker-compose", type: "shell", path: "provision/21-docker-compose.sh", env: env
+
+  conf.vm.provision "container-nginx-proxy", type: "shell", path: "provision/31-container-nginx-proxy.sh", env: env
+
+  conf.vm.provision "smartcd", type: "shell", privileged: false, path: "provision/41-smartcd.sh", env: env
 end

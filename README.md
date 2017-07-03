@@ -14,7 +14,8 @@ Il faut donc un moyen de s'affranchir du partage de fichier hôte <-> VM.
 
 - VM Docker (Ubuntu Xenial).
 - Vagrant pour provisionner Docker, Docker Compose et [nginx-proxy](https://github.com/jwilder/nginx-proxy).
-- Unison pour synchroniser les fichiers entre l'hôte sous windows et la VM Docker.
+- [Unison](https://www.cis.upenn.edu/~bcpierce/unison/) pour synchroniser les fichiers entre l'hôte sous windows et la VM Docker.
+- [Smartcd](https://github.com/cxreg/smartcd) (Activation/Désactivation automatique d'alias lors de l'entrée/sortie dans un dossier)
 
 Cette solution est construite de zéro ce qui nous permet de garder un grand contrôle sur l'environnement technique.
 
@@ -43,7 +44,7 @@ git config core.autocrlf false
 - Cloner le repository
 
 ```bash
-git clone http://frordvmf002/PoleDigital/vagrant-docker.git
+git clone http://gitlab/PoleDigital/vagrant-docker.git
 cd vagrant-docker
 ```
 
