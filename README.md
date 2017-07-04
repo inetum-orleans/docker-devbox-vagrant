@@ -28,20 +28,6 @@ Cette solution est construite de zéro ce qui nous permet de garder un grand con
 - [Acrylic](https://sourceforge.net/projects/acrylic) (Optionnel, ([Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.app` vers 
 l'environnement docker, identique au fichier /etc/host mais supporte les wildcard `*`)
 
-## Attention aux sauts de ligne des fichiers texte
-
-Pour éviter tout problème lors du partage de fichier entre Linux et Windows, il faut prendre quelques précautions au 
-sujet des caractères de saut de lignes.
-
-- Paramétrer l'option pour git `core.autocrlf false`.
-
-```bash
-# Dans le dossier racine de git
-git config core.autocrlf false
-```
-
-- Paramétrer l'éditeur de code pour utiliser les sauts de ligne linux uniquement (LF).
-
 ## Installation
 
 - Cloner le repository
@@ -96,7 +82,20 @@ Provisionner la vm
 vagrant provision
 ```
 
-## Synchronysation des fichiers d'un projet docker-composer via Unison
+## Configuration des sauts de ligne sur le projet
+
+Pour éviter tout problème lors du partage de fichier entre Linux et Windows, il faut prendre quelques précautions au 
+sujet des caractères de saut de lignes.
+
+- Paramétrer l'option pour git `core.autocrlf false`.
+
+```bash
+git config core.autocrlf false
+```
+
+- Paramétrer l'éditeur de code pour utiliser les sauts de ligne linux uniquement (LF).
+
+## Synchronisation des fichiers du projet via Unison
 
 ### Installation du client unison sur le poste de travail
 
