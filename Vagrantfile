@@ -23,6 +23,7 @@ box_name = "ubuntu/xenial64"
 box_memory = config['box_memory'] || 2048
 box_cpus = config['box_cpus'] || 2
 box_cpu_max_exec_cap = config['box_cpu_max_exec_cap'] || "90"
+disksize = config['disksize'] || '20GB'
 host_network = config['host_network']
 
 ip_address = "192.168.1.100"
@@ -39,6 +40,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |conf|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   conf.vm.box = box_name
+
+  # Configure disk size
+  conf.disksize.size = disksize
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
