@@ -24,6 +24,7 @@ Cette solution est construite de zéro ce qui nous permet de garder un grand con
 ## Pré-requis
 
 - [Vagrant](https://www.vagrantup.com/).
+- [vagrant-disksize plugin](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`).
 - [Acrylic](https://sourceforge.net/projects/acrylic) (Optionnel, ([Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.app` vers 
 l'environnement docker, identique au fichier /etc/host mais supporte les wildcard `*`)
 
@@ -50,7 +51,7 @@ git clone http://gitlab/PoleDigital/vagrant-docker.git
 cd vagrant-docker
 ```
 
-- Lancer un vagrant:
+- Lancer vagrant:
 
 ```bash
 vagrant up
@@ -90,9 +91,9 @@ Redémarrage de la vm
 vagrant reload
 ```
 
-Re-provisionner de la vm
+Provisionner la vm
 ```bash
-vagrant reload --provision
+vagrant provision
 ```
 
 ## Synchronysation des fichiers d'un projet docker-composer via Unison
