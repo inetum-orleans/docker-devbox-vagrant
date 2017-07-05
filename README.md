@@ -150,3 +150,12 @@ services:
 
 - Placer le batch `docker-sync.bat` du dossier unison à la racine du projet pour lancer facilement la synchronisation 
 unison (à adapter selon le besoin, le port doit correspondre à celui défini dans `docker-compose.yml`).
+
+## Avertissements et conseils d'utilisation
+ 
+- Les méta-données git sont exclues de la synchronisation (dossier `.git`). Pour éviter tout problème, il est 
+préferable d'utiliser git à partir du poste de développement uniquement.
+
+- Lors de la mise en place d'un projet existant sur un nouveau poste, il est cependant nécessaire d'effectuer la 
+commande `git clone` sur la VM (pour lancer les containers docker), puis sur le poste de développement 
+(pour obtenir le docker-sync.bat et activer la synchronisation de fichiers).
