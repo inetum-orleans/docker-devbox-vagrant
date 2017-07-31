@@ -6,14 +6,14 @@ VAGRANTFILE_API_VERSION = "2"
 
 require 'yaml'
 
-current_dir    = File.dirname(File.expand_path(__FILE__))
-config         = YAML.load_file("#{current_dir}/config.yaml")
+current_dir = File.dirname(File.expand_path(__FILE__))
+config = YAML.load_file("#{current_dir}/config.yaml")
 
 host_env = ENV.to_h
 env = {
-  "http_proxy" => host_env['http_proxy'],
-  "https_proxy" => host_env['https_proxy'],
-  "no_proxy" => host_env['no_proxy']
+    "http_proxy" => host_env['http_proxy'],
+    "https_proxy" => host_env['https_proxy'],
+    "no_proxy" => host_env['no_proxy']
 }
 
 ###############################
@@ -84,7 +84,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |conf|
   #
   conf.vm.provider "virtualbox" do |v|
     v.memory = box_memory
-    v.cpus   = box_cpus
+    v.cpus = box_cpus
     # v.gui    = true
     v.customize ["modifyvm", :id, "--cpuexecutioncap", box_cpu_max_exec_cap]
     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
@@ -120,4 +120,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |conf|
   conf.vm.provision "container-nginx-proxy", type: "shell", path: "provision/31-container-nginx-proxy.sh", env: env
 
   conf.vm.provision "smartcd", type: "shell", privileged: false, path: "provision/41-smartcd.sh", env: env
+
+  synced_folders = config['synced_folders']
+  if synced_folders
+    if Vagrant.has_plugin?("vagrant-winnfsd")
+      conf.winnfsd.logging = "off"
+      conf.winnfsd.uid = 1000
+      conf.winnfsd.gid = 1000
+      conf.winnfsd.halt_on_reload = "on"
+
+      synced_folders.each do |i,folder|
+        conf.vm.synced_folder "#{folder['source']}", "#{folder['target']}",
+                              id: "#{i}",
+                              type: 'nfs',
+                              :nfs => { :mount_options => ["#{folder['mount_options']}" || 'dmode=775,fmode=775,nolock,vers=3,udp,noatime,actimeo=1'] }
+      end
+    else
+      puts 'vagrant-winnfsd plugin is not installed, nfs shares won\'t be available. run "vagrant plugin install vagrant-winnfsd" to install the plugin.'
+    end
+  end
 end

@@ -3,3 +3,8 @@ box_cpus: 2
 box_cpu_max_exec_cap: "90"
 disksize: "20GB"
 host_network: ~ # Si vagrant demande sur quelle carte attacher le réseau, définir le libellé de la carte ici.
+#synced_folders:
+#  test:
+#    source: "C:\\test"
+#    target: "/home/ubuntu/test"
+#    mount_options: "dmode=775,fmode=775,nolock,vers=3,udp,noatime,actimeo=1"
