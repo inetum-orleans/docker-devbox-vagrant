@@ -24,6 +24,7 @@ Cette solution est construite de zéro ce qui nous permet de garder un grand con
 ## Pré-requis
 
 - [Vagrant](https://www.vagrantup.com/).
+- [Vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) (`vagrant plugin install vagrant-winnfsd`)
 - [vagrant-disksize plugin](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`).
 - [Acrylic](https://sourceforge.net/projects/acrylic) (Optionnel, ([Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.app` vers 
 l'environnement docker, identique au fichier /etc/host mais supporte les wildcard `*`)
