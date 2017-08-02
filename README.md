@@ -96,6 +96,21 @@ git config core.autocrlf false
 
 - Paramétrer l'éditeur de code pour utiliser les sauts de ligne linux uniquement (LF).
 
+## Configuration de git sur la VM et sur la machine hôte
+
+* Utiliser som prénom & nom comme et adresse mail GFI.
+
+```bash
+git config --global user.name "Prénom Nom"
+git config --global user.email "prenom.nom@gfi.fr"
+```
+
+* Pour éviter de polluer l'historique des commits avec des merge commit.
+
+```bash
+git config --global pull.rebase true
+```
+
 ## Synchronisation des fichiers du projet via Unison
 
 ### Installation du client unison sur le poste de travail
