@@ -31,7 +31,16 @@ Cette solution est construite de zéro ce qui nous permet de garder un grand con
 - [Acrylic](https://sourceforge.net/projects/acrylic) (Optionnel, ([Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.app` vers
 l'environnement docker, identique au fichier /etc/host mais supporte les wildcard `*`)
 
-## Configuration des sauts de ligne GIT
+## Installation
+
+### Cloner le repository
+
+```bash
+git clone http://gitlab/PoleDigital/vagrant-docker.git
+cd vagrant-docker
+```
+
+### Configuration des sauts de ligne GIT
 
 Pour éviter tout problème lors du partage de fichier entre Linux et Windows, il faut prendre quelques précautions au
 sujet des caractères de saut de lignes.
@@ -42,13 +51,10 @@ sujet des caractères de saut de lignes.
 git config core.autocrlf false
 ```
 
-## Installation
-
-- Cloner le repository
+### On applique la configuration de saut de ligne
 
 ```bash
-git clone http://gitlab/PoleDigital/vagrant-docker.git
-cd vagrant-docker
+git reset --hard
 ```
 
 ## Paramétrage
