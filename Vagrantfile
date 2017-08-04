@@ -107,8 +107,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |conf|
   # config.vm.provision "shell", inline: <<-SHELL
   # SHELL
 
+  # Proxy configuration
+  if Vagrant.has_plugin?("vagrant-proxyconf")
+    if host_env['http_proxy']
+      conf.proxy.http = host_env['http_proxy']
+    end
+    if host_env['https_proxy']
+      conf.proxy.https = host_env['https_proxy']
+    end
+    if host_env['no_proxy']
+      conf.proxy.no_proxy = host_env['no_proxy']
+    end
+  end
+
   # Provisioning from files available in provision directory
-  conf.vm.provision "system-proxy", type: "shell", run: "always", path: "provision/01-system-proxy.sh", env: env
   conf.vm.provision "system-settings", type: "shell", path: "provision/02-system-settings.sh", env: env
 
   conf.vm.provision "docker", type: "shell", path: "provision/11-docker.sh", env: env

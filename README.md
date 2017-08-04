@@ -28,47 +28,25 @@ Cette solution est construite de zéro ce qui nous permet de garder un grand con
 - [Vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) (`vagrant plugin install vagrant-vbguest`)
 - [Vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) (`vagrant plugin install vagrant-winnfsd`)
 - [vagrant-disksize plugin](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`).
-- [Acrylic](https://sourceforge.net/projects/acrylic) (Optionnel, ([Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.app` vers
+- [Acrylic](https://sourceforge.net/projects/acrylic) (Optionnel, ([Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.app` vers 
 l'environnement docker, identique au fichier /etc/host mais supporte les wildcard `*`)
 
 ## Installation
 
-### Cloner le repository
+- Cloner le repository
 
 ```bash
 git clone http://gitlab/PoleDigital/vagrant-docker.git
 cd vagrant-docker
 ```
 
-### Configuration des sauts de ligne GIT
-
-Pour éviter tout problème lors du partage de fichier entre Linux et Windows, il faut prendre quelques précautions au
-sujet des caractères de saut de lignes.
-
-- Paramétrer l'option pour git `core.autocrlf false`.
-
-```bash
-git config core.autocrlf false
-```
-
-### On applique la configuration de saut de ligne
-
-```bash
-git reset --hard
-```
-
-## Paramétrage
-
-Il est possible de paramétrer la VM avec le fichier `config.yaml`. Copier le fichier `config.example.yaml` vers
-`config.yaml`, et modifier selon vos besoins.
-
-## Lancement de la VM vagrant:
+- Lancer vagrant:
 
 ```bash
 vagrant up
 ```
 
-Au premier lancement, la box `ubuntu/xenial` est téléchargée depuis le cloud Vagrant, puis provisionnée selon la
+Au premier lancement, la box `ubuntu/xenial` est téléchargée depuis le cloud Vagrant, puis provisionnée selon la 
 définition du Vagrantfile. Le vagrantfile provisionne grâce aux scripts présents dans le dossier `provision`.
 
 Une fois la machine provisionnée, vous pouvez vous connecter à celle-ci via la commande :
@@ -78,6 +56,11 @@ vagrant ssh
 ```
 
 Les commandes `docker` et `docker-compose` sont disponibles dans cet environnement.
+
+## Paramétrage
+
+Il est possible de paramétrer la VM avec le fichier `config.yaml`. Copier le fichier `config.example.yaml` vers 
+`config.yaml`, et modifier selon vos besoins.
 
 ## Commandes Vagrant
 
@@ -102,10 +85,6 @@ Provisionner la vm
 vagrant provision
 ```
 
-## Configuration des sauts de ligne sur le projet
-
-Paramétrer l'éditeur de code pour utiliser les sauts de ligne linux uniquement (LF).
-
 ## Configuration de git sur la VM et sur la machine hôte
 
 * Utiliser som prénom & nom comme et adresse mail GFI.
@@ -121,7 +100,22 @@ git config --global user.email "prenom.nom@gfi.fr"
 git config --global pull.rebase true
 ```
 
+## Configuration des sauts de ligne sur le projet
+
+Pour éviter tout problème lors du partage de fichier entre Linux et Windows, il faut prendre quelques précautions au 
+sujet des caractères de saut de lignes.
+
+- Paramétrer l'option pour git `core.autocrlf false`.
+
+```bash
+git config core.autocrlf false
+```
+
+- Paramétrer l'éditeur de code pour utiliser les sauts de ligne linux uniquement (LF).
+
+
 ## Synchronisation des fichiers du projet via NFS
+
 Dans le cas où le projet en cours ne nécessiterait pas une synchro de fichiers "complexe" via Unison, la VM peut synchroniser les fichiers via NFS et le plugin vagrant-winnfsd.
 Pour ce faire, il faut paramétrer la section "synced_folder" dans le fichier ``config.yaml`` comme décrit dans la section "Paramétrage".
 
@@ -147,7 +141,7 @@ Lorsque la section ``synched_folders`` est renseignée dans le fichier de config
 
 ### Configuration d'un container unison dans un projet docker-compose
 
-- Ajouter un service unison dans `docker-compose.override.dev.yml` et son volume de metadata associé (à adapter selon
+- Ajouter un service unison dans `docker-compose.override.dev.yml` et son volume de metadata associé (à adapter selon 
 le besoin, le port doit être différent selon chaque projet).
 
 ```yml
@@ -170,11 +164,11 @@ volumes:
   unison-volume: ~
 ```
 
-Cette [image est un fork](https://github.com/Toilal/docker-image-unison) de l'image issue de
+Cette [image est un fork](https://github.com/Toilal/docker-image-unison) de l'image issue de 
 [docker-sync.io](http://docker-sync.io/), qui ajoute la possibilité de définir la variable `GROUP_ID` et conserve
 les métadonnées de unison au sein d'un volume.
 
-Pour plus d'informations sur la configuration de ce container, se référer à la
+Pour plus d'informations sur la configuration de ce container, se référer à la 
 [documentation de l'image](https://github.com/Toilal/docker-image-unison).
 
 - Monter le volume du container unison dans les containers nécessitant l'accès à ce dossier partagé.
