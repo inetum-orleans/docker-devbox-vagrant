@@ -12,10 +12,30 @@ if [ ! "$(docker ps -a | grep nginx-proxy)" ]; then
     # Ce dossier permet de personnaliser la configuration de chaque virtualhost
     # Voir documentation https://github.com/jwilder/nginx-proxy#custom-nginx-configuration
     mkdir -p /home/ubuntu/.nginx-proxy/vhost.d
+    mkdir -p /home/ubuntu/.nginx-proxy/certs
     touch /home/ubuntu/.nginx-proxy/my_proxy.conf
+
+    cat > /home/ubuntu/.nginx-proxy/certs/nginx-proxy-genssl.sh <<EOF
+#!/bin/bash
+
+cd /home/ubuntu/.nginx-proxy/certs
+openssl req \
+    -nodes -new -x509 \
+    -keyout "$1.key" \
+    -subj "/C=FR/O=GFI Informatique/CN=$1" \
+    -extensions SAN \
+    -reqexts SAN \
+    -config <(cat /etc/ssl/openssl.cnf \
+        <(printf "\n[SAN]\nsubjectAltName=DNS:$1")) \
+    -out "$1.crt"
+EOF
     chown -R ubuntu:ubuntu /home/ubuntu/.nginx-proxy
 
-    docker run -d -p 80:80 --restart unless-stopped --net nginx-proxy --name nginx-proxy \
+    chmod +x /home/ubuntu/.nginx-proxy/certs/nginx-proxy-genssl.sh
+
+    docker run -d -p 80:80 -p 443:443 -e "HTTPS_METHOD=noredirect" \
+      --restart unless-stopped --net nginx-proxy --name nginx-proxy \
+      -v /home/ubuntu/.nginx-proxy/certs:/etc/nginx/certs
       -v /home/ubuntu/.nginx-proxy/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro \
       -v /home/ubuntu/.nginx-proxy/vhost.d:/etc/nginx/vhost.d:ro \
       -v /var/run/docker.sock:/tmp/docker.sock:ro \
