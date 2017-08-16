@@ -20,14 +20,14 @@ if [ ! "$(docker ps -a | grep nginx-proxy)" ]; then
 
 cd /home/ubuntu/.nginx-proxy/certs
 openssl req \
-    -nodes -new -x509 \
-    -keyout "$1.key" \
-    -subj "/C=FR/O=GFI Informatique/CN=$1" \
+    -nodes -new -x509 -days 3650 \
+    -keyout "\$1.key" \
+    -subj "/C=FR/O=GFI Informatique/CN=\$1" \
     -extensions SAN \
     -reqexts SAN \
     -config <(cat /etc/ssl/openssl.cnf \
-        <(printf "\n[SAN]\nsubjectAltName=DNS:$1")) \
-    -out "$1.crt"
+        <(printf "\n[SAN]\nsubjectAltName=DNS:\$1")) \
+    -out "\$1.crt"
 EOF
     chown -R ubuntu:ubuntu /home/ubuntu/.nginx-proxy
 
