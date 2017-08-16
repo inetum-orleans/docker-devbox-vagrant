@@ -24,7 +24,7 @@ Cette solution est construite de zéro ce qui nous permet de garder un grand con
 ## Pré-requis
 - **La virtualisation doit être activé dans le bios de la machine du développeur**
 - [VirtualBox](https://www.virtualbox.org/)
-- [Vagrant](https://www.vagrantup.com/) ATTENTION Version 1.9.5 uniquement : dispo sur serveur de fichier (``S:/Vagrant/vagrant_1.9.5.msi``)
+- [Vagrant](https://www.vagrantup.com/): Attention [la version 1.9.7 est buguée](https://github.com/mitchellh/vagrant/issues/8764), utiliser la 1.9.6 (``S:/Vagrant/vagrant_1.9.6_x86_64.msi``)
 - [Vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) (`vagrant plugin install vagrant-vbguest`)
 - [Vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) (`vagrant plugin install vagrant-winnfsd`)
 - [vagrant-disksize plugin](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`).
