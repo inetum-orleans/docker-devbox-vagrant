@@ -118,13 +118,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |conf|
     if host_env['no_proxy']
       conf.proxy.no_proxy = host_env['no_proxy']
     end
+  elsif host_env['http_proxy'] or host_env['https_proxy']
+    puts 'vagrant-proxyconf plugin is not installed. Vagrant box will not be configured to use host configured HTTP proxy.'
   end
 
   # Provisioning from files available in provision directory
   conf.vm.provision "system-settings", type: "shell", path: "provision/02-system-settings.sh", env: env
 
   conf.vm.provision "docker", type: "shell", path: "provision/11-docker.sh", env: env
-  conf.vm.provision "docker-proxy", type: "shell", run: "always", path: "provision/12-docker-proxy.sh", env: env
   conf.vm.provision "docker-group", type: "shell", path: "provision/13-docker-group.sh", env: env
 
   conf.vm.provision "docker-compose", type: "shell", path: "provision/21-docker-compose.sh", env: env
@@ -133,7 +134,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |conf|
 
   conf.vm.provision "smartcd", type: "shell", privileged: false, path: "provision/41-smartcd.sh", env: env
 
-  synced_folders = config['synced_folders']
+  synced_folders = config["synced_folders"]
   if synced_folders
     if Vagrant.has_plugin?("vagrant-winnfsd")
       conf.winnfsd.logging = "off"

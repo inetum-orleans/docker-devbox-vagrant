@@ -25,4 +25,4 @@ apt-get update
 apt-get -y install docker-ce
 
 echo "## Activation de Docker au démarrage"
-systemctl enable docker
+systemctl enable docker --force

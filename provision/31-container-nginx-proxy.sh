@@ -35,7 +35,7 @@ EOF
 
     docker run -d -p 80:80 -p 443:443 -e "HTTPS_METHOD=noredirect" \
       --restart unless-stopped --net nginx-proxy --name nginx-proxy \
-      -v /home/ubuntu/.nginx-proxy/certs:/etc/nginx/certs
+      -v /home/ubuntu/.nginx-proxy/certs:/etc/nginx/certs \
       -v /home/ubuntu/.nginx-proxy/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro \
       -v /home/ubuntu/.nginx-proxy/vhost.d:/etc/nginx/vhost.d:ro \
       -v /var/run/docker.sock:/tmp/docker.sock:ro \
