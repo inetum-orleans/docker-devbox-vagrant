@@ -2,13 +2,12 @@
 
 ## Pourquoi ?
 
-Docker for windows pose des problèmes sur les dossiers montés dans le container:
+Docker for windows et Docker toolbox utilisent des partages VirtualBox/Hyper-V entre l'hôte Windows et la VM Linux ou 
+s'execute le daemon docker pour monter le volumes locaux dans le container. Celà entraine une série de problèmes:
 
 - Performance médiocres.
-- Droits altérés et difficile à maitriser.
-- Liens symboliques absents, rendant l'utilisation de certains container impossibles.
-
-Il faut donc un moyen de s'affranchir du partage de fichier hôte <-> VM.
+- Droits altérés et difficiles à maitriser.
+- Liens symboliques absents provoquant des problèmes pour certains programmes.
 
 ## Solution
 
@@ -22,14 +21,14 @@ Cette solution est construite de zéro ce qui nous permet de garder un grand con
 *Note: nginx-proxy permet d'accéder un à container web via `http://monappli.app` plutôt que `http://192.168.1.100:<port>`*
 
 ## Pré-requis
-- **La virtualisation doit être activé dans le bios de la machine du développeur**
-- [VirtualBox](https://www.virtualbox.org/)
-- [Vagrant](https://www.vagrantup.com/): Attention [la version 1.9.7 est buguée](https://github.com/mitchellh/vagrant/issues/8764), utiliser la 1.9.6 (``S:/Vagrant/vagrant_1.9.6_x86_64.msi``)
+- [VirtualBox](https://www.virtualbox.org/) (La virtualisation doit être activé dans le bios de la machine)
+- [Vagrant](https://www.vagrantup.com/) (Attention [la version 1.9.7 est buguée](https://github.com/mitchellh/vagrant/issues/8764), utiliser la 1.9.6 présente sur le partage réseau ``S:/Vagrant/vagrant_1.9.6_x86_64.msi``
 - [Vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) (`vagrant plugin install vagrant-vbguest`)
 - [Vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) (`vagrant plugin install vagrant-winnfsd`)
-- [vagrant-disksize plugin](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`).
-- [Acrylic](https://sourceforge.net/projects/acrylic) (Optionnel, ([Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.app` vers 
-l'environnement docker, identique au fichier /etc/host mais supporte les wildcard `*`)
+- [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`)
+- [vagrant-proxyconf](https://github.com/tmatilai/vagrant-proxyconf) (`vagrant plugin install vagrant-proxyconf`)
+- [Acrylic](https://sourceforge.net/projects/acrylic) (Optionnel, [Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.app` vers 
+l'environnement docker, identique au fichier `/etc/hosts` mais supporte les wildcard `*`)
 
 ## Installation
 
@@ -49,7 +48,7 @@ vagrant up
 Au premier lancement, la box `ubuntu/xenial` est téléchargée depuis le cloud Vagrant, puis provisionnée selon la 
 définition du Vagrantfile. Le vagrantfile provisionne grâce aux scripts présents dans le dossier `provision`.
 
-Une fois la machine provisionnée, vous pouvez vous connecter à celle-ci via la commande :
+Une fois la machine provisionnée, vous pouvez vous connecter à celle-ci via la commande:
 
 ```bash
 vagrant ssh
@@ -108,16 +107,18 @@ sujet des caractères de saut de lignes.
 - Paramétrer l'option pour git `core.autocrlf false`.
 
 ```bash
-git config core.autocrlf false
+git config --global core.autocrlf false
 ```
 
 - Paramétrer l'éditeur de code pour utiliser les sauts de ligne linux uniquement (LF).
 
-
 ## Synchronisation des fichiers du projet via NFS
 
-Dans le cas où le projet en cours ne nécessiterait pas une synchro de fichiers "complexe" via Unison, la VM peut synchroniser les fichiers via NFS et le plugin vagrant-winnfsd.
-Pour ce faire, il faut paramétrer la section "synced_folder" dans le fichier ``config.yaml`` comme décrit dans la section "Paramétrage".
+Si vous n'avez pas besoin du support des notifications de fichier [inotify](https://fr.wikipedia.org/wiki/Inotify) (ex: Compilation sur changement de fichiers 
+via nodeJS), il est possible d'utiliser un point de montage NFS via le plugin `vagrant-winnfsd`.
+
+Pour ce faire, il faut paramétrer la section `synced_folder` dans le fichier `config.yaml` comme décrit dans la 
+section **Paramétrage**.
 
 ```yml
 synced_folders:
@@ -129,15 +130,21 @@ synced_folders:
     target: "/home/ubuntu/workspace/FRR" # dossier mappé sur la vm
 ```
 
-Lorsque la section ``synched_folders`` est renseignée dans le fichier de configuration, Vagrant va automatiquement lancer un watcher de fichiers pour assurer la synchronisation des fichiers Hôte <-> VM
+Lorsque la section `synced_folders` est renseignée dans le fichier de configuration, Vagrant va automatiquement 
+lancer winnfsd pour monter les dossiers spécifiés via NFS.
+
+Pour supporter les liens symboliques, winnsfd doit être executé en tant qu'Administrateur (Cocher la propriété Exécuter) 
 
 ## Synchronisation des fichiers du projet via Unison
 
+Si vous avez besoin du support des notifications de fichier [inotify](https://fr.wikipedia.org/wiki/Inotify) (ex: Compilation sur changement de fichiers 
+via nodeJS), il est nécessaire d'utiliser une synchronisation Unison à la place d'un point de montage NFS.
+
 ### Installation du client unison sur le poste de travail
 
-- Copier les fichiers présents dans `unison/bin` dans le dossier `C:/bin`
+- Copier les fichiers présents dans `unison/bin` dans le dossier `C:\bin`
 
-- Ajouter le dossier `C:/bin` dans la variable d'environnement `PATH`
+- Ajouter le dossier `C:\bin` dans la variable d'environnement `PATH`
 
 ### Configuration d'un container unison dans un projet docker-compose
 
@@ -187,7 +194,7 @@ services:
 - Placer le batch `docker-sync.bat` du dossier unison à la racine du projet pour lancer facilement la synchronisation
 unison (à adapter selon le besoin, le port doit correspondre à celui défini dans `docker-compose.yml`).
 
-## Avertissements et conseils d'utilisation
+### Avertissements et conseils d'utilisation
 
 - Les méta-données git sont exclues de la synchronisation (dossier `.git`). Pour éviter tout problème, il est
 préferable d'utiliser git à partir du poste de développement uniquement.
