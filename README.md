@@ -27,7 +27,7 @@ Cette solution est construite de zéro ce qui nous permet de garder un grand con
 - [Vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) (`vagrant plugin install vagrant-winnfsd`)
 - [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`)
 - [vagrant-proxyconf](https://github.com/tmatilai/vagrant-proxyconf) (`vagrant plugin install vagrant-proxyconf`)
-- [Acrylic](https://sourceforge.net/projects/acrylic) (Optionnel, [Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.app` vers 
+- [Acrylic DNS Proxy](https://sourceforge.net/projects/acrylic) (Optionnel, [Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.app` vers 
 l'environnement docker, identique au fichier `/etc/hosts` mais supporte les wildcard `*`)
 
 ## Installation
@@ -61,29 +61,6 @@ Les commandes `docker` et `docker-compose` sont disponibles dans cet environneme
 Il est possible de paramétrer la VM avec le fichier `config.yaml`. Copier le fichier `config.example.yaml` vers 
 `config.yaml`, et modifier selon vos besoins.
 
-## Commandes Vagrant
-
-Lancement de la vm
-
-```bash
-vagrant up
-```
-
-Extinction de la vm
-```bash
-vagrant halt
-```
-
-Redémarrage de la vm
-```bash
-vagrant reload
-```
-
-Provisionner la vm
-```bash
-vagrant provision
-```
-
 ## Configuration de git sur la VM et sur la machine hôte
 
 * Utiliser som prénom & nom comme et adresse mail GFI.
@@ -112,10 +89,53 @@ git config --global core.autocrlf false
 
 - Paramétrer l'éditeur de code pour utiliser les sauts de ligne linux uniquement (LF).
 
+## Configuration de Acrylic DNS Proxy (optionnel)
+
+Acrylic DNS Proxy permet de router des ensemble de noms de domaines vers la VM, sans avoir à modifier le fichier 
+`/etc/hosts` pour chaque projet.
+
+- Dans les propriétés de la carte réseau, définir le serveur DNS de l'interface IPv4 à `127.0.0.1`, et IPv6 à `::1`.
+
+- Menu Démarrer > Edit Acrylic Configuration File > Modifier les paramètres suivants
+
+```
+PrimaryServerAddress=172.16.78.251
+SecondaryServerAddress=10.45.6.3
+TertiaryServerAddress=10.45.6.2
+```
+
+- Menu Démarrer > Edit Acrylic Hosts File > Ajouter la ligne suivante à la fin du fichier
+
+192.168.1.100 *.app
+
+## Rappel des commandes Vagrant
+
+- Lancer la VM
+
+```bash
+vagrant up
+```
+
+- Arrêter la VM
+```bash
+vagrant halt
+```
+
+- Redémarrer la VM
+```bash
+vagrant reload
+```
+
+- Provisionner la VM
+```bash
+vagrant provision
+```
+
 ## Synchronisation des fichiers du projet via NFS
 
-Si vous n'avez pas besoin du support des notifications de fichier [inotify](https://fr.wikipedia.org/wiki/Inotify) (ex: Compilation sur changement de fichiers 
-via nodeJS), il est possible d'utiliser un point de montage NFS via le plugin `vagrant-winnfsd`.
+Si vous n'avez pas besoin du support des notifications de fichier [inotify](https://fr.wikipedia.org/wiki/Inotify) 
+(ex: Compilation sur changement de fichiers via nodeJS), il est possible d'utiliser un point de montage NFS via le 
+plugin `vagrant-winnfsd`.
 
 Pour ce faire, il faut paramétrer la section `synced_folder` dans le fichier `config.yaml` comme décrit dans la 
 section **Paramétrage**.
@@ -138,7 +158,7 @@ Pour supporter les liens symboliques, winnsfd doit être executé en tant qu'Adm
 ## Synchronisation des fichiers du projet via Unison
 
 Si vous avez besoin du support des notifications de fichier [inotify](https://fr.wikipedia.org/wiki/Inotify) (ex: Compilation sur changement de fichiers 
-via nodeJS), il est nécessaire d'utiliser une synchronisation Unison à la place d'un point de montage NFS.
+via nodeJS), il est possible d'utiliser une synchronisation Unison à la place d'un point de montage NFS.
 
 ### Installation du client unison sur le poste de travail
 
