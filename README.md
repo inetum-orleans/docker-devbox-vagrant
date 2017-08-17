@@ -21,8 +21,8 @@ Cette solution est construite de zéro ce qui nous permet de garder un grand con
 *Note: nginx-proxy permet d'accéder un à container web via `http://monappli.app` plutôt que `http://192.168.1.100:<port>`*
 
 ## Pré-requis
-- [VirtualBox](https://www.virtualbox.org/) (La virtualisation doit être activé dans le bios de la machine)
-- [Vagrant](https://www.vagrantup.com/) (Attention [la version 1.9.7 est buguée](https://github.com/mitchellh/vagrant/issues/8764), utiliser la 1.9.6 présente sur le partage réseau ``S:/Vagrant/vagrant_1.9.6_x86_64.msi``
+- [VirtualBox](https://www.virtualbox.org/) (**/!\\** La virtualisation doit être activé dans le bios de la machine)
+- [Vagrant](https://www.vagrantup.com/) (**/!\\** [la version 1.9.7 est buguée](https://github.com/mitchellh/vagrant/issues/8764), utiliser la 1.9.6 présente sur le partage réseau ``S:/Vagrant/vagrant_1.9.6_x86_64.msi``
 - [Vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) (`vagrant plugin install vagrant-vbguest`)
 - [Vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) (`vagrant plugin install vagrant-winnfsd`)
 - [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`)
@@ -106,7 +106,9 @@ TertiaryServerAddress=10.45.6.2
 
 - Menu Démarrer > Edit Acrylic Hosts File > Ajouter la ligne suivante à la fin du fichier
 
+```
 192.168.1.100 *.app
+```
 
 ## Rappel des commandes Vagrant
 
@@ -153,7 +155,11 @@ synced_folders:
 Lorsque la section `synced_folders` est renseignée dans le fichier de configuration, Vagrant va automatiquement 
 lancer winnfsd pour monter les dossiers spécifiés via NFS.
 
-Pour supporter les liens symboliques, winnsfd doit être executé en tant qu'Administrateur (Cocher la propriété Exécuter) 
+Pour supporter les liens symboliques, `winnsfd.exe` doit s'exécuter en tant qu'Administrateur. 
+
+- Ouvrir le dossier `%USERPROFILE%\.vagrant.d\gems\2.3.4\gems\vagrant-winnfsd-1.3.1\bin` (**/!\\** Adapter les versions)
+- Selectionner `winnfsd.exe` > Bouton droit > Propriétés
+- Activer l'onglet "Compatibilité", Cocher la case "Executer ce programme en tant qu'administrateur", Cliquer sur Appliquer
 
 ## Synchronisation des fichiers du projet via Unison
 
