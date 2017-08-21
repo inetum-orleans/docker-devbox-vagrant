@@ -13,7 +13,11 @@ if [ ! "$(docker ps -a | grep nginx-proxy)" ]; then
     # Voir documentation https://github.com/jwilder/nginx-proxy#custom-nginx-configuration
     mkdir -p /home/ubuntu/.nginx-proxy/vhost.d
     mkdir -p /home/ubuntu/.nginx-proxy/certs
-    touch /home/ubuntu/.nginx-proxy/my_proxy.conf
+
+    # Le téléchargement de certains gros fichiers échoue parfois sans ces paramètres
+    echo proxy_buffer_size          128k;>/home/ubuntu/.nginx-proxy/my_proxy.conf
+    echo proxy_buffers              4 256k;>>/home/ubuntu/.nginx-proxy/my_proxy.conf
+    echo proxy_busy_buffers_size    256k;>>/home/ubuntu/.nginx-proxy/my_proxy.conf
 
     cat > /home/ubuntu/.nginx-proxy/certs/nginx-proxy-genssl.sh <<EOF
 #!/bin/bash
