@@ -13,7 +13,8 @@ host_env = ENV.to_h
 env = {
     "http_proxy" => host_env['http_proxy'],
     "https_proxy" => host_env['https_proxy'],
-    "no_proxy" => host_env['no_proxy']
+    "no_proxy" => host_env['no_proxy'],
+    "USER" => 'ubuntu' # La variable d'environment USER n'est pas définie lors du provisionning
 }
 
 ###############################

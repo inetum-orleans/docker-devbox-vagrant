@@ -39,11 +39,3 @@ if [ "$BASHRC_CONFIGURED" != "0" ]; then
     echo '[ -r "$HOME/.smartcd_config" ] && ( [ -n $BASH_VERSION ] || [ -n $ZSH_VERSION ] ) && source ~/.smartcd_config'>>$HOME/.bashrc
     echo "Enregistrement de smartcd (~/.bashrc)"
 fi
-
-cat $HOME/.profile | grep .smartcd_config
-PROFILE_CONFIGURED=$?
-if [ "$PROFILE_CONFIGURED" != "0" ]; then
-    echo ''>>$HOME/.profile
-    echo '[ -r "$HOME/.smartcd_config" ] && ( [ -n $BASH_VERSION ] || [ -n $ZSH_VERSION ] ) && source ~/.smartcd_config'>>$HOME/.profile
-    echo "Enregistrement de smartcd (~/.profile)"
-fi
