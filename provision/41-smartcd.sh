@@ -35,7 +35,8 @@ fi
 cat $HOME/.bashrc | grep .smartcd_config
 BASHRC_CONFIGURED=$?
 if [ "$BASHRC_CONFIGURED" != "0" ]; then
-    echo ''>>$HOME/.bashrc
+    echo -e>>$HOME/.bashrc
+    echo "# SmartCD Configuration">>$HOME/.bashrc
     echo '[ -r "$HOME/.smartcd_config" ] && ( [ -n $BASH_VERSION ] || [ -n $ZSH_VERSION ] ) && source ~/.smartcd_config'>>$HOME/.bashrc
     echo "Enregistrement de smartcd (~/.bashrc)"
 fi

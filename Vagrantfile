@@ -29,6 +29,18 @@ host_network = config['host_network']
 
 ip_address = "192.168.1.100"
 
+def self.get_host_ip(connect_ip)
+  orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true
+  UDPSocket.open do |s|
+    s.connect connect_ip, 1
+    s.addr.last
+  end
+  ensure
+    Socket.do_not_reverse_lookup = orig
+end
+
+env['HOST_IP'] = get_host_ip(ip_address)
+
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -125,13 +137,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |conf|
 
   # Provisioning from files available in provision directory
   conf.vm.provision "system-settings", type: "shell", path: "provision/02-system-settings.sh", env: env
+  conf.vm.provision "environment-variables", type: "shell", privileged: false, path: "provision/03-environment-variables.sh", env: env
 
   conf.vm.provision "docker", type: "shell", path: "provision/11-docker.sh", env: env
   conf.vm.provision "docker-group", type: "shell", path: "provision/13-docker-group.sh", env: env
 
   conf.vm.provision "docker-compose", type: "shell", path: "provision/21-docker-compose.sh", env: env
 
-  conf.vm.provision "container-nginx-proxy", type: "shell", path: "provision/31-container-nginx-proxy.sh", env: env
+  conf.vm.provision "container-nginx-proxy", type: "shell", privileged: false, path: "provision/31-container-nginx-proxy.sh", env: env
 
   conf.vm.provision "smartcd", type: "shell", privileged: false, path: "provision/41-smartcd.sh", env: env
 
