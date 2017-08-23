@@ -17,9 +17,9 @@ if [ ! "$(docker ps -a | grep nginx-proxy)" ]; then
     mkdir -p "${NGINX_PROXY_HOME}/certs"
 
     # Le téléchargement de certains gros fichiers échoue parfois sans ces paramètres
-    echo proxy_buffer_size          128k;>"${NGINX_PROXY_HOME}/my_proxy.conf"
-    echo proxy_buffers              4 256k;>>"${NGINX_PROXY_HOME}/my_proxy.conf"
-    echo proxy_busy_buffers_size    256k;>>"${NGINX_PROXY_HOME}/my_proxy.conf"
+    echo "proxy_buffer_size          128k;">"${NGINX_PROXY_HOME}/my_proxy.conf"
+    echo "proxy_buffers              4 256k;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
+    echo "proxy_busy_buffers_size    256k;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
 
     cat > "${NGINX_PROXY_HOME}/certs/nginx-proxy-genssl.sh" <<EOF
 #!/bin/bash
