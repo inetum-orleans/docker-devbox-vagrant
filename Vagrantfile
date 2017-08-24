@@ -148,6 +148,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |conf|
 
   conf.vm.provision "smartcd", type: "shell", privileged: false, path: "provision/41-smartcd.sh", env: env
 
+  conf.vm.provision "smartcd", type: "shell", path: "provision/51-vpnc.sh", env: env
+
   synced_folders = config["synced_folders"]
   if synced_folders
     if Vagrant.has_plugin?("vagrant-winnfsd")
