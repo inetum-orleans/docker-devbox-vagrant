@@ -162,7 +162,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |conf|
         conf.vm.synced_folder "#{folder['source']}", "#{folder['target']}",
                               id: "#{i}",
                               type: 'nfs',
-                              :nfs => { :mount_options => ["#{folder['mount_options']}" || 'dmode=775,fmode=775,nolock,vers=3,udp,noatime,actimeo=1'] }
+                              :nfs => { :mount_options => ["#{folder['mount_options']}" || nil] }
       end
     else
       puts 'vagrant-winnfsd plugin is not installed, nfs shares won\'t be available. run "vagrant plugin install vagrant-winnfsd" to install the plugin.'
