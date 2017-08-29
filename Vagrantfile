@@ -136,7 +136,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |conf|
   end
 
   # Provisioning from files available in provision directory
-  conf.vm.provision "system-settings", type: "shell", path: "provision/02-system-settings.sh", env: env
   conf.vm.provision "environment-variables", type: "shell", privileged: false, path: "provision/03-environment-variables.sh", env: env
 
   conf.vm.provision "docker", type: "shell", path: "provision/11-docker.sh", env: env
@@ -148,7 +147,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |conf|
 
   conf.vm.provision "smartcd", type: "shell", privileged: false, path: "provision/41-smartcd.sh", env: env
 
-  conf.vm.provision "smartcd", type: "shell", path: "provision/51-vpnc.sh", env: env
+  conf.vm.provision "smartcd", type: "shell", privileged: true, path: "provision/51-vpnc.sh", env: env
 
   synced_folders = config["synced_folders"]
   if synced_folders
