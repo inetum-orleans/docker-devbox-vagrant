@@ -155,13 +155,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |conf|
       conf.winnfsd.logging = "off"
       conf.winnfsd.uid = 1000
       conf.winnfsd.gid = 1000
-      conf.winnfsd.halt_on_reload = "on"
 
       synced_folders.each do |i,folder|
         conf.vm.synced_folder "#{folder['source']}", "#{folder['target']}",
                               id: "#{i}",
                               type: 'nfs',
-                              :nfs => { :mount_options => ["#{folder['mount_options']}" || nil] }
+                              mount_options: folder['mount_options'] || %w(actimeo=1)
+                              # See https://www.sebastien-han.fr/blog/2012/12/18/noac-performance-impact-on-web-applications/
       end
     else
       puts 'vagrant-winnfsd plugin is not installed, nfs shares won\'t be available. run "vagrant plugin install vagrant-winnfsd" to install the plugin.'

@@ -7,4 +7,3 @@ host_network: ~ # Si vagrant demande sur quelle carte attacher le réseau, défi
 #  test:
 #    source: "C:\\test"
 #    target: "/home/ubuntu/test"
-#    mount_options: "dmode=775,fmode=775,nolock,vers=3,udp,noatime,actimeo=1"
