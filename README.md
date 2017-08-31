@@ -234,3 +234,9 @@ préferable d'utiliser git à partir du poste de développement uniquement.
 - Lors de la mise en place d'un projet existant sur un nouveau poste, il est cependant nécessaire d'effectuer la
 commande `git clone` sur la VM (pour lancer les containers docker), puis sur le poste de développement
 (pour obtenir le docker-sync.bat et activer la synchronisation de fichiers).
+
+### Problèmes liés au VPN
+
+Si le client vpnc ne parvient pas à se connecter, il est nécessaire de vérifier le MTU des cartes réseaux (1500).
+
+Voir [https://www.virtualbox.org/ticket/13847](https://www.virtualbox.org/ticket/13847)
