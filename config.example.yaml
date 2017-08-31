@@ -1,7 +1,7 @@
-box_memory: 2048
+box_memory: 4096
 box_cpus: 2
 box_cpu_max_exec_cap: "90"
-disksize: "20GB"
+disksize: "40GB"
 host_network: ~ # Si vagrant demande sur quelle carte attacher le réseau, définir le libellé de la carte ici.
 #synced_folders:
 #  test:
