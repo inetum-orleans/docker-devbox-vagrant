@@ -167,10 +167,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       config.winnfsd.gid = 1000
 
       synced_folders.each do |i,folder|
+        mount_options = if folder.key?('mount_options') then folder['mount_options'] else %w(nolock noatime nodiratime actimeo=1) end
+        mount_options = if not mount_options or mount_options.kind_of?(Array) then mount_options else mount_options.split(/[,\s]/) end
+
         config.vm.synced_folder "#{folder['source']}", "#{folder['target']}",
                               id: "#{i}",
                               type: 'nfs',
-                              mount_options: folder['mount_options'] || %w(actimeo=1)
+                              mount_options: mount_options
                               # See https://www.sebastien-han.fr/blog/2012/12/18/noac-performance-impact-on-web-applications/
       end
     else
