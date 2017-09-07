@@ -143,7 +143,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # Provisioning from files available in provision directory
+  config.vm.provision 'prepare', type: 'shell', privileged: false, path: 'provision/01-prepare.sh', env: env
+
   config.vm.provision 'environment-variables', type: 'shell', privileged: false, path: 'provision/03-environment-variables.sh', env: env
+
+  config.vm.provision 'ca-certificates-files', type: 'file', source: './ca-certificates', destination: '/home/ubuntu/.provision'
+  config.vm.provision 'ca-certificates', type: 'shell', privileged: true, path: 'provision/05-ca-certificates.sh', env: env
 
   config.vm.provision 'docker', type: 'shell', path: 'provision/11-docker.sh', env: env
   config.vm.provision 'docker-group', type: 'shell', path: 'provision/13-docker-group.sh', env: env
