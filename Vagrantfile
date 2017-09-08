@@ -129,15 +129,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Proxy configuration
   if Vagrant.has_plugin?('vagrant-proxyconf')
-    if host_env['http_proxy']
-      config.proxy.http = host_env['http_proxy']
-    end
-    if host_env['https_proxy']
-      config.proxy.https = host_env['https_proxy']
-    end
-    if host_env['no_proxy']
-      config.proxy.no_proxy = host_env['no_proxy']
-    end
+    if host_env['http_proxy'] then config.proxy.http = host_env['http_proxy'] else config.proxy.http = false end
+    if host_env['https_proxy'] then config.proxy.https = host_env['https_proxy'] else config.proxy.https = false end
+    if host_env['no_proxy'] then config.proxy.no_proxy = host_env['no_proxy'] else config.proxy.no_proxy = false end
   elsif host_env['http_proxy'] or host_env['https_proxy']
     puts 'vagrant-proxyconf plugin is not installed. Vagrant box will not be configured to use host configured HTTP proxy.'
   end
