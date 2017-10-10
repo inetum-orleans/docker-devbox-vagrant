@@ -235,6 +235,17 @@ préferable d'utiliser git à partir du poste de développement uniquement.
 commande `git clone` sur la VM (pour lancer les containers docker), puis sur le poste de développement
 (pour obtenir le docker-sync.bat et activer la synchronisation de fichiers).
 
+### Libérer de l'espace disque
+
+Attention, car `dc down` supprime les containers ! Avant de lancer ces commandes pour libérer de l'espace disque,
+il vaut mieux donc arrêter les projets que l'on souhaite conserver avec `dc stop` pour que les volumes associés
+ne soient pas détruits.
+
+ ```
+ docker system prune  --filter "until=24h"
+ docker volume rm $(docker volume ls -qf dangling=true)
+ ```
+
 ### Problèmes liés au VPN
 
 Si le client vpnc ne parvient pas à se connecter, il est nécessaire de vérifier le MTU des cartes réseaux (1500).
