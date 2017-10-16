@@ -20,7 +20,8 @@ if [ ! "$(docker ps -a | grep nginx-proxy)" ]; then
     echo "proxy_buffer_size          128k;">"${NGINX_PROXY_HOME}/my_proxy.conf"
     echo "proxy_buffers              4 256k;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
     echo "proxy_busy_buffers_size    256k;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
-
+    echo "client_max_body_size       128m;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
+;
     cat > "${NGINX_PROXY_HOME}/certs/nginx-proxy-genssl.sh" <<EOF
 #!/bin/bash
 
