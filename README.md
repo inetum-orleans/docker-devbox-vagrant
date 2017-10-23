@@ -246,6 +246,15 @@ ne soient pas détruits.
  docker volume rm $(docker volume ls -qf dangling=true)
  ```
 
+ Dans certains cas, le dossier `/var/lib/docker` est pollué avec des dossiers `*-removing` et `*-init`. Ils peuvent être supprimés.
+
+ ```
+ # A executer avec l'utilisateur root
+ cd /var/lib/docker
+ find . -name "*-init" -type d -exec rm -R {} +
+ find . -name "*-removing" -type d -exec rm -R {} +
+ ``` 
+
 ### Problèmes liés au VPN
 
 Si le client vpnc ne parvient pas à se connecter, il est nécessaire de vérifier le MTU des cartes réseaux (1500).
