@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "## Installation des certificats CA SSL"
+mkdir -p /usr/local/share/ca-certificates
 rm -f /usr/local/share/ca-certificates/*
 
 for f in "/home/ubuntu/.provision/ca-certificates/*"
