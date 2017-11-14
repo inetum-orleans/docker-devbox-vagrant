@@ -30,12 +30,6 @@ Cette solution est construite de zéro ce qui nous permet de garder un grand con
 - [Acrylic DNS Proxy](https://sourceforge.net/projects/acrylic) (Optionnel, [Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.app` vers 
 l'environnement docker, identique au fichier `/etc/hosts` mais supporte les wildcard `*`)
 
-## Fork de winnfsd
-
-Pour résoudre un bug de winnfsd (https://github.com/winnfsd/winnfsd/pull/49), il est préférable d'utiliser une version corrigée et recompilée.
-
-Copier le fichier `winnfsd/winnfsd.exe` sur `%USERPROFILE%\.vagrant.d\gems\2.3.4\gems\vagrant-winnfsd-1.3.1\bin`.
-
 ## Installation
 
 - Cloner le repository
@@ -163,7 +157,7 @@ lancer winnfsd pour monter les dossiers spécifiés via NFS.
 
 Pour supporter les liens symboliques, `winnsfd.exe` doit s'exécuter en tant qu'Administrateur. 
 
-- Ouvrir le dossier `%USERPROFILE%\.vagrant.d\gems\2.3.4\gems\vagrant-winnfsd-1.3.1\bin` (**/!\\** Adapter les versions)
+- Ouvrir le dossier `%USERPROFILE%\.vagrant.d\gems\2.3.4\gems\vagrant-winnfsd-1.4.0\bin` (**/!\\** Adapter les versions)
 - Selectionner `winnfsd.exe` > Bouton droit > Propriétés
 - Activer l'onglet "Compatibilité", Cocher la case "Executer ce programme en tant qu'administrateur", Cliquer sur Appliquer
 
