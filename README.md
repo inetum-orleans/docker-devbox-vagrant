@@ -141,12 +141,9 @@ Il faut paramétrer la section `synced_folder` dans le fichier `config.yaml` com
 
 ```yml
 synced_folders:
-  patbiodiv: # clé (nom du projet par exemple)
-    source: "../AFB/PATBiodiv/www" # dossier relatif sur la machine hôte
-    target: "/home/ubuntu/workspace/AFB/PATBiodiv" # dossier mappé sur la vm
-  frr:
-    source: "D:\\Projets\\FRR\\www" # dossier absolu sur la machine hôte ATTENTION à doubler les antislash
-    target: "/home/ubuntu/workspace/FRR" # dossier mappé sur la vm
+  projects: # clé
+    source: "../projects" # dossier relatif ou absolu sur la machine hôte
+    target: "/home/ubuntu/projects" # dossier mappé sur la vm
 ```
 
 Lorsque la section `synced_folders` est renseignée dans le fichier de configuration, Vagrant va automatiquement 
