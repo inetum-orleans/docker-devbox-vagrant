@@ -32,9 +32,9 @@ box_memory = config_file['box_memory'] || 4096
 box_cpus = config_file['box_cpus'] || 2
 box_cpu_max_exec_cap = config_file['box_cpu_max_exec_cap'] || '90'
 disksize = config_file['disksize'] || '40GB'
+ip_address = config_file['ip_address'] || '192.168.1.100'
 host_network = config_file['host_network']
 
-ip_address = '192.168.1.100'
 
 def self.get_host_ip(connect_ip)
   orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true

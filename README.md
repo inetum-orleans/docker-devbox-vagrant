@@ -13,16 +13,16 @@ s'execute le daemon docker pour monter le volumes locaux dans le container. Cel�
 
 - VM Docker (Ubuntu Xenial).
 - Vagrant pour provisionner Docker, Docker Compose et [nginx-proxy](https://github.com/jwilder/nginx-proxy).
-- [Unison](https://www.cis.upenn.edu/~bcpierce/unison/) pour synchroniser les fichiers entre l'hôte sous windows et la VM Docker.
+- [winnfsd](https://github.com/winnfsd/winnfsd) pour partager les fichiers entre l'hôte sous windows et la VM Docker.
 - [Smartcd](https://github.com/cxreg/smartcd) (Activation/Désactivation automatique d'alias lors de l'entrée/sortie dans un dossier)
 
-Cette solution est construite de zéro ce qui nous permet de garder un grand contrôle sur l'environnement technique.
+Cette solution est construite de zéro ce qui permet de garder une bonne flexibilité sur l'environnement technique de la VM.
 
 *Note: nginx-proxy permet d'accéder un à container web via `http://monappli.app` plutôt que `http://192.168.1.100:<port>`*
 
 ## Pré-requis
 - [VirtualBox](https://www.virtualbox.org/) (**/!\\** La virtualisation doit être activé dans le bios de la machine)
-- [Vagrant](https://www.vagrantup.com/) (**/!\\** [la version 1.9.7 est buguée](https://github.com/mitchellh/vagrant/issues/8764), utiliser la 1.9.6 présente sur le partage réseau ``S:/Vagrant/vagrant_1.9.6_x86_64.msi``
+- [Vagrant](https://www.vagrantup.com/)
 - [Vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) (`vagrant plugin install vagrant-vbguest`)
 - [Vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) (`vagrant plugin install vagrant-winnfsd`)
 - [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`)
@@ -35,7 +35,7 @@ l'environnement docker, identique au fichier `/etc/hosts` mais supporte les wild
 - Cloner le repository
 
 ```bash
-git clone http://gitlab/PoleDigital/vagrant-docker.git
+git clone https://github.com/GFI-Informatique/docker-devbox
 cd vagrant-docker
 ```
 
@@ -135,12 +135,9 @@ vagrant provision
 
 ## Synchronisation des fichiers du projet via NFS
 
-Si vous n'avez pas besoin du support des notifications de fichier [inotify](https://fr.wikipedia.org/wiki/Inotify) 
-(ex: Compilation sur changement de fichiers via nodeJS), il est possible d'utiliser un point de montage NFS via le 
-plugin `vagrant-winnfsd`.
+Il est possible d'utiliser un point de montage NFS via le plugin `vagrant-winnfsd`.
 
-Pour ce faire, il faut paramétrer la section `synced_folder` dans le fichier `config.yaml` comme décrit dans la 
-section **Paramétrage**.
+Il faut paramétrer la section `synced_folder` dans le fichier `config.yaml` comme décrit dans la section **Paramétrage**.
 
 ```yml
 synced_folders:
@@ -160,74 +157,6 @@ Pour supporter les liens symboliques, `winnsfd.exe` doit s'exécuter en tant qu'
 - Ouvrir le dossier `%USERPROFILE%\.vagrant.d\gems\2.3.4\gems\vagrant-winnfsd-1.4.0\bin` (**/!\\** Adapter les versions)
 - Selectionner `winnfsd.exe` > Bouton droit > Propriétés
 - Activer l'onglet "Compatibilité", Cocher la case "Executer ce programme en tant qu'administrateur", Cliquer sur Appliquer
-
-## Synchronisation des fichiers du projet via Unison
-
-Si vous avez besoin du support des notifications de fichier [inotify](https://fr.wikipedia.org/wiki/Inotify) (ex: Compilation sur changement de fichiers 
-via nodeJS), il est possible d'utiliser une synchronisation Unison à la place d'un point de montage NFS.
-
-### Installation du client unison sur le poste de travail
-
-- Copier les fichiers présents dans `unison/bin` dans le dossier `C:\bin`
-
-- Ajouter le dossier `C:\bin` dans la variable d'environnement `PATH`
-
-### Configuration d'un container unison dans un projet docker-compose
-
-- Ajouter un service unison dans `docker-compose.override.dev.yml` et son volume de metadata associé (à adapter selon 
-le besoin, le port doit être différent selon chaque projet).
-
-```yml
-services:
-  web:
-    ...
-  unison:
-    image: toilal/unison:2.48.4
-    environment:
-      - VOLUME=/var/www/html
-      - OWNER_UID=1000
-      - GROUP_ID=1000
-      - UNISONLOCALHOSTNAME=nom-du-projet
-    ports:
-      - "4250:5000"
-    volumes:
-      - ".:/var/www/html"
-      - "unison-volume:/.unison"
-volumes:
-  unison-volume: ~
-```
-
-Cette [image est un fork](https://github.com/Toilal/docker-image-unison) de l'image issue de 
-[docker-sync.io](http://docker-sync.io/), qui ajoute la possibilité de définir la variable `GROUP_ID` et conserve
-les métadonnées de unison au sein d'un volume.
-
-Pour plus d'informations sur la configuration de ce container, se référer à la 
-[documentation de l'image](https://github.com/Toilal/docker-image-unison).
-
-- Monter le volume du container unison dans les containers nécessitant l'accès à ce dossier partagé.
-
-```yml
-services:
-  web:
-    environment:
-      - VIRTUAL_HOST=eqo.app
-    volumes_from:
-      - unison
-  unison:
-    ...
-```
-
-- Placer le batch `docker-sync.bat` du dossier unison à la racine du projet pour lancer facilement la synchronisation
-unison (à adapter selon le besoin, le port doit correspondre à celui défini dans `docker-compose.yml`).
-
-### Avertissements et conseils d'utilisation
-
-- Les méta-données git sont exclues de la synchronisation (dossier `.git`). Pour éviter tout problème, il est
-préferable d'utiliser git à partir du poste de développement uniquement.
-
-- Lors de la mise en place d'un projet existant sur un nouveau poste, il est cependant nécessaire d'effectuer la
-commande `git clone` sur la VM (pour lancer les containers docker), puis sur le poste de développement
-(pour obtenir le docker-sync.bat et activer la synchronisation de fichiers).
 
 ### Libérer de l'espace disque
 

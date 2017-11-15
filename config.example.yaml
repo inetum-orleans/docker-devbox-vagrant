@@ -2,6 +2,7 @@ box_memory: 4096
 box_cpus: 2
 box_cpu_max_exec_cap: "90"
 disksize: "40GB"
+ip_address: "192.168.1.100"
 host_network: ~ # Si vagrant demande sur quelle carte attacher le réseau, définir le libellé de la carte ici.
 #synced_folders:
 #  test:
