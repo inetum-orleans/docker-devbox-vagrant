@@ -18,10 +18,10 @@ s'execute le daemon docker pour monter le volumes locaux dans le container. Cel�
 
 Cette solution est construite de zéro ce qui permet de garder une bonne flexibilité sur l'environnement technique de la VM.
 
-*Note: nginx-proxy permet d'accéder un à container web via `http://monappli.app` plutôt que `http://192.168.1.100:<port>`*
+*Note: nginx-proxy permet d'accéder un à container web via `http://mon-appli.app` plutôt que `http://192.168.1.100:<port>`*
 
 ## Pré-requis
-- [VirtualBox](https://www.virtualbox.org/) (**/!\\** La virtualisation doit être activé dans le bios de la machine)
+- [VirtualBox](https://www.virtualbox.org/) (**/!\\** La virtualisation doit être activé dans le BIOS)
 - [Vagrant](https://www.vagrantup.com/)
 - [Vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) (`vagrant plugin install vagrant-vbguest`)
 - [Vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) (`vagrant plugin install vagrant-winnfsd`)

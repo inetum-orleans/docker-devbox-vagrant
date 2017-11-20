@@ -12,23 +12,23 @@ Docker for Windows and Docker Toolbox are using VirtualBox/Hyper-V between the W
 
 * Docker VM (Ubuntu Xenial).
 * Provisionning Docker, Docker-Compose and nginx-proxy using Vagrant.
-* Winnfsd to share files between the Windows host and the Docker VM.
-* Smartcd (Aliases auto (dis)Enabling when browsing the filesystem)
+* [Winnfsd](https://github.com/winnfsd/winnfsd) to share files between the Windows host and the Docker VM.
+* [Smartcd](https://github.com/cxreg/smartcd) (Aliases auto (dis)Enabling when browsing the filesystem)
 
 This solution is built from scratch in order to keep agile on the environment.
 
-*Note:  nginx-proxy allows to connect to a webcontainer through `http://monappli.app` instead of `http://192.168.1.100:<port>`*.
+*Note:  nginx-proxy allows to connect to a web container through `http://my-app.app` instead of `http://192.168.1.100:<port>`*.
 
-## prerequisites
+## Prerequisites
 
-## Pré-requis
-- [VirtualBox](https://www.virtualbox.org/) (**/!\\** Virtualisation must be enabled in you BIOS.)
+- [VirtualBox](https://www.virtualbox.org/) (**/!\\** Virtualisation must be enabled in BIOS.)
 - [Vagrant](https://www.vagrantup.com/)
 - [Vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) (`vagrant plugin install vagrant-vbguest`)
 - [Vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) (`vagrant plugin install vagrant-winnfsd`)
 - [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`)
 - [vagrant-proxyconf](https://github.com/tmatilai/vagrant-proxyconf) (`vagrant plugin install vagrant-proxyconf`)
-- [Acrylic DNS Proxy](https://sourceforge.net/projects/acrylic) (Optionnal, [Intallation guide on StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), DNS local proxy to redirect `*.app` to the docker env. Same as for the `/etc/hosts` file but also allows wildcards `*`)
+- [Acrylic DNS Proxy](https://sourceforge.net/projects/acrylic) (Optionnal, [Intallation guide on StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), DNS local proxy to redirect `*.app` to 
+the docker environment. Same as for the `/etc/hosts` file but also allows wildcards `*`)
 
 ## Installation
 
