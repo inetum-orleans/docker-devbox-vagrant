@@ -151,6 +151,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'container-nginx-proxy', type: 'shell', privileged: false, path: 'provision/31-container-nginx-proxy.sh', env: env
 
+  config.vm.provision 'container-portainer', type: 'shell', privileged: false, path: 'provision/32-container-portainer.sh', env: env
+
   config.vm.provision 'smartcd', type: 'shell', privileged: false, path: 'provision/41-smartcd.sh', env: env
 
   config.vm.provision 'node', type: 'shell', privileged: false, path: 'provision/46-node.sh', env: env
