@@ -183,3 +183,8 @@ ne soient pas détruits.
 Si le client vpnc ne parvient pas à se connecter, il est nécessaire de vérifier le MTU des cartes réseaux (1500).
 
 Voir [https://www.virtualbox.org/ticket/13847](https://www.virtualbox.org/ticket/13847)
+
+### Interface PORTAINER
+
+Une interface graphique de gestion des containers/volumes docker est accessible via l'url : `http://192.168.1.100:9000`.
+Elle est basée sur [PORTAINER](https://portainer.readthedocs.io/en/stable/index.html) 
