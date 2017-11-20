@@ -1,4 +1,7 @@
-﻿# Docker on Vagrant
+﻿# Docker Devbox
+
+Docker devbox is a Vagrant project including everything required to implement docker development environments on 
+Windows & Mac.
 
 ## Why is that needed ?
 
