@@ -7,6 +7,8 @@ if [ ! "$(docker ps -a | grep portainer)" ]; then
         --restart unless-stopped \
         --name portainer \
         -v /var/run/docker.sock:/var/run/docker.sock \
+        -e "VIRTUAL_HOST=portainer.app" \
+        --network="nginx-proxy" \
         portainer/portainer \
         -H unix:///var/run/docker.sock \
         --no-auth

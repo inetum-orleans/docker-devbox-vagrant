@@ -180,5 +180,5 @@ See [https://www.virtualbox.org/ticket/13847](https://www.virtualbox.org/ticket/
 
 ### User interface PORTAINER
 
-A user interface is available in order to manage containers/volumes. Reachable at : `http://192.168.1.100:9000`
+A user interface is available in order to manage containers/volumes. Reachable at : `portainer.app` (should be added in the host machine hosts file if needed).
 It is based on [PORTAINER](https://portainer.readthedocs.io/en/stable/index.html)

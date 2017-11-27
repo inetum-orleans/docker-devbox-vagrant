@@ -186,5 +186,5 @@ Voir [https://www.virtualbox.org/ticket/13847](https://www.virtualbox.org/ticket
 
 ### Interface PORTAINER
 
-Une interface graphique de gestion des containers/volumes docker est accessible via l'url : `http://192.168.1.100:9000`.
+Une interface graphique de gestion des containers/volumes docker est accessible via l'url : `portainer.app` (à ajouter dans le fichier hosts de la machine hôte au besoin).
 Elle est basée sur [PORTAINER](https://portainer.readthedocs.io/en/stable/index.html) 
