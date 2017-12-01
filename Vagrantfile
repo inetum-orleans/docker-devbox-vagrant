@@ -160,14 +160,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'vpnc', type: 'shell', path: 'provision/51-vpnc.sh', env: env
 
+  if File.file?(File.join(Dir.home, ".ssh/id_rsa.pub")) or File.file?(File.join(Dir.home, ".ssh/id_rsa")) then
+    if File.file?(File.join(Dir.home, ".ssh/id_rsa")) then
+        config.vm.provision "ssh_keys_file_private", type: 'file', source: "~/.ssh/id_rsa", destination: "/home/ubuntu/.provision/id_rsa"
+    end
+    if File.file?(File.join(Dir.home, ".ssh/id_rsa.pub")) then
+        config.vm.provision "ssh_keys_file_pub", type: 'file', source: "~/.ssh/id_rsa.pub", destination: "/home/ubuntu/.provision/id_rsa.pub"
+    end
+    config.vm.provision 'ssh_keys', type: 'shell', privileged: false, path: 'provision/61-ssh_keys.sh', env: env
+  end
+
   # Disable vagrant default share
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
-  # SSH SETTINGS
-  config.vm.provision "ssh_file_pub", type: 'file', source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/id_rsa.pub"
-  config.vm.provision "ssh_file_private", type: 'file', source: "~/.ssh/id_rsa", destination: "~/.ssh/id_rsa"
-  config.vm.provision "ssh_shell", type: 'shell', privileged: false, inline: "cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"
-  config.vm.provision "ssh_chmod", type: 'shell', privileged: false, inline: "chmod 400 ~/.ssh/id_rsa*"
 
   synced_folders = config_file['synced_folders']
   if synced_folders
