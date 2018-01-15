@@ -160,6 +160,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'vpnc', type: 'shell', path: 'provision/51-vpnc.sh', env: env
 
+  if File.file?(File.join(Dir.home, '.ssh/id_rsa.pub')) or File.file?(File.join(Dir.home, '.ssh/id_rsa'))
+    if File.file?(File.join(Dir.home, '.ssh/id_rsa'))
+        config.vm.provision 'ssh-keys-private', type: 'file', source: '~/.ssh/id_rsa', destination: '/home/ubuntu/.provision/id_rsa'
+    end
+    if File.file?(File.join(Dir.home, '.ssh/id_rsa.pub'))
+        config.vm.provision 'ssh-keys-public', type: 'file', source: '~/.ssh/id_rsa.pub', destination: '/home/ubuntu/.provision/id_rsa.pub'
+    end
+    config.vm.provision 'ssh-keys', type: 'shell', privileged: false, path: 'provision/61-ssh-keys.sh', env: env
+  end
+
   config.vm.provision 'cleanup', type: 'shell', path: 'provision/99-cleanup.sh', env: env
 
   # Disable vagrant default share
