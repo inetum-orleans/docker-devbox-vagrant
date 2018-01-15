@@ -1,17 +1,18 @@
 #!/bin/bash
 
-if [ ! "$(docker ps -a | grep portainer)" ]; then
-    echo "## Création du container portainer"
+echo "## Création du container portainer"
 
-    docker run -d -p 9000:9000 \
-        --restart unless-stopped \
-        --name portainer \
-        -v /var/run/docker.sock:/var/run/docker.sock \
-        -e "VIRTUAL_HOST=portainer.app" \
-        --network="nginx-proxy" \
-        portainer/portainer \
-        -H unix:///var/run/docker.sock \
-        --no-auth
-else
-    echo "## Le container portainer existe déja."
+if [ "$(docker ps -a --format '{{.Names}}' | grep portainer)" ]; then
+    echo "## Suppression du container existant"
+    docker rm -f portainer
 fi
+
+docker run -d -p 9000:9000 \
+    --restart unless-stopped \
+    --name portainer \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -e "VIRTUAL_HOST=portainer.app" \
+    --network="nginx-proxy" \
+    portainer/portainer \
+    -H unix:///var/run/docker.sock \
+    --no-auth

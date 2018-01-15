@@ -160,6 +160,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'vpnc', type: 'shell', path: 'provision/51-vpnc.sh', env: env
 
+  config.vm.provision 'cleanup', type: 'shell', path: 'provision/99-cleanup.sh', env: env
+
   # Disable vagrant default share
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
