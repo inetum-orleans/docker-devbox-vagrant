@@ -143,7 +143,7 @@ You must edit the `synced_folder` section in the `config.yaml` file as described
 synced_folders:
   projects: # key
     source: "../projects" # absolute or relative path
-    target: "/home/ubuntu/projects" # mapped folder
+    target: "test" # dossier relatif au home du user utilisé pour la connexion ssh (voir paramètre du yml ssh.username)
 ```
 
 Once the `synced_folders` section is filled, Vagrant will automatically launch winfsd to mount specified files using NFS.

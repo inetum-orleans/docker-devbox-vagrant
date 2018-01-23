@@ -4,7 +4,10 @@ box_cpu_max_exec_cap: "90"
 disksize: "40GB"
 ip_address: "192.168.1.100"
 host_network: ~ # Si vagrant demande sur quelle carte attacher le réseau, définir le libellé de la carte ici.
+ssh:
+  username: vagrant
+  #password: vagrant
 #synced_folders:
 #  test:
 #    source: "C:\\test"
-#    target: "/home/ubuntu/test"
+#    target: "test" # dossier relatif au home du user utilisé pour la connexion ssh (voir paramètre du yml ssh.username)

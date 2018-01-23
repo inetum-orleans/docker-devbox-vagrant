@@ -2,10 +2,10 @@
 
 echo "## Installing SSH keys"
 
-PUBLIC_KEY="/home/ubuntu/.provision/id_rsa.pub"
-PRIVATE_KEY="/home/ubuntu/.provision/id_rsa"
+PUBLIC_KEY="/home/$USER/.provision/id_rsa.pub"
+PRIVATE_KEY="/home/$USER/.provision/id_rsa"
 
-sudo chown -R ubuntu:ubuntu "$HOME/.ssh"
+sudo chown -R $USER:$USER "$HOME/.ssh"
 
 if [ -f "$PUBLIC_KEY" ]; then
     echo "## Copying public key to $HOME/.ssh/id_rsa.pub"
@@ -31,4 +31,4 @@ if [ -f "$PRIVATE_KEY" ]; then
     sudo chmod 400 "$HOME/.ssh/id_rsa"
 fi
 
-sudo chown ubuntu:ubuntu -R "$HOME/.ssh"
+sudo chown $USER:$USER -R "$HOME/.ssh"

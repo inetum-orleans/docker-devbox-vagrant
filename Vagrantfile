@@ -16,12 +16,15 @@ else
   puts 'Copy config.example.yaml to config.yaml and customize configuration for your own environment'
 end
 
+ssh_username = config_file['ssh']['username']
+ssh_password = config_file['ssh']['password']
+
 host_env = ENV.to_h
 env = {
     'http_proxy' => host_env['http_proxy'],
     'https_proxy' => host_env['https_proxy'],
     'no_proxy' => host_env['no_proxy'],
-    'USER' => 'ubuntu' # La variable d'environment USER n'est pas définie lors du provisionning
+    'USER' => ssh_username # La variable d'environment USER n'est pas définie lors du provisionning
 }
 
 ###############################
@@ -60,6 +63,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = box_name
+
+  # SSH connection info
+  #config.ssh.username = ssh_username
+  #config.ssh.password = ssh_password
 
   # Configure disk size
   config.disksize.size = disksize
@@ -141,7 +148,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'environment-variables', type: 'shell', privileged: false, path: 'provision/03-environment-variables.sh', env: env
 
-  config.vm.provision 'ca-certificates-files', type: 'file', source: './ca-certificates', destination: '/home/ubuntu/.provision'
+  config.vm.provision 'ca-certificates-files', type: 'file', source: './ca-certificates', destination: '/home/'+ssh_username+'/.provision'
   config.vm.provision 'ca-certificates', type: 'shell', privileged: true, path: 'provision/05-ca-certificates.sh', env: env
 
   config.vm.provision 'docker', type: 'shell', path: 'provision/11-docker.sh', env: env
@@ -162,10 +169,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   if File.file?(File.join(Dir.home, '.ssh/id_rsa.pub')) or File.file?(File.join(Dir.home, '.ssh/id_rsa'))
     if File.file?(File.join(Dir.home, '.ssh/id_rsa'))
-        config.vm.provision 'ssh-keys-private', type: 'file', source: '~/.ssh/id_rsa', destination: '/home/ubuntu/.provision/id_rsa'
+        config.vm.provision 'ssh-keys-private', type: 'file', source: '~/.ssh/id_rsa', destination: '/home/'+ssh_username+'/.provision/id_rsa'
     end
     if File.file?(File.join(Dir.home, '.ssh/id_rsa.pub'))
-        config.vm.provision 'ssh-keys-public', type: 'file', source: '~/.ssh/id_rsa.pub', destination: '/home/ubuntu/.provision/id_rsa.pub'
+        config.vm.provision 'ssh-keys-public', type: 'file', source: '~/.ssh/id_rsa.pub', destination: '/home/'+ssh_username+'/.provision/id_rsa.pub'
     end
     config.vm.provision 'ssh-keys', type: 'shell', privileged: false, path: 'provision/61-ssh-keys.sh', env: env
   end
@@ -186,7 +193,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         mount_options = if folder.key?('mount_options') then folder['mount_options'] else %w(nolock udp noatime nodiratime actimeo=1) end
         mount_options = if not mount_options or mount_options.kind_of?(Array) then mount_options else mount_options.split(/[,\s]/) end
 
-        config.vm.synced_folder "#{folder['source']}", "#{folder['target']}",
+        config.vm.synced_folder "#{folder['source']}", "/home/"+ssh_username+"/#{folder['target']}",
                               id: "#{i}",
                               type: 'nfs',
                               mount_options: mount_options

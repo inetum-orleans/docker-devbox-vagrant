@@ -1,7 +1,8 @@
 #!/bin/bash
-echo "## Ajout de l'utilisateur au groupe docker"
+
+echo "## Ajout de l'utilisateur $USER au groupe docker"
 getent group docker || groupadd docker
-usermod -aG docker ${USER}
+usermod -aG docker $USER
 
 echo "## Rechargement du daemon"
 systemctl daemon-reload
