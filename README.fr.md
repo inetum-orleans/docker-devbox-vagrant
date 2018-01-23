@@ -146,7 +146,7 @@ Il faut paramétrer la section `synced_folder` dans le fichier `config.yaml` com
 synced_folders:
   projects: # clé
     source: "../projects" # dossier relatif ou absolu sur la machine hôte
-    target: "/home/ubuntu/projects" # dossier mappé sur la vm
+    target: "test" # mapped directory relative to ssh user home directory (see parameter in yml ssh.username)
 ```
 
 Lorsque la section `synced_folders` est renseignée dans le fichier de configuration, Vagrant va automatiquement 

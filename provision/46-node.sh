@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-mkdir -p /home/ubuntu/.cache/yarn
+mkdir -p /home/$USER/.cache/yarn
 
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get update && sudo apt-get install -y nodejs
