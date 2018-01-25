@@ -16,8 +16,13 @@ else
   puts 'Copy config.example.yaml to config.yaml and customize configuration for your own environment'
 end
 
-ssh_username = config_file['ssh']['username']
-ssh_password = config_file['ssh']['password']
+if config_file['ssh']['username'].nil?
+ ssh_username = config_file['ssh']['username']
+ ssh_password = config_file['ssh']['password']
+else
+ ssh_username = 'ubuntu'
+ ssh_password = 'ubuntu'
+end
 
 host_env = ENV.to_h
 env = {
