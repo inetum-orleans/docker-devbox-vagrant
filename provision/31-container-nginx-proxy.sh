@@ -26,24 +26,6 @@ echo "proxy_buffers              4 256k;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
 echo "proxy_busy_buffers_size    256k;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
 echo "client_max_body_size       128m;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
 
-cat > "${NGINX_PROXY_HOME}/certs/nginx-proxy-genssl.sh" <<EOF
-#!/bin/bash
-
-# Génération d'un script de création de certifications SSL
-cd "${NGINX_PROXY_HOME}/certs"
-openssl req \
-    -nodes -new -x509 -days 3650 \
-    -keyout "\$1.key" \
-    -subj "/C=FR/O=GFI Informatique/CN=\$1" \
-    -extensions SAN \
-    -reqexts SAN \
-    -config <(cat /etc/ssl/openssl.cnf \
-        <(printf "\n[SAN]\nsubjectAltName=DNS:\$1")) \
-    -out "\$1.crt"
-EOF
-
-chmod +x "${NGINX_PROXY_HOME}/certs/nginx-proxy-genssl.sh"
-
 docker run -d -p 80:80 -p 443:443 -e "HTTPS_METHOD=noredirect" \
   --restart unless-stopped --net nginx-proxy --name nginx-proxy \
   -v "${NGINX_PROXY_HOME}/certs:/etc/nginx/certs" \
