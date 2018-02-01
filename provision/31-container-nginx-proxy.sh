@@ -26,7 +26,7 @@ echo "proxy_buffers              4 256k;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
 echo "proxy_busy_buffers_size    256k;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
 echo "client_max_body_size       128m;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
 
-docker run -d -p 80:80 -p 443:443 -e "HTTPS_METHOD=noredirect" \
+docker run -d -p 80:80 -p 443:443 \
   --restart unless-stopped --net nginx-proxy --name nginx-proxy \
   -v "${NGINX_PROXY_HOME}/certs:/etc/nginx/certs" \
   -v "${NGINX_PROXY_HOME}/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro" \
