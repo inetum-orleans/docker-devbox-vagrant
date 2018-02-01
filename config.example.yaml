@@ -8,6 +8,14 @@ ssh:
   username: vagrant
   #password: vagrant
 #synced_folders:
+## Configurer les dossiers à synchroniser ici
 #  test:
 #    source: "C:\\test"
 #    target: "test" # dossier relatif au home du user utilisé pour la connexion ssh (voir paramètre du yml ssh.username)
+## Utiliser ces partages permet l'utilisation du plugin docker sur PHPStorm (patterns Docker for windows)
+#  d_user:
+#    source: 'D:\Users\FRUP67305'
+#    target: '/d/Users/FRUP67305'
+#  c_projects:
+#    source: 'C:\devel\projects'
+#    target: '/c/devel/projects'
