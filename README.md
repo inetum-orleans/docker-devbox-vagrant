@@ -20,7 +20,7 @@ Docker for Windows and Docker Toolbox are using VirtualBox/Hyper-V between the W
 
 This solution is built from scratch in order to keep agile on the environment.
 
-*Note:  nginx-proxy allows to connect to a web container through `http://my-app.local` instead of `http://192.168.1.100:<port>`*.
+*Note:  nginx-proxy allows to connect to a web container through `http://my-app.test` instead of `http://192.168.1.100:<port>`*.
 
 ## Prerequisites
 
@@ -30,7 +30,7 @@ This solution is built from scratch in order to keep agile on the environment.
 - [Vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) (`vagrant plugin install vagrant-winnfsd`)
 - [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`)
 - [vagrant-proxyconf](https://github.com/tmatilai/vagrant-proxyconf) (`vagrant plugin install vagrant-proxyconf`)
-- [Acrylic DNS Proxy](https://sourceforge.net/projects/acrylic) (Optionnal, [Intallation guide on StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), DNS local proxy to redirect `*.local` to 
+- [Acrylic DNS Proxy](https://sourceforge.net/projects/acrylic) (Optionnal, [Intallation guide on StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), DNS local proxy to redirect `*.test` to 
 the docker environment. Same as for the `/etc/hosts` file but also allows wildcards `*`)
 
 ## Installation
@@ -107,7 +107,7 @@ TertiaryServerAddress=10.45.6.2
 - Start Menu > Edit Acrylic Hosts File > Add this line at the end of the file:
 
 ```
-192.168.1.100 *.local
+192.168.1.100 *.test
 ```
 
 ## Vagrant cheatsheet
@@ -180,5 +180,5 @@ See [https://www.virtualbox.org/ticket/13847](https://www.virtualbox.org/ticket/
 
 ### User interface PORTAINER
 
-A user interface is available in order to manage containers/volumes. Reachable at : `portainer.local` (should be added in the host machine hosts file if needed).
+A user interface is available in order to manage containers/volumes. Reachable at : `portainer.test` (should be added in the host machine hosts file if needed).
 It is based on [PORTAINER](https://portainer.readthedocs.io/en/stable/index.html)

@@ -21,7 +21,7 @@ s'execute le daemon docker pour monter le volumes locaux dans le container. Cel�
 
 Cette solution est construite de zéro ce qui permet de garder une bonne flexibilité sur l'environnement technique de la VM.
 
-*Note: nginx-proxy permet d'accéder un à container web via `http://mon-appli.local` plutôt que `http://192.168.1.100:<port>`*
+*Note: nginx-proxy permet d'accéder un à container web via `http://mon-appli.test` plutôt que `http://192.168.1.100:<port>`*
 
 ## Pré-requis
 - [VirtualBox](https://www.virtualbox.org/) (**/!\\** La virtualisation doit être activé dans le BIOS)
@@ -30,7 +30,7 @@ Cette solution est construite de zéro ce qui permet de garder une bonne flexibi
 - [Vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) (`vagrant plugin install vagrant-winnfsd`)
 - [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`)
 - [vagrant-proxyconf](https://github.com/tmatilai/vagrant-proxyconf) (`vagrant plugin install vagrant-proxyconf`)
-- [Acrylic DNS Proxy](https://sourceforge.net/projects/acrylic) (Optionnel, [Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.local` vers 
+- [Acrylic DNS Proxy](https://sourceforge.net/projects/acrylic) (Optionnel, [Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.test` vers 
 l'environnement docker, identique au fichier `/etc/hosts` mais supporte les wildcard `*`)
 
 ## Installation
@@ -110,7 +110,7 @@ TertiaryServerAddress=10.45.6.2
 - Menu Démarrer > Edit Acrylic Hosts File > Ajouter la ligne suivante à la fin du fichier
 
 ```
-192.168.1.100 *.local
+192.168.1.100 *.test
 ```
 
 ## Rappel des commandes Vagrant
@@ -186,5 +186,5 @@ Voir [https://www.virtualbox.org/ticket/13847](https://www.virtualbox.org/ticket
 
 ### Interface PORTAINER
 
-Une interface graphique de gestion des containers/volumes docker est accessible via l'url : `portainer.local` (à ajouter dans le fichier hosts de la machine hôte au besoin).
+Une interface graphique de gestion des containers/volumes docker est accessible via l'url : `portainer.test` (à ajouter dans le fichier hosts de la machine hôte au besoin).
 Elle est basée sur [PORTAINER](https://portainer.readthedocs.io/en/stable/index.html) 

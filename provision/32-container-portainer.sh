@@ -11,7 +11,7 @@ docker run -d -p 9000:9000 \
     --restart unless-stopped \
     --name portainer \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    -e "VIRTUAL_HOST=portainer.local" \
+    -e "VIRTUAL_HOST=portainer.test" \
     --network="nginx-proxy" \
     portainer/portainer \
     -H unix:///var/run/docker.sock \
