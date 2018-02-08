@@ -17,11 +17,11 @@ else
 end
 
 if config_file['ssh']['username'].nil?
- ssh_username = config_file['ssh']['username']
- ssh_password = config_file['ssh']['password']
+  ssh_username = 'ubuntu'
+  ssh_password = 'ubuntu'
 else
- ssh_username = 'ubuntu'
- ssh_password = 'ubuntu'
+  ssh_username = config_file['ssh']['username']
+  ssh_password = config_file['ssh']['password']
 end
 
 host_env = ENV.to_h
