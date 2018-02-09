@@ -5,8 +5,7 @@
 echo "## Installation de smartcd"
 sudo apt-get install make
 
-# Fork de smartcd permettant de trust les fichiers locaux .bash_enter et .bash_exit
-cd /tmp && rm -Rf smartcd && git clone https://github.com/Toilal/smartcd.git && cd smartcd && make install && source load_smartcd && rm -Rf smartcd && cd $HOME
+cd /tmp && rm -Rf smartcd && git clone https://github.com/cxreg/smartcd.git && cd smartcd && make install && source load_smartcd && rm -Rf smartcd && cd $HOME
 
 if [ ! -f $HOME/.smartcd_config ]; then
     cat << EOF > $HOME/.smartcd_config
