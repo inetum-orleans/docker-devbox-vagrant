@@ -4,7 +4,7 @@ box_cpu_max_exec_cap: "90"
 disksize: "40GB"
 ip_address: "192.168.1.100"
 host_network: ~ # If vagrant ask for a network device, you may define it's label here.
-ca_certificates: ~ # Set to a directory where CA certificates are stored
+ca_certificates: ~ # Set to a glob expression where CA certificates are stored (C:/Users/USER/.ca-certificates/*.crt)
 ssh:
   username: vagrant
 synced_folders:
