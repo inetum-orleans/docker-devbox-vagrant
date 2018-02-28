@@ -11,6 +11,3 @@ config.yaml
 
 # Ignore cloudimg log files
 *-cloudimg-console.log
-
-# Ignore default vagrant-ca-certificates directory
-ca-certificates/
