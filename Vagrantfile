@@ -17,8 +17,8 @@ else
 end
 
 if config_file['ssh']['username'].nil?
-  ssh_username = 'ubuntu'
-  ssh_password = 'ubuntu'
+  ssh_username = 'vagrant'
+  ssh_password = 'vagrant'
 else
   ssh_username = config_file['ssh']['username']
   ssh_password = config_file['ssh']['password']
@@ -140,12 +140,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # SHELL
 
   # Proxy configuration
-  if Vagrant.has_plugin?('vagrant-proxyconf')
-    if host_env['http_proxy'] then config.proxy.http = host_env['http_proxy'] else config.proxy.http = false end
-    if host_env['https_proxy'] then config.proxy.https = host_env['https_proxy'] else config.proxy.https = false end
-    if host_env['no_proxy'] then config.proxy.no_proxy = host_env['no_proxy'] else config.proxy.no_proxy = false end
-  elsif host_env['http_proxy'] or host_env['https_proxy']
-    puts 'vagrant-proxyconf plugin is not installed. Vagrant box will not be configured to use host configured HTTP proxy.'
+  if Vagrant.has_plugin?('vagrant-ca-certificates') and not config_file['ca_certificates'].nil?
+    config.ca_certificates.enabled = true
+    config.ca_certificates.certs = Dir.glob(config_file['ca_certificates'])
   end
 
   # Provisioning from files available in provision directory
@@ -153,11 +150,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'environment-variables', type: 'shell', privileged: false, path: 'provision/03-environment-variables.sh', env: env
 
-  config.vm.provision 'ca-certificates-files', type: 'file', source: './ca-certificates', destination: '/home/'+ssh_username+'/.provision'
-  config.vm.provision 'ca-certificates', type: 'shell', privileged: true, path: 'provision/05-ca-certificates.sh', env: env
-
   config.vm.provision 'docker', type: 'shell', path: 'provision/11-docker.sh', env: env
   config.vm.provision 'docker-group', type: 'shell', path: 'provision/13-docker-group.sh', env: env
+
+  if Vagrant.has_plugin?('vagrant-reload')
+    config.vm.provision :reload
+  end
 
   config.vm.provision 'docker-compose', type: 'shell', path: 'provision/21-docker-compose.sh', env: env
 
@@ -174,10 +172,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   if File.file?(File.join(Dir.home, '.ssh/id_rsa.pub')) or File.file?(File.join(Dir.home, '.ssh/id_rsa'))
     if File.file?(File.join(Dir.home, '.ssh/id_rsa'))
-        config.vm.provision 'ssh-keys-private', type: 'file', source: '~/.ssh/id_rsa', destination: '/home/'+ssh_username+'/.provision/id_rsa'
+      config.vm.provision 'ssh-keys-private', type: 'file', source: '~/.ssh/id_rsa', destination: "/home/#{ssh_username}/.provision/id_rsa"
     end
     if File.file?(File.join(Dir.home, '.ssh/id_rsa.pub'))
-        config.vm.provision 'ssh-keys-public', type: 'file', source: '~/.ssh/id_rsa.pub', destination: '/home/'+ssh_username+'/.provision/id_rsa.pub'
+      config.vm.provision 'ssh-keys-public', type: 'file', source: '~/.ssh/id_rsa.pub', destination: "/home/#{ssh_username}/.provision/id_rsa.pub"
     end
     config.vm.provision 'ssh-keys', type: 'shell', privileged: false, path: 'provision/61-ssh-keys.sh', env: env
   end

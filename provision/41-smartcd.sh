@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Ce script doit être lancé avec l'utilisateur ubuntu (Utiliser privileged: false dans Vagrantfile)
+# Ce script doit être lancé avec l'utilisateur vagrant (Utiliser privileged: false dans Vagrantfile)
 
 echo "## Installation de smartcd"
 sudo apt-get install make

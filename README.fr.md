@@ -29,7 +29,9 @@ Cette solution est construite de zéro ce qui permet de garder une bonne flexibi
 - [Vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) (`vagrant plugin install vagrant-vbguest`)
 - [Vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) (`vagrant plugin install vagrant-winnfsd`)
 - [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`)
-- [vagrant-proxyconf](https://github.com/tmatilai/vagrant-proxyconf) (`vagrant plugin install vagrant-proxyconf`)
+- [vagrant-reload](https://github.com/aidanns/vagrant-reload) (`vagrant plugin install vagrant-reload`)
+- [vagrant-proxyconf](https://github.com/tmatilai/vagrant-proxyconf) (Optionnel, `vagrant plugin install vagrant-proxyconf`)
+- [vagrant-ca-certificates](https://github.com/williambailey/vagrant-ca-certificates) (Optionnel, `vagrant plugin install vagrant-ca-certificates`)
 - [Acrylic DNS Proxy](https://sourceforge.net/projects/acrylic) (Optionnel, [Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.test` vers 
 l'environnement docker, identique au fichier `/etc/hosts` mais supporte les wildcard `*`)
 
@@ -136,6 +138,11 @@ vagrant reload
 vagrant provision
 ```
 
+## Installation automatique des certificats d'autorité racine
+
+Le plugin `vagrant-ca-certificates` permet d'installer automatiquement sur la VM les certificats racine situés dans un 
+dossier de l'hôte.
+
 ## Synchronisation des fichiers du projet via NFS
 
 Il est possible d'utiliser un point de montage NFS via le plugin `vagrant-winnfsd`.
@@ -144,9 +151,12 @@ Il faut paramétrer la section `synced_folder` dans le fichier `config.yaml` com
 
 ```yml
 synced_folders:
-  projects: # clé
-    source: "../projects" # dossier relatif ou absolu sur la machine hôte
-    target: "test" # mapped directory relative to ssh user home directory (see parameter in yml ssh.username)
+  user:
+    source: 'C:\Users\user' # chemin absolu ou relatif au fichier Vagrantfile
+    target: '/c/Users/user' # chemin absolu ou relatif au home de l'utilisateur de la VM
+  projects:
+    source: 'C:\devel\projects' # chemin absolu ou relatif au fichier Vagrantfile
+    target: '/c/devel/projects' # chemin absolu ou relatif au home de l'utilisateur de la VM
 ```
 
 Lorsque la section `synced_folders` est renseignée dans le fichier de configuration, Vagrant va automatiquement 

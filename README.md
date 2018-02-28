@@ -29,8 +29,10 @@ This solution is built from scratch in order to keep agile on the environment.
 - [Vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) (`vagrant plugin install vagrant-vbguest`)
 - [Vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) (`vagrant plugin install vagrant-winnfsd`)
 - [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`)
-- [vagrant-proxyconf](https://github.com/tmatilai/vagrant-proxyconf) (`vagrant plugin install vagrant-proxyconf`)
-- [Acrylic DNS Proxy](https://sourceforge.net/projects/acrylic) (Optionnal, [Intallation guide on StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), DNS local proxy to redirect `*.test` to 
+- [vagrant-reload](https://github.com/aidanns/vagrant-reload) (`vagrant plugin install vagrant-reload`)
+- [vagrant-proxyconf](https://github.com/tmatilai/vagrant-proxyconf) (Optional, `vagrant plugin install vagrant-proxyconf`)
+- [vagrant-ca-certificates](https://github.com/williambailey/vagrant-ca-certificates) (Optional, `vagrant plugin install vagrant-ca-certificates`)
+- [Acrylic DNS Proxy](https://sourceforge.net/projects/acrylic) (Optional, [Intallation guide on StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), DNS local proxy to redirect `*.test` to 
 the docker environment. Same as for the `/etc/hosts` file but also allows wildcards `*`)
 
 ## Installation
@@ -133,7 +135,11 @@ vagrant reload
 vagrant provision
 ```
 
-## Synchronisation des fichiers du projet via NFS
+## Automated installation of CA certificates
+
+`vagrant-ca-certificates` can install CA Certificates automatically on VM certificates located in a directory of the host.
+
+## Synchronisation of project files through NFS
 
 A NFS mounting-point can be used through the plugin `vagrant-winnfsd`.
 
@@ -141,9 +147,12 @@ You must edit the `synced_folder` section in the `config.yaml` file as described
 
 ```yml
 synced_folders:
-  projects: # key
-    source: "../projects" # absolute or relative path
-    target: "test" # dossier relatif au home du user utilisé pour la connexion ssh (voir paramètre du yml ssh.username)
+  user:
+    source: 'C:\Users\user' # absolute or relative path from Vagrantfile
+    target: '/c/Users/user' # absolute or relative path from home of VM
+  projects:
+    source: 'C:\devel\projects' # absolute or relative path from Vagrantfile
+    target: '/c/devel/projects' # absolute or relative path from home of VM
 ```
 
 Once the `synced_folders` section is filled, Vagrant will automatically launch winfsd to mount specified files using NFS.

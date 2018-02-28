@@ -3,19 +3,16 @@ box_cpus: 2
 box_cpu_max_exec_cap: "90"
 disksize: "40GB"
 ip_address: "192.168.1.100"
-host_network: ~ # Si vagrant demande sur quelle carte attacher le réseau, définir le libellé de la carte ici.
+host_network: ~ # If vagrant ask for a network device, you may define it's label here.
+ca_certificates: ~ # Set to a directory where CA certificates are stored
 ssh:
   username: vagrant
-  #password: vagrant
-#synced_folders:
-## Configurer les dossiers à synchroniser ici
-#  test:
-#    source: "C:\\test"
-#    target: "test" # dossier relatif au home du user utilisé pour la connexion ssh (voir paramètre du yml ssh.username)
-## Utiliser ces partages permet l'utilisation du plugin docker sur PHPStorm (patterns Docker for windows)
-#  d_user:
-#    source: 'D:\Users\FRUP67305'
-#    target: '/d/Users/FRUP67305'
-#  c_projects:
-#    source: 'C:\devel\projects'
-#    target: '/c/devel/projects'
+synced_folders:
+## Configure folders to share here
+## Use this naming convention to match docker for windows and allow docker PHPStorm support
+#  user:
+#    source: 'C:\Users\user' # absolute or relative path from Vagrantfile
+#    target: '/c/Users/user' # absolute or relative path from home of VM
+#  projects:
+#    source: 'C:\devel\projects' # absolute or relative path from Vagrantfile
+#    target: '/c/devel/projects' # absolute or relative path from home of VM
