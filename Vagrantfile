@@ -16,7 +16,7 @@ else
   puts 'Copy config.example.yaml to config.yaml and customize configuration for your own environment'
 end
 
-if config_file['ssh']['username'].nil?
+if config_file['ssh'].nil? || config_file['ssh']['username'].nil?
   ssh_username = 'vagrant'
   ssh_password = 'vagrant'
 else
