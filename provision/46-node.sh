@@ -19,3 +19,18 @@ if [ "$YARN_CONFIGURED" != "0" ]; then
     echo PATH="$PATH:$(yarn global bin)">>$HOME/.bashrc
     echo "Enregistrement de yarn (~/.bashrc)"
 fi
+
+wget -O- https://raw.githubusercontent.com/glenpike/npm-g_nosudo/master/npm-g-nosudo.sh | sh
+
+cat $HOME/.bashrc | grep "# npm-g-nosudo Configuration"
+NPM_G_NOSUDO_CONFIGURED=$?
+if [ "$NPM_G_NOSUDO_CONFIGURED" != "0" ]; then
+    echo -e>>$HOME/.bashrc
+    echo "# npm-g-nosudo Configuration">>$HOME/.bashrc
+    echo -e>>$HOME/.bashrc
+    echo "export NPM_PACKAGES=\"/home/vagrant/.npm-packages\"">>$HOME/.bashrc
+    echo "export NODE_PATH=\"\$NPM_PACKAGES/lib/node_modules\${NODE_PATH:+:\$NODE_PATH}\"">>$HOME/.bashrc
+    echo "export PATH=\"\$NPM_PACKAGES/bin:\$PATH\"">>$HOME/.bashrc
+    echo "unset MANPATH  # delete if you already modified MANPATH elsewhere in your config">>$HOME/.bashrc
+    echo "export MANPATH=\"\$NPM_PACKAGES/share/man:$(manpath)\"">>$HOME/.bashrc
+fi
