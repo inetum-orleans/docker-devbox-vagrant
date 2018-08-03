@@ -141,10 +141,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # SHELL
 
   # Proxy configuration
-  if Vagrant.has_plugin?('vagrant-ca-certificates') and not config_file['ca_certificates'].nil?
+  if Vagrant.has_plugin?('vagrant-ca-certificates') and not config_file['ca_certificates'].nil? 
     config.ca_certificates.enabled = true
-    config.ca_certificates.certs = Dir.glob(config_file['ca_certificates']['ca_certs_glob'])
-    config.vm.box_download_ca_cert = config_file['ca_certificates']['ca_certs_file']
+	  if not config_file['ca_certificates']['ca_certs_glob'].nil? 
+      config.ca_certificates.certs = Dir.glob(config_file['ca_certificates']['ca_certs_glob'])
+	  end
+    if not config_file['ca_certificates']['ca_certs_file'].nil? 
+      config.vm.box_download_ca_cert = config_file['ca_certificates']['ca_certs_file']
+	  end
   end
 
   # Provisioning from files available in provision directory
