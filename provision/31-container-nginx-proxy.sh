@@ -19,6 +19,7 @@ fi
 # Voir documentation https://github.com/jwilder/nginx-proxy#custom-nginx-configuration
 mkdir -p "${NGINX_PROXY_HOME}/vhost.d"
 mkdir -p "${NGINX_PROXY_HOME}/certs"
+mkdir -p "${NGINX_PROXY_HOME}/dhparam"
 
 # Le téléchargement de certains gros fichiers échoue parfois sans ces paramètres
 echo "proxy_buffer_size          128k;">"${NGINX_PROXY_HOME}/my_proxy.conf"
@@ -31,6 +32,7 @@ docker run -d -p 80:80 -p 443:443 \
   -v "${NGINX_PROXY_HOME}/certs:/etc/nginx/certs" \
   -v "${NGINX_PROXY_HOME}/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro" \
   -v "${NGINX_PROXY_HOME}/vhost.d:/etc/nginx/vhost.d:ro" \
+  -v "${NGINX_PROXY_HOME}/dhparam:/etc/nginx/dhparam" \
   -v /var/run/docker.sock:/tmp/docker.sock:ro \
   jwilder/nginx-proxy
 
