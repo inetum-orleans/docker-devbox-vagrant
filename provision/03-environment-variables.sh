@@ -4,6 +4,7 @@
 
 echo "## Environment variables configuration"
 
+HOST_IP="${HOST_IP:=127.0.0.1}"
 echo "HOST_IP: ${HOST_IP} (Host IP Address)"
 
 if grep -q "HOST_IP=" "${HOME}/.profile"; then
