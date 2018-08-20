@@ -50,8 +50,8 @@ def self.get_host_ip(connect_ip)
     s.connect connect_ip, 1
     s.addr.last
   end
-  ensure
-    Socket.do_not_reverse_lookup = orig
+ensure
+  Socket.do_not_reverse_lookup = orig
 end
 
 env['HOST_IP'] = get_host_ip(ip_address)
@@ -68,6 +68,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = box_name
+
+  config.vm.boot_timeout = 600 # default is 300 seconds, but it may be short in some case.
 
   # SSH connection info
   #config.ssh.username = ssh_username
@@ -121,7 +123,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.customize ['modifyvm', :id, '--cpuexecutioncap', box_cpu_max_exec_cap]
     v.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
     v.customize ['modifyvm', :id, '--natdnsproxy1', 'on']
-    v.customize ['guestproperty', 'set', :id, '/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold', 1000 ]
+    v.customize ['guestproperty', 'set', :id, '/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold', 1000]
   end
   #
   # View the documentation for the provider you are using for more
@@ -141,14 +143,27 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # SHELL
 
   # Proxy configuration
-  if Vagrant.has_plugin?('vagrant-ca-certificates') and not config_file['ca_certificates'].nil? 
+  if Vagrant.has_plugin?('vagrant-ca-certificates') and not config_file['ca_certificates'].nil?
     config.ca_certificates.enabled = true
-	  if not config_file['ca_certificates']['ca_certs_glob'].nil? 
+    if not config_file['ca_certificates']['ca_certs_glob'].nil?
       config.ca_certificates.certs = Dir.glob(config_file['ca_certificates']['ca_certs_glob'])
-	  end
-    if not config_file['ca_certificates']['ca_certs_file'].nil? 
+    end
+    if not config_file['ca_certificates']['ca_certs_file'].nil?
       config.vm.box_download_ca_cert = config_file['ca_certificates']['ca_certs_file']
-	  end
+    end
+  end
+
+  persistent_storage = config_file['persistent_storage']
+  if Vagrant.has_plugin?('vagrant-persistent-storage') and persistent_storage
+    config.persistent_storage.enabled = true
+    config.persistent_storage.location = persistent_storage['location']
+    config.persistent_storage.size = persistent_storage['size_in_gb'] * 1024
+    config.persistent_storage.mountname = 'persistent_storage'
+    config.persistent_storage.filesystem = 'ext4'
+    config.persistent_storage.mountpoint = "/home/#{ssh_username}/persistent_storage"
+    config.persistent_storage.volgroupname = 'persistent_storage'
+    config.persistent_storage.diskdevice = '/dev/sdc'
+    config.persistent_storage.use_lvm = false
   end
 
   # Provisioning from files available in provision directory
@@ -192,24 +207,32 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
   synced_folders = config_file['synced_folders']
-  if synced_folders
-    if Vagrant.has_plugin?('vagrant-winnfsd')
-      config.winnfsd.logging = 'off'
-      config.winnfsd.uid = 1000
-      config.winnfsd.gid = 1000
+  if Vagrant.has_plugin?('vagrant-winnfsd') and synced_folders
+    config.winnfsd.logging = 'off'
+    config.winnfsd.uid = 1000
+    config.winnfsd.gid = 1000
 
-      synced_folders.each do |i,folder|
-        mount_options = if folder.key?('mount_options') then folder['mount_options'] else %w(nolock udp noatime nodiratime actimeo=1) end
-        mount_options = if not mount_options or mount_options.kind_of?(Array) then mount_options else mount_options.split(/[,\s]/) end
+    synced_folders.each do |i, folder|
+      mount_options = if folder.key?('mount_options') then
+                        folder['mount_options']
+                      else
+                        %w(nolock udp noatime nodiratime actimeo=1)
+                      end
+      mount_options = if not mount_options or mount_options.kind_of?(Array) then
+                        mount_options
+                      else
+                        mount_options.split(/[,\s]/)
+                      end
 
-        config.vm.synced_folder "#{folder['source']}", if folder['target'].start_with?("/") then folder['target'] else "/home/"+ssh_username+"/#{folder['target']}" end,
+      config.vm.synced_folder "#{folder['source']}", if folder['target'].start_with?("/") then
+                                                       folder['target']
+                                                     else
+                                                       "/home/#{ssh_username}/#{folder['target']}"
+                                                     end,
                               id: "#{i}",
                               type: 'nfs',
                               mount_options: mount_options
-                              # See https://www.sebastien-han.fr/blog/2012/12/18/noac-performance-impact-on-web-applications/
-      end
-    else
-      puts 'vagrant-winnfsd plugin is not installed, nfs shares won\'t be available. run "vagrant plugin install vagrant-winnfsd" to install the plugin.'
+      # See https://www.sebastien-han.fr/blog/2012/12/18/noac-performance-impact-on-web-applications/
     end
   end
 end

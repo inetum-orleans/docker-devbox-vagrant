@@ -32,6 +32,7 @@ Cette solution est construite de zéro ce qui permet de garder une bonne flexibi
 - [vagrant-reload](https://github.com/aidanns/vagrant-reload) (`vagrant plugin install vagrant-reload`)
 - [vagrant-proxyconf](https://github.com/tmatilai/vagrant-proxyconf) (Optionnel, `vagrant plugin install vagrant-proxyconf`)
 - [vagrant-ca-certificates](https://github.com/williambailey/vagrant-ca-certificates) (Optionnel, `vagrant plugin install vagrant-ca-certificates`)
+- [vagrant-persistent-storage](https://github.com/kusnier/vagrant-persistent-storage) (Optionnel, `vagrant plugin install vagrant-persistent-storage`)
 - [Acrylic DNS Proxy](https://sourceforge.net/projects/acrylic) (Optionnel, [Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.test` vers 
 l'environnement docker, identique au fichier `/etc/hosts` mais supporte les wildcard `*`)
 

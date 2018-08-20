@@ -8,8 +8,8 @@ ca_certificates:
   ca_certs_file: ~ # Path where ca-certificates.crt is stored (C:/Users/USER/ca-certificates.crt)
   ca_certs_glob: ~ # Set to a glob expression where CA certificates are stored (C:/Users/USER/.ca-certificates/{GFI*.crt,*.local.crt})
 #ssh:
-  #username: vagrant
-synced_folders:
+#  username: vagrant
+#synced_folders:
 ## Configure folders to share here
 ## Use this naming convention to match docker for windows and allow docker PHPStorm support
 #  user:
@@ -18,3 +18,6 @@ synced_folders:
 #  projects:
 #    source: 'C:\devel\projects' # absolute or relative path from Vagrantfile
 #    target: '/c/devel/projects' # absolute or relative path from home of VM
+#persistent_storage:
+#  location: 'D:\persistent_storage.vdi'
+#  size_in_gb: 100
