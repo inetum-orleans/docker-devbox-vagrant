@@ -5,6 +5,7 @@
 VAGRANTFILE_API_VERSION = '2'
 
 require 'yaml'
+require 'socket'
 
 current_dir = File.dirname(File.expand_path(__FILE__))
 if File.file?("#{current_dir}/config.yaml") then
