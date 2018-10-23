@@ -9,7 +9,7 @@ ca_certificates:
   ca_certs_glob: ~ # Set to a glob expression where CA certificates are stored (C:/Users/USER/.ca-certificates/{GFI*.crt,*.local.crt})
 #env:
 #  DOCKER_DEVBOX_CA_CERTIFICATES: /etc/ssl/certs/GFI*.pem /etc/ssl/certs/*.local.pem
-#  DOCKER_DEVBOX_REGISTRY: docker-registry.etudes.local:5000/
+#  DOCKER_DEVBOX_REGISTRY: docker-registry.etudes.local/
 #ssh:
 #  username: vagrant
 #synced_folders:
