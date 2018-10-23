@@ -204,6 +204,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'cleanup', type: 'shell', path: 'provision/99-cleanup.sh', env: env
 
+  if not config_file['env'].nil?
+    config.vm.provision "shell", inline: "> /etc/profile.d/vagrant-env.sh", privileged: true, run: "always"
+
+    config_file['env'].each do |key, value|
+      config.vm.provision "shell", inline: "echo export #{key}=\\\"#{value}\\\">> /etc/profile.d/vagrant-env.sh", privileged: true, run: "always"
+    end
+  else
+    config.vm.provision "shell", inline: "rm -f /etc/profile.d/vagrant-env.sh", privileged: true, run: "always"
+  end
+
   # Disable vagrant default share
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
