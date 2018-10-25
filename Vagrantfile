@@ -202,6 +202,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.provision 'ssh-keys', type: 'shell', privileged: false, path: 'provision/61-ssh-keys.sh', env: env
   end
 
+  config.vm.provision 'cfssl-cli', type: 'shell', path: 'provision/71-cfssl-cli.sh', env: env
+
   config.vm.provision 'cleanup', type: 'shell', path: 'provision/99-cleanup.sh', env: env
 
   if not config_file['env'].nil?
