@@ -8,6 +8,5 @@ sudo chmod go+xr /usr/share/ca-certificates/private
 
 if [ -d /home/$USER/persistent_storage ]
 then 
-    sudo chown -R $USER:$USER /home/$USER/persistent_storage
+    sudo chown $USER:$USER /home/$USER/persistent_storage
 fi
-
