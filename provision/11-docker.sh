@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "## Installation de Docker"
+export DEBIAN_FRONTEND=noninteractive
 apt-get update
 
 apt-get install -y \

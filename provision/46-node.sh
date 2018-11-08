@@ -3,6 +3,7 @@
 mkdir -p /home/$USER/.cache/yarn
 
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+export DEBIAN_FRONTEND=noninteractive
 sudo apt-get update && sudo apt-get install -y nodejs
 
 # sudo apt-get install -y build-essential
@@ -20,7 +21,7 @@ if [ "$YARN_CONFIGURED" != "0" ]; then
     echo "Enregistrement de yarn (~/.bashrc)"
 fi
 
-wget -O- https://raw.githubusercontent.com/glenpike/npm-g_nosudo/master/npm-g-nosudo.sh | sh
+curl -sL https://raw.githubusercontent.com/glenpike/npm-g_nosudo/master/npm-g-nosudo.sh | sh
 
 cat $HOME/.bashrc | grep "# npm-g-nosudo Configuration"
 NPM_G_NOSUDO_CONFIGURED=$?

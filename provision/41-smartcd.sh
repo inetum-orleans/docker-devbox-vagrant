@@ -3,6 +3,7 @@
 # Ce script doit être lancé avec l'utilisateur vagrant (Utiliser privileged: false dans Vagrantfile)
 
 echo "## Installation de smartcd"
+export DEBIAN_FRONTEND=noninteractive
 sudo apt-get install make
 
 cd /tmp && rm -Rf smartcd && git clone https://github.com/cxreg/smartcd.git && cd smartcd && make install && source load_smartcd && rm -Rf smartcd && cd $HOME
