@@ -172,6 +172,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'environment-variables', type: 'shell', privileged: false, path: 'provision/03-environment-variables.sh', env: env
 
+  config.vm.provision 'cfssl-cli', type: 'shell', path: 'provision/07-cfssl-cli.sh', env: env
+
   config.vm.provision 'docker', type: 'shell', path: 'provision/11-docker.sh', env: env
   config.vm.provision 'docker-group', type: 'shell', path: 'provision/13-docker-group.sh', env: env
 
@@ -201,8 +203,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     config.vm.provision 'ssh-keys', type: 'shell', privileged: false, path: 'provision/61-ssh-keys.sh', env: env
   end
-
-  config.vm.provision 'cfssl-cli', type: 'shell', path: 'provision/71-cfssl-cli.sh', env: env
 
   config.vm.provision 'cleanup', type: 'shell', path: 'provision/99-cleanup.sh', env: env
 

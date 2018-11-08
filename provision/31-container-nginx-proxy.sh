@@ -1,8 +1,6 @@
 #!/bin/bash
 NGINX_PROXY_HOME="${HOME}/.nginx-proxy"
 
-echo "## Création du container nginx-proxy"
-
 if [ "$(docker ps -a --format '{{.Names}}' | grep nginx-proxy)" ]; then
   echo "## Supression du container nginx-proxy existant."
   docker rm -f nginx-proxy
@@ -27,6 +25,42 @@ echo "proxy_buffers              4 256k;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
 echo "proxy_busy_buffers_size    256k;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
 echo "client_max_body_size       128m;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
 
+if [ "$(docker ps -a --format '{{.Names}}' | grep nginx-proxy-fallback)" ]; then
+  echo "## Supression du container nginx-proxy-fallback existant."
+  docker rm -f nginx-proxy-fallback
+fi
+
+echo "## Création du container nginx-proxy-fallback"
+
+CFSSL_CLI_EXE=$(which cfssl-cli)
+CERTS_DESTINATION="$NGINX_PROXY_HOME/certs"
+CERTS_DESTINATION_CRT="$CERTS_DESTINATION/fallback.test.crt"
+CERTS_DESTINATION_KEY="$CERTS_DESTINATION/fallback.test.key"
+
+if [ -f "$CFSSL_CLI_EXE" ] && ([ ! -f "$CERTS_DESTINATION_CRT" ] || [ ! -f "$CERTS_DESTINATION_KEY" ]); then
+   echo "## Création du certificat pour fallback.test"
+   mkdir -p "${HOME}/.cfssl-cli"
+
+   cfssl-cli gencert --config "${HOME}/.cfssl-cli/config.yml" --destination "$CERTS_DESTINATION" fallback.test
+fi
+
+cat << EOF > "${NGINX_PROXY_HOME}/vhost.d/fallback.test_location"
+return 503;
+EOF
+
+cat << EOF > "${NGINX_PROXY_HOME}/vhost.d/fallback.test"
+server_name _;
+EOF
+
+docker run -d \
+  -e VIRTUAL_HOST=fallback.test \
+  --restart unless-stopped \
+  --net nginx-proxy \
+  --name nginx-proxy-fallback \
+  nginx
+  
+echo "## Création du container nginx-proxy"
+
 docker run -d -p 80:80 -p 443:443 \
   --restart unless-stopped --net nginx-proxy --name nginx-proxy \
   -v "${NGINX_PROXY_HOME}/certs:/etc/nginx/certs" \
@@ -35,4 +69,3 @@ docker run -d -p 80:80 -p 443:443 \
   -v "${NGINX_PROXY_HOME}/dhparam:/etc/nginx/dhparam" \
   -v /var/run/docker.sock:/tmp/docker.sock:ro \
   jwilder/nginx-proxy
-
