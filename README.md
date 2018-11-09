@@ -41,7 +41,7 @@ the docker environment. Same as for the `/etc/hosts` file but also allows wildca
 - Clone the repository
 
 ```bash
-git clone https://github.com/GFI-Informatique/docker-devbox
+git clone https://github.com/gfi-centre-ouest/docker-devbox
 cd vagrant-docker
 ```
 

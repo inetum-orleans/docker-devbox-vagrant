@@ -41,7 +41,7 @@ l'environnement docker, identique au fichier `/etc/hosts` mais supporte les wild
 - Cloner le repository
 
 ```bash
-git clone https://github.com/GFI-Informatique/docker-devbox
+git clone https://github.com/gfi-centre-ouest/docker-devbox
 cd vagrant-docker
 ```
 
