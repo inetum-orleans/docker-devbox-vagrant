@@ -169,18 +169,9 @@ To use symbolic links, `winnsfd.exe` must be run with administrator priviledges.
 Be aware that `dc down` destroy the containers! Please stop the containers (`dc stop`) to save the volumes before destroying them.
 
  ```
- docker system prune  --filter "until=24h"
- docker volume rm $(docker volume ls -qf dangling=true)
+ docker system prune --filter "until=24h"
+ docker image prune
  ```
-
-In certain cases, the folder `/var/lib/docker` is full of `*-removing` and `*-init` subfolders that can be deleted.
-
- ```
- # Use with root
- cd /var/lib/docker
- find . -name "*-init" -type d -exec rm -R {} +
- find . -name "*-removing" -type d -exec rm -R {} +
- ``` 
 
  ### VPN Issues
 
