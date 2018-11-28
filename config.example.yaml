@@ -6,9 +6,9 @@ ip_address: "192.168.1.100"
 host_network: ~ # If vagrant ask for a network device, you may define it's label here.
 ca_certificates:
   ca_certs_file: ~ # Path where ca-certificates.crt is stored (C:/Users/USER/ca-certificates.crt)
-  ca_certs_glob: ~ # Set to a glob expression where CA certificates are stored (C:/Users/USER/.ca-certificates/{GFI*.crt,*.local.crt})
+  ca_certs_glob: ~ # Set to a glob expression where CA certificates are stored (C:/Users/USER/.ca-certificates/{GFI_Informatique*.crt,fwca.annuaire.groupe.local.crt})
 #env:
-#  DOCKER_DEVBOX_CA_CERTIFICATES: /etc/ssl/certs/GFI*.pem /etc/ssl/certs/*.local.pem
+#  DOCKER_DEVBOX_CA_CERTIFICATES: /etc/ssl/certs/GFI_Informatique*.pem /etc/ssl/certs/fwca.annuaire.groupe.local.crt
 #  DOCKER_DEVBOX_REGISTRY: docker-registry.etudes.local/
 #ssh:
 #  username: vagrant
