@@ -172,6 +172,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'environment-variables', type: 'shell', privileged: false, path: 'provision/03-environment-variables.sh', env: env
 
+  config.vm.provision 'jq', type: 'shell', privileged: true, path: 'provision/05-jq.sh', env: env
+  
   config.vm.provision 'cfssl-cli', type: 'shell', path: 'provision/07-cfssl-cli.sh', env: env
 
   config.vm.provision 'docker', type: 'shell', path: 'provision/11-docker.sh', env: env
