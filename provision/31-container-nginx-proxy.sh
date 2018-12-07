@@ -47,10 +47,12 @@ fi
 cat << EOF > "${NGINX_PROXY_HOME}/vhost.d/fallback.test_location"
 return 503;
 EOF
+chmod -w "${NGINX_PROXY_HOME}/vhost.d/fallback.test_location"
 
 cat << EOF > "${NGINX_PROXY_HOME}/vhost.d/fallback.test"
 server_name _;
 EOF
+chmod -w "${NGINX_PROXY_HOME}/vhost.d/fallback.test"
 
 docker run -d \
   -e VIRTUAL_HOST=fallback.test \
