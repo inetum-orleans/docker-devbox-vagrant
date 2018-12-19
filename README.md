@@ -15,7 +15,7 @@ Docker for Windows and Docker Toolbox are using VirtualBox/Hyper-V between the W
 
 * Docker VM (Ubuntu Xenial).
 * Provisionning Docker, Docker-Compose and nginx-proxy using Vagrant.
-* [Winnfsd](https://github.com/winnfsd/winnfsd) to share files between the Windows host and the Docker VM.
+* [nfs4j-daemon](https://github.com/gfi-centre-ouest/nfs4j-daemon) to share files between the Windows host and the Docker VM.
 * [Smartcd](https://github.com/cxreg/smartcd) (Aliases auto (dis)Enabling when browsing the filesystem)
 
 This solution is built from scratch in order to keep agile on the environment.
@@ -27,7 +27,7 @@ This solution is built from scratch in order to keep agile on the environment.
 - [VirtualBox](https://www.virtualbox.org/) (**/!\\** Virtualisation must be enabled in BIOS.)
 - [Vagrant](https://www.vagrantup.com/)
 - [Vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) (`vagrant plugin install vagrant-vbguest`)
-- [Vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) (`vagrant plugin install vagrant-winnfsd`)
+- [Vagrant-nfs4j](https://github.com/gfi-centre-ouest/vagrant-nfs4j) (`vagrant plugin install vagrant-nfs4j`)
 - [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`)
 - [vagrant-reload](https://github.com/aidanns/vagrant-reload) (`vagrant plugin install vagrant-reload`)
 - [vagrant-proxyconf](https://github.com/tmatilai/vagrant-proxyconf) (Optional, `vagrant plugin install vagrant-proxyconf`)
@@ -142,7 +142,7 @@ vagrant provision
 
 ## Synchronisation of project files through NFS
 
-A NFS mounting-point can be used through the plugin `vagrant-winnfsd`.
+A NFS mounting-point can be used through the plugin `vagrant-nfs4j`.
 
 You must edit the `synced_folder` section in the `config.yaml` file as described in the **Setup** section.
 
@@ -150,19 +150,16 @@ You must edit the `synced_folder` section in the `config.yaml` file as described
 synced_folders:
   user:
     source: 'C:\Users\user' # absolute or relative path from Vagrantfile
-    target: '/c/Users/user' # absolute or relative path from home of VM
+    target: '/C/Users/user' # absolute or relative path from home of VM
   projects:
     source: 'C:\devel\projects' # absolute or relative path from Vagrantfile
-    target: '/c/devel/projects' # absolute or relative path from home of VM
+    target: '/C/devel/projects' # absolute or relative path from home of VM
 ```
 
-Once the `synced_folders` section is filled, Vagrant will automatically launch winfsd to mount specified files using NFS.
+Once the `synced_folders` section is filled, Vagrant will automatically launch nfs4j-daemon to mount specified files using NFS.
 
-To use symbolic links, `winnsfd.exe` must be run with administrator priviledges.
-
-- Open this folder: `%USERPROFILE%\.vagrant.d\gems\2.3.4\gems\vagrant-winnfsd-1.4.0\bin` (**/!\\** Change versions)
-- Select `winnfsd.exe` > Right click > Properties
-- Go to the "compatibility" tab, check the "Exectute as Administrator" box, then "Apply".
+To use symbolic links, you should configure [Local Group Policy to allow symbolic links creation](https://github.com/gfi-centre-ouest/nfs4j-daemon#symbolic-links-support-on-windows) 
+for your user.
 
 ### Free the diskspace
 

@@ -220,16 +220,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
   synced_folders = config_file['synced_folders']
-  if Vagrant.has_plugin?('vagrant-winnfsd') and synced_folders
-    config.winnfsd.logging = 'off'
-    config.winnfsd.uid = 1000
-    config.winnfsd.gid = 1000
-
+  if Vagrant.has_plugin?('vagrant-nfs4j') and synced_folders
+    config.nfs4j.shares_config = {:permissions => {:uid => 1000, :gid => 1000}}
     synced_folders.each do |i, folder|
       mount_options = if folder.key?('mount_options') then
                         folder['mount_options']
                       else
-                        %w(nolock udp noatime nodiratime actimeo=1)
+                        %w(noatime nodiratime actimeo=1)
                       end
       mount_options = if not mount_options or mount_options.kind_of?(Array) then
                         mount_options
@@ -244,6 +241,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                                                      end,
                               id: "#{i}",
                               type: 'nfs',
+                              nfs_version: 4,
+                              nfs_udp: false,
                               mount_options: mount_options
       # See https://www.sebastien-han.fr/blog/2012/12/18/noac-performance-impact-on-web-applications/
     end

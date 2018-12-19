@@ -17,10 +17,10 @@ ca_certificates:
 ## Use this naming convention to match docker for windows and allow docker PHPStorm support
 #  user:
 #    source: 'C:\Users\user' # absolute or relative path from Vagrantfile
-#    target: '/c/Users/user' # absolute or relative path from home of VM
+#    target: '/C/Users/user' # absolute or relative path from home of VM
 #  projects:
 #    source: 'C:\devel\projects' # absolute or relative path from Vagrantfile
-#    target: '/c/devel/projects' # absolute or relative path from home of VM
+#    target: '/C/devel/projects' # absolute or relative path from home of VM
 #persistent_storage:
 #  location: 'D:\persistent_storage.vdi'
 #  size_in_gb: 100

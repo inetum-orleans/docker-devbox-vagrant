@@ -16,7 +16,7 @@ s'execute le daemon docker pour monter le volumes locaux dans le container. Cel�
 
 - VM Docker (Ubuntu Xenial).
 - Vagrant pour provisionner Docker, Docker Compose et [nginx-proxy](https://github.com/jwilder/nginx-proxy).
-- [winnfsd](https://github.com/winnfsd/winnfsd) pour partager les fichiers entre l'hôte sous windows et la VM Docker.
+- [nfs4j-daemon](https://github.com/gfi-centre-ouest/nfs4j-daemon) pour partager les fichiers entre l'hôte sous windows et la VM Docker.
 - [Smartcd](https://github.com/cxreg/smartcd) (Activation/Désactivation automatique d'alias lors de l'entrée/sortie dans un dossier)
 
 Cette solution est construite de zéro ce qui permet de garder une bonne flexibilité sur l'environnement technique de la VM.
@@ -27,7 +27,7 @@ Cette solution est construite de zéro ce qui permet de garder une bonne flexibi
 - [VirtualBox](https://www.virtualbox.org/) (**/!\\** La virtualisation doit être activé dans le BIOS)
 - [Vagrant](https://www.vagrantup.com/)
 - [Vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) (`vagrant plugin install vagrant-vbguest`)
-- [Vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd) (`vagrant plugin install vagrant-winnfsd`)
+- [Vagrant-nfs4j](https://github.com/gfi-centre-ouest/vagrant-nfs4j) (`vagrant plugin install vagrant-nfs4j`)
 - [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`)
 - [vagrant-reload](https://github.com/aidanns/vagrant-reload) (`vagrant plugin install vagrant-reload`)
 - [vagrant-proxyconf](https://github.com/tmatilai/vagrant-proxyconf) (Optionnel, `vagrant plugin install vagrant-proxyconf`)
@@ -146,7 +146,7 @@ dossier de l'hôte.
 
 ## Synchronisation des fichiers du projet via NFS
 
-Il est possible d'utiliser un point de montage NFS via le plugin `vagrant-winnfsd`.
+Il est possible d'utiliser un point de montage NFS via le plugin `vagrant-nfs4j`.
 
 Il faut paramétrer la section `synced_folder` dans le fichier `config.yaml` comme décrit dans la section **Paramétrage**.
 
@@ -161,13 +161,10 @@ synced_folders:
 ```
 
 Lorsque la section `synced_folders` est renseignée dans le fichier de configuration, Vagrant va automatiquement 
-lancer winnfsd pour monter les dossiers spécifiés via NFS.
+lancer nfs4j-daemon pour monter les dossiers spécifiés via NFS.
 
-Pour supporter les liens symboliques, `winnsfd.exe` doit s'exécuter en tant qu'Administrateur. 
-
-- Ouvrir le dossier `%USERPROFILE%\.vagrant.d\gems\2.3.4\gems\vagrant-winnfsd-1.4.0\bin` (**/!\\** Adapter les versions)
-- Selectionner `winnfsd.exe` > Bouton droit > Propriétés
-- Activer l'onglet "Compatibilité", Cocher la case "Executer ce programme en tant qu'administrateur", Cliquer sur Appliquer
+Pour supporter les liens symboliques, il est nécessaire de configurer la [Stratégie de Sécurité Locale pour autoriser la création de liens symboliques](https://github.com/gfi-centre-ouest/nfs4j-daemon#symbolic-links-support-on-windows) 
+pour votre utilisateur.
 
 ### Libérer de l'espace disque
 
