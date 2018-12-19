@@ -220,10 +220,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
   synced_folders = config_file['synced_folders']
-  if Vagrant.has_plugin?('vagrant-nfs4j') and synced_folders
-    config.nsf4j.logging = 'off'
-    config.nsf4j.uid = 1000
-    config.nsf4j.gid = 1000
+  if Vagrant.has_plugin?('vagrant-winnfsd') and synced_folders
+    config.winnfsd.logging = 'off'
+    config.winnfsd.uid = 1000
+    config.winnfsd.gid = 1000
 
     synced_folders.each do |i, folder|
       mount_options = if folder.key?('mount_options') then
