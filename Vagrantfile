@@ -241,10 +241,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                                                      end,
                               id: "#{i}",
                               type: 'nfs',
-                              nfs_version: 4,
-                              nfs_udp: false,
                               mount_options: mount_options
-      # See https://www.sebastien-han.fr/blog/2012/12/18/noac-performance-impact-on-web-applications/
     end
   end
 end
