@@ -171,7 +171,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision 'environment-variables', type: 'shell', privileged: false, path: 'provision/03-environment-variables.sh', env: env
 
   config.vm.provision 'jq', type: 'shell', privileged: true, path: 'provision/05-jq.sh', env: env
-  
+
   config.vm.provision 'cfssl-cli', type: 'shell', path: 'provision/07-cfssl-cli.sh', env: env
 
   config.vm.provision 'docker', type: 'shell', path: 'provision/11-docker.sh', env: env
@@ -221,7 +221,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   synced_folders = config_file['synced_folders']
   if Vagrant.has_plugin?('vagrant-nfs4j') and synced_folders
-    config.nfs4j.shares_config = {:permissions => {:uid => 1000, :gid => 1000}}
+    config.nfs4j.shares_config = {:permissions => {:uid => 1000, :gid => 1000}, :globPermissions => {"**/.git{/**,}" => {:type => 'SIMPLE'}}}
     synced_folders.each do |i, folder|
       mount_options = if folder.key?('mount_options') then
                         folder['mount_options']
