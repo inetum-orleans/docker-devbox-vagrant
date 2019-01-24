@@ -16,19 +16,22 @@ else
 fi
 
 export HOST_IP=${HOST_IP}
+export SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
+export NODE_EXTRA_CA_CERTS="/etc/ssl/certs/ca-certificates.crt"
 
-NODE_EXTRA_CA_CERTS=${SSL_CERT_FILE:-/etc/ssl/certs/ca-certificates.crt}
-
-if [ -f "$NODE_EXTRA_CA_CERTS" ]; then
+if [ -f "$SSL_CERT_FILE" ]; then
+    if ! grep -q "# Root certificates" "${HOME}/.profile"; then
+      echo -e>>"${HOME}/.profile"
+      echo "# Root certificates">>"${HOME}/.profile"
+    fi
     if grep -q "NODE_EXTRA_CA_CERTS=" "${HOME}/.profile"; then
       sed -i "s|.*NODE_EXTRA_CA_CERTS=.*|export NODE_EXTRA_CA_CERTS=${NODE_EXTRA_CA_CERTS}|" "${HOME}/.profile"
     else
-      echo -e>>"${HOME}/.profile"
-      echo "# Root certificates bundle for NodeJS">>"${HOME}/.profile"
       echo "export NODE_EXTRA_CA_CERTS=${NODE_EXTRA_CA_CERTS}">>"${HOME}/.profile"
     fi
-
-    export NODE_EXTRA_CA_CERTS=${NODE_EXTRA_CA_CERTS}
-else
-    echo "No root ca certificates found ($NODE_EXTRA_CA_CERTS)"
+    if grep -q "SSL_CERT_FILE=" "${HOME}/.profile";then
+      sed -i "s|.*SSL_CERT_FILE=.*|export SSL_CERT_FILE=${SSL_CERT_FILE}|" "${HOME}/.profile"
+    else
+      echo "export SSL_CERT_FILE=${SSL_CERT_FILE}">>"${HOME}/.profile"
+    fi
 fi
