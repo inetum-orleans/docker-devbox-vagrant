@@ -169,6 +169,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision 'prepare', type: 'shell', privileged: false, path: 'provision/01-prepare.sh', env: env
 
   config.vm.provision 'environment-variables', type: 'shell', privileged: false, path: 'provision/03-environment-variables.sh', env: env
+  config.vm.provision 'system-variables', type: 'shell', privileged: true, path: 'provision/04-system-variables.sh', env: env
 
   config.vm.provision 'jq', type: 'shell', privileged: true, path: 'provision/05-jq.sh', env: env
   
