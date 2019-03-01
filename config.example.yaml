@@ -1,12 +1,21 @@
 box_memory: 4096
 box_cpus: 2
 box_cpu_max_exec_cap: "90"
+box_video_ram: 16
 disksize: "40GB"
 ip_address: "192.168.1.100"
 host_network: ~ # If vagrant ask for a network device, you may define it's label here.
 ca_certificates:
   ca_certs_file: ~ # Path where ca-certificates.crt is stored (C:/Users/USER/ca-certificates.crt)
   ca_certs_glob: ~ # Set to a glob expression where CA certificates are stored (C:/Users/USER/.ca-certificates/{GFI_Informatique*.crt,fwca.annuaire.groupe.local.crt})
+#box_monitor_count: 1 # Number of screen
+#locale: fr_FR.UTF-8 # Default locale to use
+#language: fr_FR # Default language to use
+#keyboard: # Custom keyboard to use
+#  layout: fr
+#  variant: latin9
+#gui: false # Enable gui on startup
+#desktop: false # Provision desktop environment
 #env:
 #  DOCKER_DEVBOX_CA_CERTIFICATES: /etc/ssl/certs/GFI_Informatique*.pem /etc/ssl/certs/fwca.annuaire.groupe.local.pem
 #  DOCKER_DEVBOX_REGISTRY: docker-registry.etudes.local/

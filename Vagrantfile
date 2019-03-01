@@ -34,14 +34,35 @@ env = {
 ###############################
 # General project settings
 # -----------------------------
-box_name = 'ubuntu/xenial64'
+box_name = 'ubuntu/bionic64'
 box_memory = config_file['box_memory'] || 4096
 box_cpus = config_file['box_cpus'] || 2
 box_cpu_max_exec_cap = config_file['box_cpu_max_exec_cap'] || '90'
+box_video_ram = config_file['box_video_ram'] || 16
+box_monitor_count = config_file['box_monitor_count'] || 1
 disksize = config_file['disksize'] || '40GB'
 ip_address = config_file['ip_address'] || '192.168.1.100'
+gui = config_file['ip_address'] || false
+desktop = config_file['desktop'] || false
 host_network = config_file['host_network']
 
+if config_file['locale']
+  env['CONFIG_LOCALE'] = config_file['locale']
+end
+
+if config_file['language']
+  env['CONFIG_LANGUAGE'] = config_file['language']
+end
+
+if config_file['keyboard']
+  if config_file['keyboard']['layout']
+    env['CONFIG_KEYBOARD_LAYOUT'] = config_file['keyboard']['layout']
+  end
+  
+  if config_file['keyboard']['variant']
+    env['CONFIG_KEYBOARD_VARIANT'] = config_file['keyboard']['variant']
+  end
+end
 
 def self.get_host_ip(connect_ip)
   orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true
@@ -118,10 +139,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider 'virtualbox' do |v|
     v.memory = box_memory
     v.cpus = box_cpus
-    # v.gui    = true
+    v.gui = gui
+    v.customize ["modifyvm", :id, "--vram", box_video_ram]
     v.customize ['modifyvm', :id, '--cpuexecutioncap', box_cpu_max_exec_cap]
     v.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
     v.customize ['modifyvm', :id, '--natdnsproxy1', 'on']
+    v.customize ['modifyvm', :id, '--monitorcount', box_monitor_count]
     v.customize ['guestproperty', 'set', :id, '/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold', 1000]
   end
   #
@@ -168,6 +191,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Provisioning from files available in provision directory
   config.vm.provision 'prepare', type: 'shell', privileged: false, path: 'provision/01-prepare.sh', env: env
 
+  config.vm.provision 'locale', type: 'shell', privileged: false, path: 'provision/02-locale.sh', env: env
+
   config.vm.provision 'environment-variables', type: 'shell', privileged: false, path: 'provision/03-environment-variables.sh', env: env
   config.vm.provision 'system-variables', type: 'shell', privileged: true, path: 'provision/04-system-variables.sh', env: env
 
@@ -204,6 +229,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     config.vm.provision 'ssh-keys', type: 'shell', privileged: false, path: 'provision/61-ssh-keys.sh', env: env
   end
+
+  config.vm.provision 'dnsmasq', type: 'shell', privileged: false, path: 'provision/71-dnsmasq.sh', env: env
+
+  if desktop
+    config.vm.provision 'ubuntu-desktop', type: 'shell', privileged: false, path: 'provision/81-ubuntu-desktop.sh', env: env
+  end
+  
+  config.vm.provision 'language-support', type: 'shell', privileged: false, path: 'provision/82-language-support.sh', env: env
 
   config.vm.provision 'cleanup', type: 'shell', path: 'provision/99-cleanup.sh', env: env
 
