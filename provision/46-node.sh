@@ -2,7 +2,7 @@
 
 mkdir -p /home/$USER/.cache/yarn
 
-curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_10.x | sed 's|https://|http://|' | sudo -E bash -
 export DEBIAN_FRONTEND=noninteractive
 sudo apt-get update && sudo apt-get install -y nodejs
 
