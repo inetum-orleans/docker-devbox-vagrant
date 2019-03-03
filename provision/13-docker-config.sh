@@ -12,7 +12,7 @@ mkdir -p /etc/systemd/system/docker.service.d
 cat << EOF > /etc/systemd/system/docker.service.d/override.conf
 [Service]
 ExecStart=
-ExecStart=/usr/bin/dockerd -H unix:// -H tcp://$IP_ADDRESS:2375
+ExecStart=/usr/bin/dockerd -H unix:// -H tcp://$IP_ADDRESS:2375 -H tcp://127.0.0.1:2375
 EOF
 
 echo "## Rechargement du daemon"

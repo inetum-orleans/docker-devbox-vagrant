@@ -34,14 +34,18 @@ env = {
 ###############################
 # General project settings
 # -----------------------------
-box_name = 'ubuntu/xenial64'
-box_memory = config_file['box_memory'] || 4096
-box_cpus = config_file['box_cpus'] || 2
-box_cpu_max_exec_cap = config_file['box_cpu_max_exec_cap'] || '90'
-disksize = config_file['disksize'] || '40GB'
+# 'gfi-centre-ouest/ubuntu-bionic64-desktop-fr' => French ubuntu desktop 18.04
+# 'gfi-centre-ouest/ubuntu-bionic64-fr' => French ubuntu server 18.04
+# 'ubuntu/xenial64' => English ubuntu server 16.04
+box_name = 'gfi-centre-ouest/ubuntu-bionic64-fr'
+box_memory = config_file['box_memory']
+box_cpus = config_file['box_cpus']
+box_cpu_max_exec_cap = config_file['box_cpu_max_exec_cap']
+box_video_ram = config_file['box_video_ram']
+box_monitor_count = config_file['box_monitor_count']
+disksize = config_file['disksize']
 ip_address = config_file['ip_address'] || '192.168.1.100'
-host_network = config_file['host_network']
-
+gui = config_file['gui'] || false
 
 def self.get_host_ip(connect_ip)
   orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true
@@ -67,6 +71,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = box_name
+  config.vm.box_download_insecure = true
 
   config.vm.boot_timeout = 600 # default is 300 seconds, but it may be short in some case.
 
@@ -75,7 +80,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #config.ssh.password = ssh_password
 
   # Configure disk size
-  config.disksize.size = disksize
+  if Vagrant.has_plugin?('vagrant-disksize') and disksize
+    config.disksize.size = disksize
+  end
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -96,7 +103,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
   # config.vm.network "private_network", ip: "192.168.33.10"
-  config.vm.network 'private_network', ip: ip_address, use_dhcp_assigned_default_route: true
+  config.vm.network 'private_network', ip: ip_address
   # config.vm.network "private_network", type: "dhcp"
 
   # Create a public network, which generally matched to bridged network.
@@ -116,13 +123,32 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Example for VirtualBox:
   #
   config.vm.provider 'virtualbox' do |v|
-    v.memory = box_memory
-    v.cpus = box_cpus
-    # v.gui    = true
-    v.customize ['modifyvm', :id, '--cpuexecutioncap', box_cpu_max_exec_cap]
-    v.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
-    v.customize ['modifyvm', :id, '--natdnsproxy1', 'on']
+    if not box_memory.nil?
+      v.memory = box_memory
+    end
+
+    if not box_cpus.nil?
+      v.cpus = box_cpus
+    end
+
+    v.gui = gui
+    
+    if not box_video_ram.nil?
+      v.customize ["modifyvm", :id, "--vram", box_video_ram]
+    end
+
+    if not box_cpu_max_exec_cap.nil?
+      v.customize ['modifyvm', :id, '--cpuexecutioncap', box_cpu_max_exec_cap]
+    end
+    
+    if not box_monitor_count.nil?
+      v.customize ['modifyvm', :id, '--monitorcount', box_monitor_count]
+    end
+
     v.customize ['guestproperty', 'set', :id, '/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold', 1000]
+    # Uncomment following lines if you experience DNS issues inside VM
+    # v.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
+    # v.customize ['modifyvm', :id, '--natdnsproxy1', 'on']
   end
   #
   # View the documentation for the provider you are using for more
@@ -175,13 +201,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'cfssl-cli', type: 'shell', path: 'provision/07-cfssl-cli.sh', env: env
 
-  config.vm.provision 'docker', type: 'shell', path: 'provision/11-docker.sh', env: env
-  config.vm.provision 'docker-group', type: 'shell', path: 'provision/13-docker-group.sh', env: env
-
-  if Vagrant.has_plugin?('vagrant-reload')
-    config.vm.provision :reload
-  end
-
+  config.vm.provision :docker
+  config.vm.provision 'docker-config', type: 'shell', path: 'provision/13-docker-config.sh', env: env
   config.vm.provision 'docker-compose', type: 'shell', path: 'provision/21-docker-compose.sh', env: env
 
   config.vm.provision 'container-nginx-proxy', type: 'shell', privileged: false, path: 'provision/31-container-nginx-proxy.sh', env: env
@@ -216,6 +237,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   else
     config.vm.provision "shell", inline: "rm -f /etc/profile.d/vagrant-env.sh", privileged: true, run: "always"
   end
+
+  # Restart docker service because of unknown failure on vagrant startup or reload ...
+  config.vm.provision "shell",	run: "always", privileged: true, inline: "service docker restart"
 
   # Disable vagrant default share
   config.vm.synced_folder '.', '/vagrant', disabled: true

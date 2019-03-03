@@ -20,10 +20,7 @@ mkdir -p "${NGINX_PROXY_HOME}/certs"
 mkdir -p "${NGINX_PROXY_HOME}/dhparam"
 
 # Le téléchargement de certains gros fichiers échoue parfois sans ces paramètres
-echo "proxy_buffer_size          128k;">"${NGINX_PROXY_HOME}/my_proxy.conf"
-echo "proxy_buffers              4 256k;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
-echo "proxy_busy_buffers_size    256k;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
-echo "client_max_body_size       128m;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
+touch "${NGINX_PROXY_HOME}/my_proxy.conf"
 
 if [ "$(docker ps -a --format '{{.Names}}' | grep nginx-proxy-fallback)" ]; then
   echo "## Supression du container nginx-proxy-fallback existant."
