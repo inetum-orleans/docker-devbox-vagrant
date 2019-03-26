@@ -243,6 +243,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Restart docker service because of unknown failure on vagrant startup or reload ...
   config.vm.provision "shell",	run: "always", privileged: true, inline: "service docker restart"
 
+  # Restart resolvconf for dns problems ...
+  config.vm.provision "shell",	run: "always", privileged: true, inline: "resolvconf -u"
+
   # Disable vagrant default share
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
