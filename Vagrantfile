@@ -132,20 +132,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     v.gui = gui
-    
-    if not box_video_ram.nil? then
+
+    if not box_video_ram.nil?
       v.customize ["modifyvm", :id, "--vram", box_video_ram]
     end
 
-    if not box_cpu_max_exec_cap.nil? then
+    if not box_cpu_max_exec_cap.nil?
       v.customize ['modifyvm', :id, '--cpuexecutioncap', box_cpu_max_exec_cap]
     end
-    
-    if not box_monitor_count.nil? then
+
+    if not box_monitor_count.nil?
       v.customize ['modifyvm', :id, '--monitorcount', box_monitor_count]
     end
-
-    v.customize ["modifyvm", :id, "--accelerate3d", "on"]
 
     v.customize ['guestproperty', 'set', :id, '/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold', 1000]
     # Uncomment following lines if you experience DNS issues inside VM
