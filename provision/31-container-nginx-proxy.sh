@@ -57,7 +57,7 @@ docker run -d \
   --net nginx-proxy \
   --name nginx-proxy-fallback \
   nginx
-  
+
 echo "## Création du container nginx-proxy"
 
 docker run -d -p 80:80 -p 443:443 \
@@ -67,4 +67,4 @@ docker run -d -p 80:80 -p 443:443 \
   -v "${NGINX_PROXY_HOME}/vhost.d:/etc/nginx/vhost.d:ro" \
   -v "${NGINX_PROXY_HOME}/dhparam:/etc/nginx/dhparam" \
   -v /var/run/docker.sock:/tmp/docker.sock:ro \
-  jwilder/nginx-proxy
+  jwilder/nginx-proxy:0.5.0

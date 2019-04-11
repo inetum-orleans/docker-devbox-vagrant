@@ -28,8 +28,14 @@ env = {
     'http_proxy' => host_env['http_proxy'],
     'https_proxy' => host_env['https_proxy'],
     'no_proxy' => host_env['no_proxy'],
-    'USER' => ssh_username # La variable d'environment USER n'est pas définie lors du provisionning
-}
+    'USER' => ssh_username, # La variable d'environment USER n'est pas définie lors du provisionning
+
+    CONFIG_LOCALE: 'fr_FR.UTF-8',
+    CONFIG_LANGUAGE: 'fr_FR',
+    CONFIG_KEYBOARD_LAYOUT: 'fr',
+    CONFIG_KEYBOARD_VARIANT: 'latin9',
+    CONFIG_TIMEZONE: 'Europe/Paris'
+  }
 
 ###############################
 # General project settings
@@ -37,7 +43,8 @@ env = {
 # 'gfi-centre-ouest/ubuntu-bionic64-desktop-fr' => French ubuntu desktop 18.04
 # 'gfi-centre-ouest/ubuntu-bionic64-fr' => French ubuntu server 18.04
 # 'ubuntu/xenial64' => English ubuntu server 16.04
-box_name = 'gfi-centre-ouest/ubuntu-bionic64-fr'
+box_name = 'ubuntu/bionic64'
+# box_version = '0.1.0'
 box_memory = config_file['box_memory']
 box_cpus = config_file['box_cpus']
 box_cpu_max_exec_cap = config_file['box_cpu_max_exec_cap']
@@ -45,7 +52,8 @@ box_video_ram = config_file['box_video_ram']
 box_monitor_count = config_file['box_monitor_count']
 disksize = config_file['disksize']
 ip_address = config_file['ip_address'] || '192.168.1.100'
-gui = config_file['gui'] || false
+desktop = config_file['desktop'] || false
+gui = desktop || false
 
 def self.get_host_ip(connect_ip)
   orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true
@@ -71,6 +79,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = box_name
+  # config.vm.box_version = box_version
   config.vm.box_download_insecure = true
 
   config.vm.boot_timeout = 600 # default is 300 seconds, but it may be short in some case.
@@ -132,9 +141,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     v.gui = gui
-    if gui
-      v.customize ['modifyvm', :id, '--accelerate3d', 'on']
-    end
+    # if gui
+    #   v.customize ['modifyvm', :id, '--accelerate3d', 'on']
+    #   v.customize ['modifyvm', :id, '--accelerate2dvideo', 'off']
+    # end
 
     if not box_video_ram.nil?
       v.customize ["modifyvm", :id, "--vram", box_video_ram]
@@ -196,6 +206,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # Provisioning from files available in provision directory
+  # config.vm.provision 'shell', inline: "sudo sed -i 's|http://security.ubuntu.com|http://archive.ubuntu.com|g' /etc/apt/sources.list", privileged: true, env: env
+  # config.vm.provision 'shell', inline: "sudo sed -i 's|http://archive.ubuntu.com|http://fr.archive.ubuntu.com|g' /etc/apt/sources.list", privileged: true, env: env
   config.vm.provision 'prepare', type: 'shell', privileged: false, path: 'provision/01-prepare.sh', env: env
 
   config.vm.provision 'environment-variables', type: 'shell', privileged: false, path: 'provision/03-environment-variables.sh', env: env
@@ -230,7 +242,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.provision 'ssh-keys', type: 'shell', privileged: false, path: 'provision/61-ssh-keys.sh', env: env
   end
 
-  config.vm.provision 'cleanup', type: 'shell', path: 'provision/99-cleanup.sh', env: env
+    config.vm.provision 'cleanup', type: 'shell', path: 'provision/99-cleanup.sh', env: env
 
   if not config_file['env'].nil?
     config.vm.provision "shell", inline: "> /etc/profile.d/vagrant-env.sh", privileged: true, run: "always"
@@ -240,6 +252,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   else
     config.vm.provision "shell", inline: "rm -f /etc/profile.d/vagrant-env.sh", privileged: true, run: "always"
+  end
+
+  # Install desktop environement
+  if desktop
+      config.vm.provision 'apps', type: 'shell', privileged: false, path: 'provision/71-desktop.sh', env: env
   end
 
   # Restart docker service because of unknown failure on vagrant startup or reload ...
@@ -252,28 +269,40 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
   synced_folders = config_file['synced_folders']
-  if Vagrant.has_plugin?('vagrant-nfs4j') and synced_folders
-    config.nfs4j.shares_config = {:permissions => {:uid => 1000, :gid => 1000}, :globPermissions => {"**/.git{/**,}" => {:type => 'SIMPLE'}}}
+  if desktop and synced_folders
     synced_folders.each do |i, folder|
-      mount_options = if folder.key?('mount_options') then
-                        folder['mount_options']
-                      else
-                        %w(noatime nodiratime actimeo=1)
-                      end
-      mount_options = if not mount_options or mount_options.kind_of?(Array) then
-                        mount_options
-                      else
-                        mount_options.split(/[,\s]/)
-                      end
-
       config.vm.synced_folder "#{folder['source']}", if folder['target'].start_with?("/") then
                                                        folder['target']
                                                      else
                                                        "/home/#{ssh_username}/#{folder['target']}"
-                                                     end,
-                              id: "#{i}",
-                              type: 'nfs',
-                              mount_options: mount_options
+                                                     end
     end
+  elsif Vagrant.has_plugin?('vagrant-winnfsd') and synced_folders
+      config.winnfsd.logging = 'off'
+      config.winnfsd.uid = 1000
+      config.winnfsd.gid = 1000
+
+      synced_folders.each do |i, folder|
+        mount_options = if folder.key?('mount_options') then
+                          folder['mount_options']
+                        else
+                          %w(nolock udp noatime nodiratime actimeo=1)
+                        end
+        mount_options = if not mount_options or mount_options.kind_of?(Array) then
+                          mount_options
+                        else
+                          mount_options.split(/[,\s]/)
+                        end
+
+        config.vm.synced_folder "#{folder['source']}", if folder['target'].start_with?("/") then
+                                                         folder['target']
+                                                       else
+                                                         "/home/#{ssh_username}/#{folder['target']}"
+                                                       end,
+                                id: "#{i}",
+                                type: 'nfs',
+                                mount_options: mount_options
+        # See https://www.sebastien-han.fr/blog/2012/12/18/noac-performance-impact-on-web-applications/
+      end
   end
 end

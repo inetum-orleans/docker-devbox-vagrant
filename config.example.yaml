@@ -10,6 +10,7 @@ ca_certificates:
   ca_certs_glob: ~ # Set to a glob expression where CA certificates are stored (C:/Users/USER/.ca-certificates/{GFI_Informatique*.crt,fwca.annuaire.groupe.local.crt})
 #box_monitor_count: 1 # Number of screen
 #gui: false # Enable gui on startup
+#desktop: false # Install KDE Plasma and enable gui
 #env:
 #  DOCKER_DEVBOX_CA_CERTIFICATES: /etc/ssl/certs/GFI_Informatique*.pem /etc/ssl/certs/fwca.annuaire.groupe.local.pem
 #  DOCKER_DEVBOX_REGISTRY: docker-registry.etudes.local/
