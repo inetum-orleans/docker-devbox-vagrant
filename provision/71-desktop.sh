@@ -2,9 +2,13 @@
 export DEBIAN_FRONTEND=noninteractive
 
 echo "## Installing desktop environement"
-sudo apt-get install kde-plasma-desktop
+sudo apt-get install -fy kubuntu-desktop
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -q -y ssdm
 sudo apt-get purge -fy avahi-daemon
-sudo apt-get install resolvconf
+sudo apt-get install -fy resolvconf
+sudo systemctl stop lightdm
+sudo systemctl disable lightdm
+sudo systemctl start ssdm
 
 echo "## Installing Git Flow"
 sudo apt-get -fy install git-flow

@@ -209,6 +209,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # config.vm.provision 'shell', inline: "sudo sed -i 's|http://security.ubuntu.com|http://archive.ubuntu.com|g' /etc/apt/sources.list", privileged: true, env: env
   # config.vm.provision 'shell', inline: "sudo sed -i 's|http://archive.ubuntu.com|http://fr.archive.ubuntu.com|g' /etc/apt/sources.list", privileged: true, env: env
   config.vm.provision 'prepare', type: 'shell', privileged: false, path: 'provision/01-prepare.sh', env: env
+    
+  config.vm.provision 'locale', type: 'shell', privileged: false, path: 'provision/02-locale.sh', env: env
 
   config.vm.provision 'environment-variables', type: 'shell', privileged: false, path: 'provision/03-environment-variables.sh', env: env
   config.vm.provision 'system-variables', type: 'shell', privileged: true, path: 'provision/04-system-variables.sh', env: env
@@ -256,7 +258,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Install desktop environement
   if desktop
-      config.vm.provision 'apps', type: 'shell', privileged: false, path: 'provision/71-desktop.sh', env: env
+      config.vm.provision 'desktop', type: 'shell', privileged: false, path: 'provision/71-desktop.sh', env: env
   end
 
   # Restart docker service because of unknown failure on vagrant startup or reload ...
