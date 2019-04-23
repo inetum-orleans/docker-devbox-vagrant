@@ -31,7 +31,7 @@ This solution is built from scratch in order to keep agile on the environment.
 - [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`)
 - [vagrant-reload](https://github.com/aidanns/vagrant-reload) (`vagrant plugin install vagrant-reload`)
 - [vagrant-proxyconf](https://github.com/tmatilai/vagrant-proxyconf) (Optional, `vagrant plugin install vagrant-proxyconf`)
-- [vagrant-ca-certificates](https://github.com/williambailey/vagrant-ca-certificates) (Optional, `vagrant plugin install vagrant-ca-certificates`)
+- [vagrant-certificates](https://github.com/gfi-centre-ouest/vagrant-certificates) (Optional, `vagrant plugin install vagrant-certificates`)
 - [vagrant-persistent-storage](https://github.com/kusnier/vagrant-persistent-storage) (Optional, `vagrant plugin install vagrant-persistent-storage`)
 - [Acrylic DNS Proxy](https://sourceforge.net/projects/acrylic) (Optional, [Intallation guide on StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), DNS local proxy to redirect `*.test` to 
 the docker environment. Same as for the `/etc/hosts` file but also allows wildcards `*`)
@@ -138,7 +138,7 @@ vagrant provision
 
 ## Automated installation of CA certificates
 
-`vagrant-ca-certificates` can install CA Certificates automatically on VM certificates located in a directory of the host.
+`vagrant-certificates` can install CA Certificates automatically on VM certificates located in a directory of the host.
 
 ## Synchronisation of project files through NFS
 

@@ -142,10 +142,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # SHELL
 
   # Proxy configuration
-  if Vagrant.has_plugin?('vagrant-ca-certificates') and not config_file['ca_certificates'].nil?
-    config.ca_certificates.enabled = true
+  if Vagrant.has_plugin?('vagrant-certificates') and not config_file['ca_certificates'].nil?
+    config.certificates.enabled = true
     if not config_file['ca_certificates']['ca_certs_glob'].nil?
-      config.ca_certificates.certs = Dir.glob(config_file['ca_certificates']['ca_certs_glob'])
+      config.certificates.certs = Dir.glob(config_file['ca_certificates']['ca_certs_glob'])
     end
     if not config_file['ca_certificates']['ca_certs_file'].nil?
       config.vm.box_download_ca_cert = config_file['ca_certificates']['ca_certs_file']
@@ -222,7 +222,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   synced_folders = config_file['synced_folders']
   if Vagrant.has_plugin?('vagrant-nfs4j') and synced_folders
-    config.nfs4j.shares_config = {:permissions => {:uid => 1000, :gid => 1000}, :globPermissions => {"**/.git{/**,}" => {:type => 'SIMPLE'}}}
+    config.nfs4j.shares_config = {:permissions => {:uid => 1000, :gid => 1000}}
     synced_folders.each do |i, folder|
       mount_options = if folder.key?('mount_options') then
                         folder['mount_options']
