@@ -20,10 +20,7 @@ mkdir -p "${NGINX_PROXY_HOME}/certs"
 mkdir -p "${NGINX_PROXY_HOME}/dhparam"
 
 # Le téléchargement de certains gros fichiers échoue parfois sans ces paramètres
-echo "proxy_buffer_size          128k;">"${NGINX_PROXY_HOME}/my_proxy.conf"
-echo "proxy_buffers              4 256k;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
-echo "proxy_busy_buffers_size    256k;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
-echo "client_max_body_size       128m;">>"${NGINX_PROXY_HOME}/my_proxy.conf"
+touch "${NGINX_PROXY_HOME}/my_proxy.conf"
 
 if [ "$(docker ps -a --format '{{.Names}}' | grep nginx-proxy-fallback)" ]; then
   echo "## Supression du container nginx-proxy-fallback existant."
@@ -60,7 +57,7 @@ docker run -d \
   --net nginx-proxy \
   --name nginx-proxy-fallback \
   nginx
-  
+
 echo "## Création du container nginx-proxy"
 
 docker run -d -p 80:80 -p 443:443 \
@@ -70,4 +67,4 @@ docker run -d -p 80:80 -p 443:443 \
   -v "${NGINX_PROXY_HOME}/vhost.d:/etc/nginx/vhost.d:ro" \
   -v "${NGINX_PROXY_HOME}/dhparam:/etc/nginx/dhparam" \
   -v /var/run/docker.sock:/tmp/docker.sock:ro \
-  jwilder/nginx-proxy
+  jwilder/nginx-proxy:0.5.0

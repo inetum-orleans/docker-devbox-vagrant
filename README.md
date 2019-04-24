@@ -29,7 +29,6 @@ This solution is built from scratch in order to keep agile on the environment.
 - [Vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) (`vagrant plugin install vagrant-vbguest`)
 - [Vagrant-nfs4j](https://github.com/gfi-centre-ouest/vagrant-nfs4j) (`vagrant plugin install vagrant-nfs4j`)
 - [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`)
-- [vagrant-reload](https://github.com/aidanns/vagrant-reload) (`vagrant plugin install vagrant-reload`)
 - [vagrant-proxyconf](https://github.com/tmatilai/vagrant-proxyconf) (Optional, `vagrant plugin install vagrant-proxyconf`)
 - [vagrant-certificates](https://github.com/gfi-centre-ouest/vagrant-certificates) (Optional, `vagrant plugin install vagrant-certificates`)
 - [vagrant-persistent-storage](https://github.com/kusnier/vagrant-persistent-storage) (Optional, `vagrant plugin install vagrant-persistent-storage`)

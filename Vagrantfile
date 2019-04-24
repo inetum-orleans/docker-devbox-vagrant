@@ -8,7 +8,8 @@ require 'yaml'
 require 'socket'
 
 current_dir = File.dirname(File.expand_path(__FILE__))
-if File.file?("#{current_dir}/config.yaml") then
+if File.file?("#{current_dir}/config.yaml") 
+then
   config_file = YAML.load_file("#{current_dir}/config.yaml")
   # puts 'Loading configuration from config.example.yaml'
 else
@@ -28,20 +29,28 @@ env = {
     'http_proxy' => host_env['http_proxy'],
     'https_proxy' => host_env['https_proxy'],
     'no_proxy' => host_env['no_proxy'],
-    'USER' => ssh_username # La variable d'environment USER n'est pas définie lors du provisionning
-}
+    'USER' => ssh_username, # La variable d'environment USER n'est pas définie lors du provisionning
+
+    CONFIG_LOCALE: 'fr_FR.UTF-8',
+    CONFIG_LANGUAGE: 'fr_FR',
+    CONFIG_KEYBOARD_LAYOUT: 'fr',
+    CONFIG_KEYBOARD_VARIANT: 'latin9',
+    CONFIG_TIMEZONE: 'Europe/Paris'
+  }
 
 ###############################
 # General project settings
 # -----------------------------
-box_name = 'ubuntu/xenial64'
-box_memory = config_file['box_memory'] || 4096
-box_cpus = config_file['box_cpus'] || 2
-box_cpu_max_exec_cap = config_file['box_cpu_max_exec_cap'] || '90'
-disksize = config_file['disksize'] || '40GB'
+box_name = 'ubuntu/bionic64'
+box_memory = config_file['box_memory']
+box_cpus = config_file['box_cpus']
+box_cpu_max_exec_cap = config_file['box_cpu_max_exec_cap']
+box_video_ram = config_file['box_video_ram']
+box_monitor_count = config_file['box_monitor_count']
+disksize = config_file['disksize']
 ip_address = config_file['ip_address'] || '192.168.1.100'
-host_network = config_file['host_network']
-
+desktop = config_file['desktop'] || false
+gui = desktop || config_file['gui'] || false
 
 def self.get_host_ip(connect_ip)
   orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true
@@ -67,6 +76,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = box_name
+  #config.vm.box_download_insecure = true
 
   config.vm.boot_timeout = 600 # default is 300 seconds, but it may be short in some case.
 
@@ -75,7 +85,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #config.ssh.password = ssh_password
 
   # Configure disk size
-  config.disksize.size = disksize
+  if Vagrant.has_plugin?('vagrant-disksize') and disksize
+    config.disksize.size = disksize
+  end
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -96,7 +108,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
   # config.vm.network "private_network", ip: "192.168.33.10"
-  config.vm.network 'private_network', ip: ip_address, use_dhcp_assigned_default_route: true
+  config.vm.network 'private_network', ip: ip_address
   # config.vm.network "private_network", type: "dhcp"
 
   # Create a public network, which generally matched to bridged network.
@@ -116,13 +128,33 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Example for VirtualBox:
   #
   config.vm.provider 'virtualbox' do |v|
-    v.memory = box_memory
-    v.cpus = box_cpus
-    # v.gui    = true
-    v.customize ['modifyvm', :id, '--cpuexecutioncap', box_cpu_max_exec_cap]
-    v.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
-    v.customize ['modifyvm', :id, '--natdnsproxy1', 'on']
+    unless box_memory.nil?
+      v.memory = box_memory
+    end
+
+    unless box_cpus.nil?
+      v.cpus = box_cpus
+    end
+
+    v.gui = gui
+
+    unless box_video_ram.nil?
+      v.customize ["modifyvm", :id, "--vram", box_video_ram]
+    end
+
+    unless box_cpu_max_exec_cap.nil?
+      v.customize ['modifyvm', :id, '--cpuexecutioncap', box_cpu_max_exec_cap]
+    end
+
+    unless box_monitor_count.nil?
+      v.customize ['modifyvm', :id, '--monitorcount', box_monitor_count]
+    end
+
     v.customize ['guestproperty', 'set', :id, '/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold', 1000]
+
+    # Uncomment following lines if you experience DNS issues inside VM
+    # v.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
+    # v.customize ['modifyvm', :id, '--natdnsproxy1', 'on']
   end
   #
   # View the documentation for the provider you are using for more
@@ -141,13 +173,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # config.vm.provision "shell", inline: <<-SHELL
   # SHELL
 
-  # Proxy configuration
-  if Vagrant.has_plugin?('vagrant-certificates') and not config_file['ca_certificates'].nil?
-    config.certificates.enabled = true
-    if not config_file['ca_certificates']['ca_certs_glob'].nil?
-      config.certificates.certs = Dir.glob(config_file['ca_certificates']['ca_certs_glob'])
+  # CA Certificates configuration
+  # vagrant-certificates is a fork of default vagrant-ca-certificates, fixing and issue for vagrant >= 2.2.4
+  # https://github.com/gfi-centre-ouest/vagrant-certificates
+  if (Vagrant.has_plugin?('vagrant-certificates') or Vagrant.has_plugin?('vagrant-ca-certificates')) and not config_file['ca_certificates'].nil?
+    ca_certificates_config = Vagrant.has_plugin?('vagrant-ca-certificates') ? config.ca_certificates : config.certificates
+
+    ca_certificates_config.enabled = true
+    unless config_file['ca_certificates']['ca_certs_glob'].nil?
+      ca_certificates_config.certs = Dir.glob(config_file['ca_certificates']['ca_certs_glob'])
     end
-    if not config_file['ca_certificates']['ca_certs_file'].nil?
+    unless config_file['ca_certificates']['ca_certs_file'].nil?
       config.vm.box_download_ca_cert = config_file['ca_certificates']['ca_certs_file']
     end
   end
@@ -167,6 +203,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Provisioning from files available in provision directory
   config.vm.provision 'prepare', type: 'shell', privileged: false, path: 'provision/01-prepare.sh', env: env
+    
+  config.vm.provision 'locale', type: 'shell', privileged: false, path: 'provision/02-locale.sh', env: env
 
   config.vm.provision 'environment-variables', type: 'shell', privileged: false, path: 'provision/03-environment-variables.sh', env: env
   config.vm.provision 'system-variables', type: 'shell', privileged: true, path: 'provision/04-system-variables.sh', env: env
@@ -175,13 +213,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'cfssl-cli', type: 'shell', path: 'provision/07-cfssl-cli.sh', env: env
 
-  config.vm.provision 'docker', type: 'shell', path: 'provision/11-docker.sh', env: env
-  config.vm.provision 'docker-group', type: 'shell', path: 'provision/13-docker-group.sh', env: env
+  config.vm.provision 'additions', type: 'shell', path: 'provision/09-additions.sh', env: env
 
-  if Vagrant.has_plugin?('vagrant-reload')
-    config.vm.provision :reload
-  end
-
+  config.vm.provision :docker
+  config.vm.provision 'docker-config', type: 'shell', path: 'provision/13-docker-config.sh', env: env
   config.vm.provision 'docker-compose', type: 'shell', path: 'provision/21-docker-compose.sh', env: env
 
   config.vm.provision 'container-nginx-proxy', type: 'shell', privileged: false, path: 'provision/31-container-nginx-proxy.sh', env: env
@@ -205,7 +240,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.provision 'ssh-keys', type: 'shell', privileged: false, path: 'provision/61-ssh-keys.sh', env: env
   end
 
-  config.vm.provision 'cleanup', type: 'shell', path: 'provision/99-cleanup.sh', env: env
+    config.vm.provision 'cleanup', type: 'shell', path: 'provision/99-cleanup.sh', env: env
 
   if not config_file['env'].nil?
     config.vm.provision "shell", inline: "> /etc/profile.d/vagrant-env.sh", privileged: true, run: "always"
@@ -217,32 +252,58 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.provision "shell", inline: "rm -f /etc/profile.d/vagrant-env.sh", privileged: true, run: "always"
   end
 
+  # Install desktop environement
+  if desktop
+      config.vm.provision 'desktop', type: 'shell', privileged: false, path: 'provision/71-desktop.sh', env: env
+
+      config.vm.provision 'desktop', type: 'shell', privileged: false, path: 'provision/79-desktop-additions.sh', env: env
+
+      # TODO: Move those hacks inside a oneshot service, if this is still an issue.
+      # Restart docker service because of unknown failure on vagrant startup or reload ...
+      # config.vm.provision "shell",	run: "always", privileged: true, inline: "service docker restart"
+    
+      # Restart resolvconf for dns problems ...
+      # config.vm.provision "shell",	run: "always", privileged: true, inline: "resolvconf -u"
+  end
+
   # Disable vagrant default share
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
   synced_folders = config_file['synced_folders']
-  if Vagrant.has_plugin?('vagrant-nfs4j') and synced_folders
-    config.nfs4j.shares_config = {:permissions => {:uid => 1000, :gid => 1000}}
-    synced_folders.each do |i, folder|
-      mount_options = if folder.key?('mount_options') then
-                        folder['mount_options']
-                      else
-                        %w(noatime nodiratime actimeo=1)
-                      end
-      mount_options = if not mount_options or mount_options.kind_of?(Array) then
-                        mount_options
-                      else
-                        mount_options.split(/[,\s]/)
-                      end
 
-      config.vm.synced_folder "#{folder['source']}", if folder['target'].start_with?("/") then
-                                                       folder['target']
-                                                     else
-                                                       "/home/#{ssh_username}/#{folder['target']}"
-                                                     end,
-                              id: "#{i}",
-                              type: 'nfs',
-                              mount_options: mount_options
+  if synced_folders
+    synced_folders_plugin = config_file['synced_folders_plugin']
+    if synced_folders_plugin == 'default'
+      synced_folders.each do |i, folder|
+        config.vm.synced_folder "#{folder['source']}", 
+                                folder['target'].start_with?("/") ? folder['target'] : "/home/#{ssh_username}/#{folder['target']}"
+      end
+    elsif Vagrant.has_plugin?('vagrant-nfs4j') and (not synced_folders_plugin or synced_folders_plugin == 'nfs4j')
+      config.nfs4j.shares_config = {:permissions => {:uid => 1000, :gid => 1000}}
+      synced_folders.each do |i, folder|
+        config.vm.synced_folder "#{folder['source']}", 
+                                folder['target'].start_with?("/") ? folder['target'] : "/home/#{ssh_username}/#{folder['target']}"
+      end
+    elsif Vagrant.has_plugin?('vagrant-winnfsd') and (not synced_folders_plugin or synced_folders_plugin == 'winnfsd')
+        config.winnfsd.logging = 'off'
+        config.winnfsd.uid = 1000
+        config.winnfsd.gid = 1000
+  
+        synced_folders.each do |i, folder|
+          mount_options = folder.key?('mount_options') ? folder['mount_options'] : %w(nolock udp noatime nodiratime actimeo=1)
+          mount_options = if not mount_options or mount_options.kind_of?(Array)
+                          then
+                            mount_options
+                          else
+                            mount_options.split(/[,\s]/)
+                          end
+  
+          config.vm.synced_folder "#{folder['source']}",
+                                  folder['target'].start_with?("/") ? folder['target'] : "/home/#{ssh_username}/#{folder['target']}",
+                                  id: "#{i}",
+                                  type: 'nfs',
+                                  mount_options: mount_options
+        end
     end
   end
 end
