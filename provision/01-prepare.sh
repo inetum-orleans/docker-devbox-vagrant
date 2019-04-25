@@ -37,7 +37,7 @@ fi
 
 # Use dnsmasq for .test domains and fix .local domains by bypassing systemd-resolved with resolvconf
 sudo apt-get install -y dnsmasq resolvconf
-sudo sh -c "echo address=/.test/127.0.0.1>/etc/dnsmasq.d/test-domain-to-localhost"
+sudo sh -c "echo address=/.test/$LOCAL_IP>/etc/dnsmasq.d/test-domain-to-local-ip"
 sudo service dnsmasq restart
 
 # Disable systemd-resolved by adding fallback resolv.conf file to resolvconf tail
