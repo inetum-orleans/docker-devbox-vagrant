@@ -63,6 +63,7 @@ ensure
 end
 
 env['HOST_IP'] = get_host_ip(ip_address)
+env['LOCAL_IP'] = ip_address
 
 # All Vagrant configuration is done below. The '2' in Vagrant.configure
 # configures the configuration version (we support older styles for
