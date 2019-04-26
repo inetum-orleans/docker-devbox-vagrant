@@ -281,6 +281,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                                 id: "#{i}"
       end
     else
+      default_mount_options = nil
       if Vagrant.has_plugin?('vagrant-nfs4j')
         if not synced_folders_plugin or synced_folders_plugin === 'nfs4j'
           synced_folders_plugin = 'nfs4j'
@@ -293,11 +294,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           config.winnfsd.logging = 'off'
           config.winnfsd.uid = 1000
           config.winnfsd.gid = 1000
+          default_mount_options = %w(nolock udp noatime nodiratime actimeo=1)
         end
       end
 
       synced_folders.each do |i, folder|
-        mount_options = folder.key?('mount_options') ? folder['mount_options'] : %w(nolock udp noatime nodiratime actimeo=1)
+        mount_options = folder.key?('mount_options') ? folder['mount_options'] : default_mount_options
         mount_options = if not mount_options or mount_options.kind_of?(Array)
                         then
                           mount_options
