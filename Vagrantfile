@@ -277,34 +277,40 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     if synced_folders_plugin == 'default'
       synced_folders.each do |i, folder|
         config.vm.synced_folder "#{folder['source']}", 
-                                folder['target'].start_with?("/") ? folder['target'] : "/home/#{ssh_username}/#{folder['target']}"
+                                folder['target'].start_with?("/") ? folder['target'] : "/home/#{ssh_username}/#{folder['target']}",
+                                id: "#{i}"
       end
-    elsif Vagrant.has_plugin?('vagrant-nfs4j') and (not synced_folders_plugin or synced_folders_plugin == 'nfs4j')
-      config.nfs4j.shares_config = {:permissions => {:uid => 1000, :gid => 1000}}
-      synced_folders.each do |i, folder|
-        config.vm.synced_folder "#{folder['source']}", 
-                                folder['target'].start_with?("/") ? folder['target'] : "/home/#{ssh_username}/#{folder['target']}"
-      end
-    elsif Vagrant.has_plugin?('vagrant-winnfsd') and (not synced_folders_plugin or synced_folders_plugin == 'winnfsd')
-        config.winnfsd.logging = 'off'
-        config.winnfsd.uid = 1000
-        config.winnfsd.gid = 1000
-  
-        synced_folders.each do |i, folder|
-          mount_options = folder.key?('mount_options') ? folder['mount_options'] : %w(nolock udp noatime nodiratime actimeo=1)
-          mount_options = if not mount_options or mount_options.kind_of?(Array)
-                          then
-                            mount_options
-                          else
-                            mount_options.split(/[,\s]/)
-                          end
-  
-          config.vm.synced_folder "#{folder['source']}",
-                                  folder['target'].start_with?("/") ? folder['target'] : "/home/#{ssh_username}/#{folder['target']}",
-                                  id: "#{i}",
-                                  type: 'nfs',
-                                  mount_options: mount_options
+    else
+      if Vagrant.has_plugin?('vagrant-nfs4j')
+        if not synced_folders_plugin or synced_folders_plugin === 'nfs4j'
+          synced_folders_plugin = 'nfs4j'
+          config.nfs4j.shares_config = {:permissions => {:uid => 1000, :gid => 1000}}
         end
+      end
+      if Vagrant.has_plugin?('vagrant-winnfsd') 
+        if not synced_folders_plugin or synced_folders_plugin === 'winnfsd'
+          synced_folders_plugin = 'winnfsd'
+          config.winnfsd.logging = 'off'
+          config.winnfsd.uid = 1000
+          config.winnfsd.gid = 1000
+        end
+      end
+
+      synced_folders.each do |i, folder|
+        mount_options = folder.key?('mount_options') ? folder['mount_options'] : %w(nolock udp noatime nodiratime actimeo=1)
+        mount_options = if not mount_options or mount_options.kind_of?(Array)
+                        then
+                          mount_options
+                        else
+                          mount_options.split(/[,\s]/)
+                        end
+
+        config.vm.synced_folder "#{folder['source']}",
+                                folder['target'].start_with?("/") ? folder['target'] : "/home/#{ssh_username}/#{folder['target']}",
+                                id: "#{i}",
+                                type: 'nfs',
+                                mount_options: mount_options
+      end
     end
   end
 end
