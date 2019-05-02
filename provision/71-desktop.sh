@@ -79,6 +79,6 @@ sudo apt-get install -fy libnss3-tools
 
 for cert in /usr/local/share/ca-certificates/*; do
     echo "Certificate found: ${cert##*/}"
-    sudo mkdir -p $HOME/.pki/nssdb
+    mkdir -p $HOME/.pki/nssdb
     certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -i "${cert}" -n "${cert##*/}"
 done
