@@ -259,13 +259,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
       config.vm.provision 'desktop-additions', type: 'shell', privileged: false, path: 'provision/79-desktop-additions.sh', env: env
 
-      # TODO: Move those hacks inside a oneshot service, if this is still an issue.
-      # Restart docker service because of unknown failure on vagrant startup or reload ...
-      # config.vm.provision "shell",	run: "always", privileged: true, inline: "service docker restart"
-    
       # Restart resolvconf for dns problems ...
       # config.vm.provision "shell",	run: "always", privileged: true, inline: "resolvconf -u"
   end
+
+  # Restart docker.socket service because of unknown failure on vagrant startup or reload ...
+  config.vm.provision "shell",	run: "always", privileged: true, inline: "systemctl restart docker.socket"
 
   # Disable vagrant default share
   config.vm.synced_folder '.', '/vagrant', disabled: true
