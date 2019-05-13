@@ -226,6 +226,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'smartcd', type: 'shell', privileged: false, path: 'provision/41-smartcd.sh', env: env
 
+  config.vm.provision 'python', type: 'shell', privileged: false, path: 'provision/45-python.sh', env: env
   config.vm.provision 'node', type: 'shell', privileged: false, path: 'provision/46-node.sh', env: env
   config.vm.provision 'yeoman', type: 'shell', privileged: false, path: 'provision/47-yeoman.sh', env: env
 
