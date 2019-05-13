@@ -15,6 +15,7 @@ ca_certificates:
 #env:
 #  DOCKER_DEVBOX_CA_CERTIFICATES: /etc/ssl/certs/GFI_Informatique*.pem /etc/ssl/certs/fwca.annuaire.groupe.local.pem
 #  DOCKER_DEVBOX_REGISTRY: docker-registry.etudes.local/
+#  CFSSL_URL: cfssl.etudes.local
 #ssh:
 #  username: vagrant
 #synced_folders:
