@@ -30,12 +30,11 @@ env = {
     'https_proxy' => host_env['https_proxy'],
     'no_proxy' => host_env['no_proxy'],
     'USER' => ssh_username, # La variable d'environment USER n'est pas définie lors du provisionning
-
-    CONFIG_LOCALE: 'fr_FR.UTF-8',
-    CONFIG_LANGUAGE: 'fr_FR',
-    CONFIG_KEYBOARD_LAYOUT: 'fr',
-    CONFIG_KEYBOARD_VARIANT: 'latin9',
-    CONFIG_TIMEZONE: 'Europe/Paris'
+    'CONFIG_LOCALE' => 'fr_FR.UTF-8',
+    'CONFIG_LANGUAGE' => 'fr_FR',
+    'CONFIG_KEYBOARD_LAYOUT' => 'fr',
+    'CONFIG_KEYBOARD_VARIANT' => 'latin9',
+    'CONFIG_TIMEZONE' =>'Europe/Paris'
   }
 
 ###############################
@@ -235,10 +234,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   
   if File.file?(File.join(Dir.home, '.ssh/id_rsa.pub')) or File.file?(File.join(Dir.home, '.ssh/id_rsa'))
     if File.file?(File.join(Dir.home, '.ssh/id_rsa'))
-      config.vm.provision 'ssh-keys-private', type: 'file', source: '~/.ssh/id_rsa', destination: "/home/#{ssh_username}/.provision/id_rsa"
+      config.vm.provision 'ssh-keys-private', type: 'file', source: '~/.ssh/id_rsa', destination: "/home/#{ssh_username}/.provision/id_rsa", env: env
     end
     if File.file?(File.join(Dir.home, '.ssh/id_rsa.pub'))
-      config.vm.provision 'ssh-keys-public', type: 'file', source: '~/.ssh/id_rsa.pub', destination: "/home/#{ssh_username}/.provision/id_rsa.pub"
+      config.vm.provision 'ssh-keys-public', type: 'file', source: '~/.ssh/id_rsa.pub', destination: "/home/#{ssh_username}/.provision/id_rsa.pub", env: env
     end
     config.vm.provision 'ssh-keys', type: 'shell', privileged: false, path: 'provision/61-ssh-keys.sh', env: env
   end
@@ -246,13 +245,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.provision 'cleanup', type: 'shell', path: 'provision/99-cleanup.sh', env: env
 
   if not config_file['env'].nil?
-    config.vm.provision 'shell', inline: "> /etc/profile.d/vagrant-env.sh", privileged: true, run: "always"
+    config.vm.provision 'shell', inline: "> /etc/profile.d/vagrant-env.sh", privileged: true, run: "always", env: env
 
     config_file['env'].each do |key, value|
-      config.vm.provision 'shell', inline: "echo export #{key}=\\\"#{value}\\\">> /etc/profile.d/vagrant-env.sh", privileged: true, run: "always"
+      config.vm.provision 'shell', inline: "echo export #{key}=\\\"#{value}\\\">> /etc/profile.d/vagrant-env.sh", privileged: true, run: "always", env: env
     end
   else
-    config.vm.provision 'shell', inline: "rm -f /etc/profile.d/vagrant-env.sh", privileged: true, run: "always"
+    config.vm.provision 'shell', inline: "rm -f /etc/profile.d/vagrant-env.sh", privileged: true, run: "always", env: env
   end
 
   # Install desktop environement
@@ -266,7 +265,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # Restart docker.socket service because of unknown failure on vagrant startup or reload ...
-  config.vm.provision "shell",	run: "always", privileged: true, inline: "systemctl restart docker.socket"
+  config.vm.provision "shell",	run: "always", privileged: true, inline: "systemctl restart docker.socket", env: env
 
   # Disable vagrant default share
   config.vm.synced_folder '.', '/vagrant', disabled: true
