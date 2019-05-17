@@ -9,7 +9,8 @@ ca_certificates:
   ca_certs_file: ~ # Path where ca-certificates.crt is stored (C:/Users/USER/ca-certificates.crt)
   ca_certs_glob: ~ # Set to a glob expression where CA certificates are stored (C:/Users/USER/.ca-certificates/{GFI_Informatique*.crt,fwca.annuaire.groupe.local.crt})
 env:
-  REVERSE_PROXY_NETWORK: nginx-proxy
+  DOCKER_COMPOSE_REVERSE_PROXY_NETWORK: nginx-proxy
+  REVERSE_PROXY_NETWORK: nginx-proxy # Should be removed later
   CURL_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
   REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
   NODE_EXTRA_CA_CERTS: /etc/ssl/certs/ca-certificates.crt
