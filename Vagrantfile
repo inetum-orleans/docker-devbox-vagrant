@@ -234,10 +234,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   
   if File.file?(File.join(Dir.home, '.ssh/id_rsa.pub')) or File.file?(File.join(Dir.home, '.ssh/id_rsa'))
     if File.file?(File.join(Dir.home, '.ssh/id_rsa'))
-      config.vm.provision 'ssh-keys-private', type: 'file', source: '~/.ssh/id_rsa', destination: "/home/#{ssh_username}/.provision/id_rsa", env: env
+      config.vm.provision 'ssh-keys-private', type: 'file', source: '~/.ssh/id_rsa', destination: "/home/#{ssh_username}/.provision/id_rsa"
     end
     if File.file?(File.join(Dir.home, '.ssh/id_rsa.pub'))
-      config.vm.provision 'ssh-keys-public', type: 'file', source: '~/.ssh/id_rsa.pub', destination: "/home/#{ssh_username}/.provision/id_rsa.pub", env: env
+      config.vm.provision 'ssh-keys-public', type: 'file', source: '~/.ssh/id_rsa.pub', destination: "/home/#{ssh_username}/.provision/id_rsa.pub"
     end
     config.vm.provision 'ssh-keys', type: 'shell', privileged: false, path: 'provision/61-ssh-keys.sh', env: env
   end
