@@ -3,17 +3,13 @@
 if [ ! -d $HOME/.pyenv ]; then
   curl https://pyenv.run | bash
 
-  cat << EOF >> "$HOME/.bashrc"
+  cat <<'EOF' >> "$HOME/.bashrc"
   
 # Pyenv configuration
 export PATH="/home/vagrant/.pyenv/bin:$PATH"
-eval "\$(pyenv init -)"
-eval "\$(pyenv virtualenv-init -)"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 EOF
-
-  echo export PATH="/home/vagrant/.pyenv/bin:$PATH">>"$HOME/.bashrc"
-  echo 'eval "$(pyenv init -)"'>>"$HOME/.bashrc"
-  echo 'eval "$(pyenv virtualenv-init -)"'>>"$HOME/.bashrc"
   
   git clone https://github.com/momo-lab/xxenv-latest.git "$(pyenv root)"/plugins/xxenv-latest
   
