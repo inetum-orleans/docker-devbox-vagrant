@@ -210,6 +210,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.persistent_storage.use_lvm = false
   end
 
+  if not config_file['env'].nil?
+    config.vm.provision 'shell', inline: "> /etc/profile.d/vagrant-env.sh", privileged: true, run: "always", env: env
+
+    config_file['env'].each do |key, value|
+      config.vm.provision 'shell', inline: "echo export #{key}=\\\"#{value}\\\">> /etc/profile.d/vagrant-env.sh", privileged: true, run: "always", env: env
+    end
+  else
+    config.vm.provision 'shell', inline: "rm -f /etc/profile.d/vagrant-env.sh", privileged: true, run: "always", env: env
+  end
+
   # Provisioning from files available in provision directory
   config.vm.provision 'prepare', type: 'shell', privileged: false, path: 'provision/01-prepare.sh', env: env
     
@@ -218,27 +228,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision 'environment-variables', type: 'shell', privileged: false, path: 'provision/03-environment-variables.sh', env: env
   config.vm.provision 'system-variables', type: 'shell', privileged: true, path: 'provision/04-system-variables.sh', env: env
 
-  config.vm.provision 'jq', type: 'shell', privileged: true, path: 'provision/05-jq.sh', env: env
-
-  config.vm.provision 'cfssl-cli', type: 'shell', path: 'provision/07-cfssl-cli.sh', env: env
-
   config.vm.provision 'additions', type: 'shell', path: 'provision/09-additions.sh', env: env
 
   config.vm.provision :docker
   config.vm.provision 'docker-config', type: 'shell', path: 'provision/13-docker-config.sh', env: env
   config.vm.provision 'docker-compose', type: 'shell', path: 'provision/21-docker-compose.sh', env: env
 
-  config.vm.provision 'container-nginx-proxy', type: 'shell', privileged: false, path: 'provision/31-container-nginx-proxy.sh', env: env
+  config.vm.provision 'docker-devbox', type: 'shell', privileged: false, path: 'provision/31-docker-devbox.sh', env: env
 
-  config.vm.provision 'container-portainer', type: 'shell', privileged: false, path: 'provision/32-container-portainer.sh', env: env
+  # config.vm.provision 'python', type: 'shell', privileged: false, path: 'provision/45-python.sh', env: env
 
-  config.vm.provision 'smartcd', type: 'shell', privileged: false, path: 'provision/41-smartcd.sh', env: env
-
-  config.vm.provision 'python', type: 'shell', privileged: false, path: 'provision/45-python.sh', env: env
   config.vm.provision 'node', type: 'shell', privileged: false, path: 'provision/46-node.sh', env: env
   config.vm.provision 'yeoman', type: 'shell', privileged: false, path: 'provision/47-yeoman.sh', env: env
 
-  config.vm.provision 'vpnc', type: 'shell', path: 'provision/51-vpnc.sh', env: env
+  # config.vm.provision 'vpnc', type: 'shell', path: 'provision/51-vpnc.sh', env: env
   config.vm.provision 'gitconfig', type: 'shell', path: 'provision/55-gitconfig.sh', env: env
   
   if File.file?(File.join(Dir.home, '.ssh/id_rsa.pub')) or File.file?(File.join(Dir.home, '.ssh/id_rsa'))
@@ -252,16 +255,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
     config.vm.provision 'cleanup', type: 'shell', path: 'provision/99-cleanup.sh', env: env
-
-  if not config_file['env'].nil?
-    config.vm.provision 'shell', inline: "> /etc/profile.d/vagrant-env.sh", privileged: true, run: "always", env: env
-
-    config_file['env'].each do |key, value|
-      config.vm.provision 'shell', inline: "echo export #{key}=\\\"#{value}\\\">> /etc/profile.d/vagrant-env.sh", privileged: true, run: "always", env: env
-    end
-  else
-    config.vm.provision 'shell', inline: "rm -f /etc/profile.d/vagrant-env.sh", privileged: true, run: "always", env: env
-  end
 
   # Install desktop environement
   if desktop
