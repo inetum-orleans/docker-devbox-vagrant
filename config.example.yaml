@@ -15,15 +15,13 @@ env:
   REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
   NODE_EXTRA_CA_CERTS: /etc/ssl/certs/ca-certificates.crt
   SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
-# DOCKER_DEVBOX_CA_CERTIFICATES: /etc/ssl/certs/GFI_Informatique*.pem /etc/ssl/certs/fwca.annuaire.groupe.local.pem
-# DOCKER_DEVBOX_REGISTRY: docker-registry.etudes.local/
-# CFSSL_URL: https://cfssl.etudes.local
+#  DOCKER_DEVBOX_CA_CERTIFICATES: /etc/ssl/certs/GFI_Informatique*.pem /etc/ssl/certs/fwca.annuaire.groupe.local.pem
+#  DOCKER_DEVBOX_REGISTRY: docker-registry.etudes.local/
+#  CFSSL_URL: https://cfssl.etudes.local
 #synced_folders_plugin: ~ # "nfs4j", "winnfsd", or "vagrant". If null, it will find the best available plugin.
 #box_monitor_count: 1 # Number of screen
 #gui: false # Enable gui on startup
 #desktop: false # Install KDE Plasma and enable gui
-#ssh:
-#  username: vagrant
 #synced_folders:
 ## Configure folders to share here
 ## Use this naming convention to match docker for windows and allow docker PHPStorm support
