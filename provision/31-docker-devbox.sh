@@ -20,3 +20,5 @@ sudo chmod +x /usr/local/bin/mkcert
 
 echo "## Installation de docker-devbox"
 curl -L https://github.com/gfi-centre-ouest/docker-devbox/raw/master/installer | bash
+
+mkdir -p "$HOME/projects"
