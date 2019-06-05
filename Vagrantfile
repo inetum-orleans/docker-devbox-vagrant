@@ -8,7 +8,7 @@ require 'yaml'
 require 'socket'
 
 current_dir = File.dirname(File.expand_path(__FILE__))
-if File.file?("#{current_dir}/config.yaml") 
+if File.file?("#{current_dir}/config.yaml")
 then
   config_file = YAML.load_file("#{current_dir}/config.yaml")
   # puts 'Loading configuration from config.example.yaml'
@@ -34,8 +34,8 @@ env = {
     'CONFIG_LANGUAGE' => 'fr_FR',
     'CONFIG_KEYBOARD_LAYOUT' => 'fr',
     'CONFIG_KEYBOARD_VARIANT' => 'latin9',
-    'CONFIG_TIMEZONE' =>'Europe/Paris'
-  }
+    'CONFIG_TIMEZONE' => 'Europe/Paris'
+}
 
 ###############################
 # General project settings
@@ -222,7 +222,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Provisioning from files available in provision directory
   config.vm.provision 'prepare', type: 'shell', privileged: false, path: 'provision/01-prepare.sh', env: env
-    
+
   config.vm.provision 'locale', type: 'shell', privileged: false, path: 'provision/02-locale.sh', env: env
 
   config.vm.provision 'environment-variables', type: 'shell', privileged: false, path: 'provision/03-environment-variables.sh', env: env
@@ -256,20 +256,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.provision 'ssh-keys', type: 'shell', privileged: false, path: 'provision/61-ssh-keys.sh', env: env
   end
 
-    config.vm.provision 'cleanup', type: 'shell', path: 'provision/99-cleanup.sh', env: env
+  config.vm.provision 'cleanup', type: 'shell', path: 'provision/99-cleanup.sh', env: env
 
   # Install desktop environement
   if desktop
-      config.vm.provision 'desktop', type: 'shell', privileged: false, path: 'provision/71-desktop.sh', env: env
+    config.vm.provision 'desktop', type: 'shell', privileged: false, path: 'provision/71-desktop.sh', env: env
 
-      config.vm.provision 'desktop-additions', type: 'shell', privileged: false, path: 'provision/79-desktop-additions.sh', env: env
+    config.vm.provision 'desktop-additions', type: 'shell', privileged: false, path: 'provision/79-desktop-additions.sh', env: env
 
-      # Restart resolvconf for dns problems ...
-      # config.vm.provision "shell",	run: "always", privileged: true, inline: "resolvconf -u"
+    # Restart resolvconf for dns problems ...
+    # config.vm.provision "shell",	run: "always", privileged: true, inline: "resolvconf -u"
   end
 
   # Restart docker.socket service because of unknown failure on vagrant startup or reload ...
-  config.vm.provision "shell",	run: "always", privileged: true, inline: "systemctl restart docker.socket", env: env
+  config.vm.provision "shell", run: "always", privileged: true, inline: "systemctl restart docker.socket", env: env
 
   # Disable vagrant default share
   config.vm.synced_folder '.', '/vagrant', disabled: true
@@ -278,34 +278,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   if synced_folders
     synced_folders_plugin = config_file['synced_folders_plugin']
-    if synced_folders_plugin == 'default'
-      synced_folders.each do |i, folder|
-        config.vm.synced_folder "#{folder['source']}", 
-                                folder['target'].start_with?("/") ? folder['target'] : "/home/#{ssh_username}/#{folder['target']}",
-                                id: "#{i}"
-      end
-    else
-      default_mount_options = nil
-      if Vagrant.has_plugin?('vagrant-nfs4j')
-        if not synced_folders_plugin or synced_folders_plugin === 'nfs4j'
-          synced_folders_plugin = 'nfs4j'
-          config.nfs4j.shares_config = {:permissions => {:uid => 1000, :gid => 1000}}
-        end
-      end
-      if Vagrant.has_plugin?('vagrant-winnfsd') 
-        if not synced_folders_plugin or synced_folders_plugin === 'winnfsd'
-          synced_folders_plugin = 'winnfsd'
-          config.winnfsd.logging = 'off'
-          config.winnfsd.uid = 1000
-          config.winnfsd.gid = 1000
-          default_mount_options = %w(nolock udp noatime nodiratime actimeo=1)
-        end
-      end
+    default_mount_options = nil
 
+    if Vagrant.has_plugin?('vagrant-nfs4j') and (not synced_folders_plugin or synced_folders_plugin === 'nfs4j')
+      synced_folders_plugin = 'nfs4j'
+      config.nfs4j.shares_config = {:permissions => {:uid => 1000, :gid => 1000}}
+    end
+
+    if Vagrant.has_plugin?('vagrant-winnfsd') and (not synced_folders_plugin or synced_folders_plugin === 'winnfsd')
+      synced_folders_plugin = 'winnfsd'
+      config.winnfsd.logging = 'off'
+      config.winnfsd.uid = 1000
+      config.winnfsd.gid = 1000
+      default_mount_options = %w(nolock udp noatime nodiratime actimeo=1)
+    end
+
+    if %w(winnfsd nfs4j).include? synced_folders_plugin
       synced_folders.each do |i, folder|
         mount_options = folder.key?('mount_options') ? folder['mount_options'] : default_mount_options
         mount_options = if not mount_options or mount_options.kind_of?(Array)
-                        then
+        then
                           mount_options
                         else
                           mount_options.split(/[,\s]/)
@@ -316,6 +308,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                                 id: "#{i}",
                                 type: 'nfs',
                                 mount_options: mount_options
+      end
+    else
+      synced_folders.each do |i, folder|
+        config.vm.synced_folder "#{folder['source']}",
+                                folder['target'].start_with?("/") ? folder['target'] : "/home/#{ssh_username}/#{folder['target']}",
+                                id: "#{i}"
       end
     end
   end
