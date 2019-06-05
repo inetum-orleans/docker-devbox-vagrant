@@ -243,7 +243,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # config.vm.provision 'vpnc', type: 'shell', path: 'provision/51-vpnc.sh', env: env
   config.vm.provision 'gitconfig', type: 'shell', path: 'provision/55-gitconfig.sh', env: env
-  
+
+  # config.vm.provision 'gitconfig', type: 'shell', path: 'provision/58-azure-cli.sh', env: env
+
   if File.file?(File.join(Dir.home, '.ssh/id_rsa.pub')) or File.file?(File.join(Dir.home, '.ssh/id_rsa'))
     if File.file?(File.join(Dir.home, '.ssh/id_rsa'))
       config.vm.provision 'ssh-keys-private', type: 'file', source: '~/.ssh/id_rsa', destination: "/home/#{ssh_username}/.provision/id_rsa"
