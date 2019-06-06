@@ -29,7 +29,6 @@ Cette solution est construite de zéro ce qui permet de garder une bonne flexibi
 - [Vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) (`vagrant plugin install vagrant-vbguest`)
 - [Vagrant-nfs4j](https://github.com/gfi-centre-ouest/vagrant-nfs4j) (`vagrant plugin install vagrant-nfs4j`)
 - [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`)
-- [vagrant-proxyconf](https://github.com/tmatilai/vagrant-proxyconf) (Optionnel, `vagrant plugin install vagrant-proxyconf`)
 - [vagrant-certificates](https://github.com/gfi-centre-ouest/vagrant-certificates) (Optionnel, `vagrant plugin install vagrant-certificates`)
 - [vagrant-persistent-storage](https://github.com/kusnier/vagrant-persistent-storage) (Optionnel, `vagrant plugin install vagrant-persistent-storage`)
 - [Acrylic DNS Proxy](https://sourceforge.net/projects/acrylic) (Optionnel, [Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.test` vers 
@@ -40,8 +39,8 @@ l'environnement docker, identique au fichier `/etc/hosts` mais supporte les wild
 - Cloner le repository
 
 ```bash
-git clone https://github.com/gfi-centre-ouest/docker-devbox
-cd vagrant-docker
+git clone https://github.com/gfi-centre-ouest/docker-devbox-vagrant
+cd docker-devbox-vagrant
 ```
 
 - Lancer vagrant:
