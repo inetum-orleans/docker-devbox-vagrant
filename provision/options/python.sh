@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ ! -d $HOME/.pyenv ]; then
+if [[ ! -d "$HOME/.pyenv" ]]; then
   curl https://pyenv.run | bash
   
   export PATH="/home/vagrant/.pyenv/bin:$PATH"

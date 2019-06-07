@@ -50,6 +50,7 @@ disksize = config_file['disksize']
 ip_address = config_file['ip_address'] || '192.168.1.100'
 desktop = config_file['desktop'] || false
 gui = desktop || config_file['gui'] || false
+provision_options = config_file['provision_options'] || []
 
 def self.get_host_ip(connect_ip)
   orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true
@@ -236,15 +237,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'docker-devbox', type: 'shell', privileged: false, path: 'provision/31-docker-devbox.sh', env: env
 
-  # config.vm.provision 'python', type: 'shell', privileged: false, path: 'provision/45-python.sh', env: env
-
   config.vm.provision 'node', type: 'shell', privileged: false, path: 'provision/46-node.sh', env: env
   config.vm.provision 'yeoman', type: 'shell', privileged: false, path: 'provision/47-yeoman.sh', env: env
 
-  # config.vm.provision 'vpnc', type: 'shell', path: 'provision/51-vpnc.sh', env: env
   config.vm.provision 'gitconfig', type: 'shell', path: 'provision/55-gitconfig.sh', env: env
-
-  # config.vm.provision 'gitconfig', type: 'shell', path: 'provision/58-azure-cli.sh', env: env
 
   if File.file?(File.join(Dir.home, '.ssh/id_rsa.pub')) or File.file?(File.join(Dir.home, '.ssh/id_rsa'))
     if File.file?(File.join(Dir.home, '.ssh/id_rsa'))
@@ -266,6 +262,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # Restart resolvconf for dns problems ...
     # config.vm.provision "shell",	run: "always", privileged: true, inline: "resolvconf -u"
+  end
+
+  # The following provisionners can be executed manually with "vagrant provision --provision-with"
+  Dir.glob('provision/options/*') do |file|
+    run = "never" 
+    option = File.basename(file, ".*" )
+    if provision_options.include? option
+      run = nil
+    end
+    config.vm.provision option, type: 'shell', privileged: false, path: file, env: env, run: run
   end
 
   # Restart docker.socket service because of unknown failure on vagrant startup or reload ...
