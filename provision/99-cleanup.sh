@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo "## Nettoyage"
 export DEBIAN_FRONTEND=noninteractive

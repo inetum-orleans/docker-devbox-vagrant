@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo "## Ajout de l'utilisateur $USER au groupe docker"
 getent group docker || groupadd docker

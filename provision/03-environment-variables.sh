@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 echo "## Environment variables configuration"
 
 HOST_IP="${HOST_IP:=127.0.0.1}"

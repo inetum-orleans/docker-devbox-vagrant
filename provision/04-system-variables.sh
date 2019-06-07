@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 echo "## Environment variables configuration (privileged)"
 
 export SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"

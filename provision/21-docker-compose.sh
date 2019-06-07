@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep 'tag_name' | cut -d\" -f4)
 docker-compose --version | grep "docker-compose version $DOCKER_COMPOSE_VERSION"
 VERSION_MATCH=$?
