@@ -229,8 +229,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision 'environment-variables', type: 'shell', privileged: false, path: 'provision/03-environment-variables.sh', env: env
   config.vm.provision 'system-variables', type: 'shell', privileged: true, path: 'provision/04-system-variables.sh', env: env
 
-  config.vm.provision 'additions', type: 'shell', path: 'provision/09-additions.sh', env: env
-
   config.vm.provision :docker
   config.vm.provision 'docker-config', type: 'shell', path: 'provision/13-docker-config.sh', env: env
   config.vm.provision 'docker-compose', type: 'shell', path: 'provision/21-docker-compose.sh', env: env
