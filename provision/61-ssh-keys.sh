@@ -24,7 +24,7 @@ if [[ -f "$PUBLIC_KEY" ]]; then
 
     if ! sudo grep -qxF "$PUBLIC_KEY_CONTENT" "/root/.ssh/authorized_keys"; then
         echo "## Append public key to authorized keys (/root/.ssh/authorized_keys)"
-        sudo echo "$PUBLIC_KEY_CONTENT" | tee -a "/root/.ssh/authorized_keys"
+        echo "$PUBLIC_KEY_CONTENT" | sudo tee -a "/root/.ssh/authorized_keys"
     else
         echo "## Public key is already present in authorized keys (/root/.ssh/authorized_keys)"
     fi
