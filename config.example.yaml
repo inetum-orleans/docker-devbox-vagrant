@@ -1,3 +1,4 @@
+box_name: ubuntu/bionic64  # You may use "gfi-centre-ouest/bionic64-minimal-fr" for a minimal french image
 box_memory: 4096
 box_cpus: 2
 box_cpu_max_exec_cap: "90"

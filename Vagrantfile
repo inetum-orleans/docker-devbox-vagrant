@@ -40,7 +40,7 @@ env = {
 ###############################
 # General project settings
 # -----------------------------
-box_name = 'ubuntu/bionic64'
+box_name = config_file['box_name'] || 'ubuntu/bionic64'
 box_memory = config_file['box_memory']
 box_cpus = config_file['box_cpus']
 box_cpu_max_exec_cap = config_file['box_cpu_max_exec_cap']
