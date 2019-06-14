@@ -5,6 +5,8 @@ echo "## Installing SSH keys"
 PUBLIC_KEY="/home/$USER/.provision/id_rsa.pub"
 PRIVATE_KEY="/home/$USER/.provision/id_rsa"
 
+sudo mkdir -p "$HOME/.ssh"
+sudo mkdir -p "/root/.ssh"
 sudo chown -R "$USER:$USER" "$HOME/.ssh"
 
 if [[ -f "$PUBLIC_KEY" ]]; then
