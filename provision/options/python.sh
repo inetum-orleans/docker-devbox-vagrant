@@ -22,7 +22,6 @@ EOF
   xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
   
   pyenv latest install -s
-  pyenv latest install 2 -s
   pyenv latest global
   
   pip install pipenv virtualenv
@@ -34,7 +33,6 @@ else
   pyenv update
 
   pyenv latest install -s
-  pyenv latest install 2 -s
   pyenv latest global
 
   pip install pipenv virtualenv
