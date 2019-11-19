@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+sudo apt-get install -y git-lfs
+
 cat << EOF > "$HOME/.gitignore-global"
 *.iml
 .idea/
