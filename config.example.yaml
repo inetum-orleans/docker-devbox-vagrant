@@ -15,7 +15,7 @@ env:
   SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
 #  DOCKER_DEVBOX_CA_CERTIFICATES: /etc/ssl/certs/GFI_Informatique*.pem /etc/ssl/certs/fwca.annuaire.groupe.local.pem
 #  CFSSL_URL: https://cfssl.etudes.local
-#provision_options: ['vpnc', 'azure-cli']  # Provisionning options (To provision additional scripts from provision/options directory)
+#provision_options: ['vpnc', 'azure-cli', 'vsftpd']  # Provisionning options (To provision additional scripts from provision/options directory)
 #synced_folders_plugin: ~ # "nfs4j", "winnfsd", or "vagrant". If null, it will find the best available plugin.
 #box_monitor_count: 1 # Number of screen
 #gui: false # Enable gui on startup
