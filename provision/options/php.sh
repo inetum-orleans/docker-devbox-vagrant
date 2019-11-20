@@ -18,6 +18,8 @@ EOF
   sudo apt-get install -y autoconf dpkg-dev file g++ gcc libc-dev make pkg-config re2c \
     libxml2-dev libcurl4-openssl-dev libjpeg-dev libtidy-dev libxslt1-dev libzip-dev unzip
 
+  # Some module may require additional libs, like libpq-dev for pdo_pgsql, ...
+
   phpenv latest install -s
   phpenv latest global
 else
