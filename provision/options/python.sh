@@ -3,14 +3,14 @@
 if [[ ! -d "$HOME/.pyenv" ]]; then
   curl https://pyenv.run | bash
   
-  export PATH="/home/vagrant/.pyenv/bin:$PATH"
+  export PATH="$HOME/.pyenv/bin:$PATH"
   eval "$(pyenv init -)"
   eval "$(pyenv virtualenv-init -)"
 
   cat <<'EOF' >> "$HOME/.bashrc"
   
 # Pyenv configuration
-export PATH="/home/vagrant/.pyenv/bin:$PATH"
+export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 EOF
@@ -26,7 +26,7 @@ EOF
   
   pip install pipenv virtualenv
 else
-  export PATH="/home/vagrant/.pyenv/bin:$PATH"
+  export PATH="$HOME/.pyenv/bin:$PATH"
   eval "$(pyenv init -)"
   eval "$(pyenv virtualenv-init -)"
 

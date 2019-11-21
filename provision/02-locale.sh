@@ -6,17 +6,17 @@ if [[ ! -z "$CONFIG_LOCALE" ]]; then
   sudo update-locale LANG="$CONFIG_LOCALE" LANGUAGE="$CONFIG_LANGUAGE"
 fi
 
-echo LANGUAGE DEFAULT=$CONFIG_LANGUAGE>/home/vagrant/.pam_environment
-echo LANG DEFAULT=$CONFIG_LOCALE>>/home/vagrant/.pam_environment
-echo LC_NUMERIC DEFAULT=$CONFIG_LOCALE>>/home/vagrant/.pam_environment
-echo LC_TIME DEFAULT=$CONFIG_LOCALE>>/home/vagrant/.pam_environment
-echo LC_MONETARY DEFAULT=$CONFIG_LOCALE>>/home/vagrant/.pam_environment
-echo LC_PAPER DEFAULT=$CONFIG_LOCALE>>/home/vagrant/.pam_environment
-echo LC_NAME DEFAULT=$CONFIG_LOCALE>>/home/vagrant/.pam_environment
-echo LC_ADDRESS DEFAULT=$CONFIG_LOCALE>>/home/vagrant/.pam_environment
-echo LC_TELEPHONE DEFAULT=$CONFIG_LOCALE>>/home/vagrant/.pam_environment
-echo LC_MEASUREMENT DEFAULT=$CONFIG_LOCALE>>/home/vagrant/.pam_environment
-echo LC_IDENTIFICATION DEFAULT=$CONFIG_LOCALE>>/home/vagrant/.pam_environment
+echo LANGUAGE DEFAULT=$CONFIG_LANGUAGE>$HOME/.pam_environment
+echo LANG DEFAULT=$CONFIG_LOCALE>>$HOME/.pam_environment
+echo LC_NUMERIC DEFAULT=$CONFIG_LOCALE>>$HOME/.pam_environment
+echo LC_TIME DEFAULT=$CONFIG_LOCALE>>$HOME/.pam_environment
+echo LC_MONETARY DEFAULT=$CONFIG_LOCALE>>$HOME/.pam_environment
+echo LC_PAPER DEFAULT=$CONFIG_LOCALE>>$HOME/.pam_environment
+echo LC_NAME DEFAULT=$CONFIG_LOCALE>>$HOME/.pam_environment
+echo LC_ADDRESS DEFAULT=$CONFIG_LOCALE>>$HOME/.pam_environment
+echo LC_TELEPHONE DEFAULT=$CONFIG_LOCALE>>$HOME/.pam_environment
+echo LC_MEASUREMENT DEFAULT=$CONFIG_LOCALE>>$HOME/.pam_environment
+echo LC_IDENTIFICATION DEFAULT=$CONFIG_LOCALE>>$HOME/.pam_environment
 
 if [[ -z "$CONFIG_KEYBOARD_LAYOUT" ]]; then
   sudo setxkbmap us

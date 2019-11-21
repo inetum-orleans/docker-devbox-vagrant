@@ -1,0 +1,39 @@
+jobs:
+  include:
+    - name: Provision without options
+      sudo: true
+      dist: bionic
+      language: minimal
+      install:
+        - rm -Rf $(pyenv root)
+        - rm -Rf $(phpenv root)
+        - ./provision.sh
+      script:
+        - cat /etc/resolv.conf
+        - docker --version
+        - docker-compose --version
+        - yo --version
+        - curl -L dnsmasq.test
+    - name: Provision with all options
+      sudo: true
+      dist: bionic
+      language: minimal
+      install:
+        - rm -Rf $(pyenv root)
+        - rm -Rf $(phpenv root)
+        - ./provision.sh
+        - ./provision/options/azure-cli.sh
+        - ./provision/options/git-flow.sh
+        - ./provision/options/php.sh
+        - ./provision/options/python.sh
+        - ./provision/options/vpnc.sh
+        - ./provision/options/vsftpd.sh
+      script:
+        - php --version
+        - python --version
+        - node --version
+        - az --version
+        - yo --version
+        - docker --version
+        - docker-compose --version
+        - curl -L dnsmasq.test

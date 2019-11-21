@@ -1,11 +1,13 @@
-﻿# Docker Devbox
+﻿# Docker Devbox Vagrant
 
-Docker devbox is a Vagrant project including everything required to implement docker development environments on 
+[![Build Status](https://img.shields.io/travis/gfi-centre-ouest/docker-devbox-vagrant.svg?style=flat-square)](https://travis-ci.org/gfi-centre-ouest/docker-devbox-vagrant)
+
+Docker Devbox is a Vagrant project including everything required to implement docker development environments on 
 Windows & Mac.
 
 ## Why is that needed ?
 
-Docker for Windows and Docker Toolbox are using VirtualBox/Hyper-V between the Windows host and the Linux VM where the Docker Daemon runs and creates local volumes inside the container. It raises several issues such as :
+Official Docker distributions are using VirtualBox/Hyper-V between the host and the Linux VM where the Docker Daemon runs and creates local volumes inside the container. It raises several issues such as :
 
 * Low performances;
 * Bad and complicated permissions system;
@@ -15,7 +17,7 @@ Docker for Windows and Docker Toolbox are using VirtualBox/Hyper-V between the W
 
 * Docker VM (Ubuntu Xenial).
 * Provisionning Docker, Docker-Compose and nginx-proxy using Vagrant.
-* [nfs4j-daemon](https://github.com/gfi-centre-ouest/nfs4j-daemon) to share files between the Windows host and the Docker VM.
+* [mutagen](https://mutagen.io) to share files between the host and the Docker VM.
 * [Smartcd](https://github.com/cxreg/smartcd) (Aliases auto (dis)Enabling when browsing the filesystem)
 
 This solution is built from scratch in order to keep agile on the environment.
@@ -81,7 +83,7 @@ git config --global pull.rebase true
 
 ## Configure carriage return
 
-To avoid problems sharing file between Windows and Linux, it is usefull to do these things :
+To avoid problems sharing file between host and Linux, it is usefull to do these things :
 
 - Parameter git `core.autocrlf false` option.
 
@@ -138,7 +140,15 @@ vagrant provision
 
 `vagrant-certificates` can install CA Certificates automatically on VM certificates located in a directory of the host.
 
-## Synchronisation of project files through NFS
+## Synchronisation of project files through Mutagen
+
+This methods will give you best performances compared to NFS or Virtualbox shares.
+
+Voir la [documentation](https://mutagen.io) de Mutagen pour mettre en oeuvre de la synchronisation des dossiers projets
+
+## Synchronisation of project files through NFS (Discouraged)
+
+*Note: You should use [Mutagen](https://mutagen.io/) to synchronise your projects inside the VM.*
 
 A NFS mounting-point can be used through the plugin `vagrant-nfs4j`.
 

@@ -11,7 +11,7 @@ sudo apt-get update
 echo "## Préparation"
 mkdir -p /home/$USER/.provision
 
-sudo usermod -aG sudo vagrant
+sudo usermod -aG sudo $(id -un)
 
 sudo mkdir -p /usr/share/ca-certificates/private
 sudo chmod go+xr /usr/share/ca-certificates/private

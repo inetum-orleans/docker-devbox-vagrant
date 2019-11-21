@@ -6,7 +6,7 @@ sudo apt-get install -fy kubuntu-desktop
 
 kwriteconfig5 --file ~/.config/kscreenlockerrc --group Daemon --key Autolock --type bool false
 kwriteconfig5 --file ~/.config/kscreenlockerrc --group Daemon --key LockOnResume --type bool false
-sudo kwriteconfig5 --file /etc/sddm.conf --group Autologin --key User --type string vagrant
+sudo kwriteconfig5 --file /etc/sddm.conf --group Autologin --key User --type string $(id -un)
 
 sudo apt-get -y install `check-language-support -l $CONFIG_LANGUAGE`
 

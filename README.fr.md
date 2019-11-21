@@ -1,11 +1,13 @@
 # Docker Devbox
 
+[![Build Status](https://img.shields.io/travis/gfi-centre-ouest/docker-devbox-vagrant.svg?style=flat-square)](https://travis-ci.org/gfi-centre-ouest/docker-devbox-vagrant)
+
 Docker devbox est un projet Vagrant intégrant tout le nécessaire pour créer des environments de développement Docker 
 sous Windows & Mac.
 
 ## Pourquoi ?
 
-Docker for windows et Docker toolbox utilisent des partages VirtualBox/Hyper-V entre l'hôte Windows et la VM Linux ou 
+Les distributions officielles de docker utilisent des partages VirtualBox/Hyper-V entre l'hôte et la VM Linux ou 
 s'execute le daemon docker pour monter le volumes locaux dans le container. Celà entraine une série de problèmes:
 
 - Performance médiocres.
@@ -16,7 +18,7 @@ s'execute le daemon docker pour monter le volumes locaux dans le container. Cel�
 
 - VM Docker (Ubuntu Xenial).
 - Vagrant pour provisionner Docker, Docker Compose et [nginx-proxy](https://github.com/jwilder/nginx-proxy).
-- [nfs4j-daemon](https://github.com/gfi-centre-ouest/nfs4j-daemon) pour partager les fichiers entre l'hôte sous windows et la VM Docker.
+- [mutagen](https://mutagen.io) pour partager les fichiers entre l'hôte et la VM Docker.
 - [Smartcd](https://github.com/cxreg/smartcd) (Activation/Désactivation automatique d'alias lors de l'entrée/sortie dans un dossier)
 
 Cette solution est construite de zéro ce qui permet de garder une bonne flexibilité sur l'environnement technique de la VM.
@@ -27,7 +29,6 @@ Cette solution est construite de zéro ce qui permet de garder une bonne flexibi
 - [VirtualBox](https://www.virtualbox.org/) (**/!\\** La virtualisation doit être activé dans le BIOS)
 - [Vagrant](https://www.vagrantup.com/)
 - [Vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) (`vagrant plugin install vagrant-vbguest`)
-- [Vagrant-nfs4j](https://github.com/gfi-centre-ouest/vagrant-nfs4j) (`vagrant plugin install vagrant-nfs4j`)
 - [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`)
 - [vagrant-certificates](https://github.com/gfi-centre-ouest/vagrant-certificates) (Optionnel, `vagrant plugin install vagrant-certificates`)
 - [vagrant-persistent-storage](https://github.com/kusnier/vagrant-persistent-storage) (Optionnel, `vagrant plugin install vagrant-persistent-storage`)
@@ -82,7 +83,7 @@ git config --global pull.rebase true
 
 ## Configuration des sauts de ligne sur le projet
 
-Pour éviter tout problème lors du partage de fichier entre Linux et Windows, il faut prendre quelques précautions au 
+Pour éviter tout problème lors du partage de fichier entre Linux et l'hôte, il faut prendre quelques précautions au 
 sujet des caractères de saut de lignes.
 
 - Paramétrer l'option pour git `core.autocrlf false`.
@@ -142,7 +143,15 @@ vagrant provision
 Le plugin `vagrant-certificates` permet d'installer automatiquement sur la VM les certificats racine situés dans un 
 dossier de l'hôte.
 
-## Synchronisation des fichiers du projet via NFS
+## Synchronisation des fichiers du projet via [Mutagen](https://mutagen.io)
+
+Il s'agit de la méthode qui permet d'obtenir les meilleurs performances comparé à un partage NFS ou Virtualbox.
+
+Voir la [documentation](https://mutagen.io) de Mutagen pour mettre en oeuvre de la synchronisation des dossiers projets
+
+## Synchronisation des fichiers du projet via NFS (Déconseillé)
+
+**Note: Vous devriez plutôt utiliser [Mutagen](https://mutagen.io/) pour synchroniser vos projets au sein de la VM.**
 
 Il est possible d'utiliser un point de montage NFS via le plugin `vagrant-nfs4j`.
 
