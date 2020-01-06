@@ -226,7 +226,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'locale', type: 'shell', privileged: false, path: 'provision/02-locale.sh', env: env
 
-  config.vm.provision 'environment-variables', type: 'shell', privileged: false, path: 'provision/03-environment-variables.sh', env: env
+  config.vm.provision 'environment-variables', type: 'shell', run: 'always', privileged: false, path: 'provision/03-environment-variables.sh', env: env
   config.vm.provision 'system-variables', type: 'shell', privileged: true, path: 'provision/04-system-variables.sh', env: env
 
   config.vm.provision :docker
