@@ -13,6 +13,8 @@ env:
   REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
   NODE_EXTRA_CA_CERTS: /etc/ssl/certs/ca-certificates.crt
   SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+  COMPOSE_DOCKER_CLI_BUILD: 1  # Delegates builds to docker CLI
+  DOCKER_BUILDKIT: 1  # Enable buildkit support for docker CLI
 #  DOCKER_DEVBOX_CA_CERTIFICATES: /etc/ssl/certs/GFI_Informatique*.pem /etc/ssl/certs/fwca.annuaire.groupe.local.pem
 #  CFSSL_URL: https://cfssl.etudes.local
 #provision_options: ['vpnc', 'azure-cli', 'vsftpd']  # Provisionning options (To provision additional scripts from provision/options directory)
