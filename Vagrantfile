@@ -48,6 +48,7 @@ box_video_ram = config_file['box_video_ram']
 box_monitor_count = config_file['box_monitor_count']
 disksize = config_file['disksize']
 ip_address = config_file['ip_address'] || '192.168.1.100'
+host_ip_address = config_file['host_ip_address'] || get_host_ip(ip_address)
 desktop = config_file['desktop'] || false
 gui = desktop || config_file['gui'] || false
 provision_options = config_file['provision_options'] || []
@@ -62,7 +63,7 @@ ensure
   Socket.do_not_reverse_lookup = orig
 end
 
-env['HOST_IP'] = get_host_ip(ip_address)
+env['HOST_IP'] = host_ip_address
 env['LOCAL_IP'] = ip_address
 
 # All Vagrant configuration is done below. The '2' in Vagrant.configure
