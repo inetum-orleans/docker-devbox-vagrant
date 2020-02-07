@@ -37,6 +37,16 @@ env = {
     'CONFIG_TIMEZONE' => 'Europe/Paris'
 }
 
+def self.get_host_ip(connect_ip)
+  orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true
+  UDPSocket.open do |s|
+    s.connect connect_ip, 1
+    s.addr.last
+  end
+ensure
+  Socket.do_not_reverse_lookup = orig
+end
+
 ###############################
 # General project settings
 # -----------------------------
@@ -52,16 +62,6 @@ host_ip_address = config_file['host_ip_address'] || get_host_ip(ip_address)
 desktop = config_file['desktop'] || false
 gui = desktop || config_file['gui'] || false
 provision_options = config_file['provision_options'] || []
-
-def self.get_host_ip(connect_ip)
-  orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true
-  UDPSocket.open do |s|
-    s.connect connect_ip, 1
-    s.addr.last
-  end
-ensure
-  Socket.do_not_reverse_lookup = orig
-end
 
 env['HOST_IP'] = host_ip_address
 env['LOCAL_IP'] = ip_address
