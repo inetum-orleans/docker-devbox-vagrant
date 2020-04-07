@@ -216,7 +216,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.provision 'shell', inline: "> /etc/profile.d/vagrant-env.sh", privileged: true, run: "always", env: env
 
     config_file['env'].each do |key, value|
-      config.vm.provision 'shell', inline: "echo export #{key}=\\\"#{value}\\\">> /etc/profile.d/vagrant-env.sh", privileged: true, run: "always", env: env
+      config.vm.provision 'shell', inline: "echo export #{key}=\\\"#{value}\\\">> /etc/profile.d/vagrant-env.sh", privileged: true, env: env, run: "always"
     end
   else
     config.vm.provision 'shell', inline: "rm -f /etc/profile.d/vagrant-env.sh", privileged: true, run: "always", env: env
@@ -227,8 +227,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'locale', type: 'shell', privileged: false, path: 'provision/02-locale.sh', env: env
 
-  config.vm.provision 'environment-variables', type: 'shell', run: 'always', privileged: false, path: 'provision/03-environment-variables.sh', env: env
-  config.vm.provision 'system-variables', type: 'shell', privileged: true, path: 'provision/04-system-variables.sh', env: env
+  config.vm.provision 'environment-variables', type: 'shell', privileged: false, path: 'provision/03-environment-variables.sh', env: env, run: "always"
+  config.vm.provision 'system-variables', type: 'shell', privileged: true, path: 'provision/04-system-variables.sh', env: env, run: "always"
+  config.vm.provision 'dnsmasq', type: 'shell', privileged: true, path: 'provision/05-dnsmasq.sh', env: env, run: "always"
 
   config.vm.provision :docker
   config.vm.provision 'docker-config', type: 'shell', path: 'provision/13-docker-config.sh', env: env
