@@ -213,13 +213,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   if not config_file['env'].nil?
-    config.vm.provision 'shell', inline: "> /etc/profile.d/vagrant-env.sh", privileged: true, run: "always", env: env
+    config.vm.provision 'shell', inline: "> /etc/profile.d/vagrant-env.sh", privileged: true, env: env, run: 'always'
 
     config_file['env'].each do |key, value|
-      config.vm.provision 'shell', inline: "echo export #{key}=\\\"#{value}\\\">> /etc/profile.d/vagrant-env.sh", privileged: true, env: env, run: "always"
+      config.vm.provision 'shell', inline: "echo export #{key}=\\\"#{value}\\\">> /etc/profile.d/vagrant-env.sh", privileged: true, env: env, run: 'always'
     end
   else
-    config.vm.provision 'shell', inline: "rm -f /etc/profile.d/vagrant-env.sh", privileged: true, run: "always", env: env
+    config.vm.provision 'shell', inline: "rm -f /etc/profile.d/vagrant-env.sh", privileged: true, env: env, run: 'always'
   end
 
   # Provisioning from files available in provision directory
@@ -236,6 +236,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision 'docker-compose', type: 'shell', path: 'provision/21-docker-compose.sh', env: env
 
   config.vm.provision 'docker-devbox', type: 'shell', privileged: false, path: 'provision/31-docker-devbox.sh', env: env
+  config.vm.provision 'ddb', type: 'shell', privileged: false, path: 'provision/32-ddb.sh', env: env, run: 'always'
 
   config.vm.provision 'node', type: 'shell', privileged: false, path: 'provision/46-node.sh', env: env
   config.vm.provision 'yeoman', type: 'shell', privileged: false, path: 'provision/47-yeoman.sh', env: env
@@ -261,7 +262,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.provision 'desktop-additions', type: 'shell', privileged: false, path: 'provision/79-desktop-additions.sh', env: env
 
     # Restart resolvconf for dns problems ...
-    # config.vm.provision "shell",	run: "always", privileged: true, inline: "resolvconf -u"
+    # config.vm.provision "shell", privileged: true, inline: "resolvconf -u", run: 'always'
   end
 
   # The following provisionners can be executed manually with "vagrant provision --provision-with"
@@ -275,7 +276,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # Restart docker.socket service because of unknown failure on vagrant startup or reload ...
-  config.vm.provision "shell", run: "always", privileged: true, inline: "systemctl restart docker.socket", env: env
+  config.vm.provision "shell", privileged: true, inline: "systemctl restart docker.socket", env: env, run: 'always'
 
   # Disable vagrant default share
   config.vm.synced_folder '.', '/vagrant', disabled: true
