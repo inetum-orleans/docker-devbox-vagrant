@@ -244,13 +244,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision 'gitconfig', type: 'shell', path: 'provision/55-gitconfig.sh', env: env
 
   if File.file?(File.join(Dir.home, '.ssh/id_rsa.pub')) or File.file?(File.join(Dir.home, '.ssh/id_rsa'))
-    if File.file?(File.join(Dir.home, '.ssh/id_rsa'))
-      config.vm.provision 'ssh-keys-private', type: 'file', source: '~/.ssh/id_rsa', destination: "/home/#{ssh_username}/.provision/id_rsa"
-    end
-    if File.file?(File.join(Dir.home, '.ssh/id_rsa.pub'))
-      config.vm.provision 'ssh-keys-public', type: 'file', source: '~/.ssh/id_rsa.pub', destination: "/home/#{ssh_username}/.provision/id_rsa.pub"
-    end
-    config.vm.provision 'ssh-keys', type: 'shell', privileged: false, path: 'provision/61-ssh-keys.sh', env: env
+    config.vm.provision 'ssh-keys-private', type: 'file', source: '~/.ssh/id_rsa', destination: "/home/#{ssh_username}/.provision/id_rsa", run: "always"
+    config.vm.provision 'ssh-keys-public', type: 'file', source: '~/.ssh/id_rsa.pub', destination: "/home/#{ssh_username}/.provision/id_rsa.pub", run: "always"
+    config.vm.provision 'ssh-keys', type: 'shell', privileged: false, path: 'provision/61-ssh-keys.sh', env: env, run: "always"
   end
 
   config.vm.provision 'cleanup', type: 'shell', path: 'provision/99-cleanup.sh', env: env
