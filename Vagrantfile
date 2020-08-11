@@ -236,7 +236,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision 'docker-compose', type: 'shell', path: 'provision/21-docker-compose.sh', env: env
 
   config.vm.provision 'docker-devbox', type: 'shell', privileged: false, path: 'provision/31-docker-devbox.sh', env: env
-  config.vm.provision 'ddb', type: 'shell', privileged: false, path: 'provision/32-ddb.sh', env: env, run: 'always'
+  config.vm.provision 'ddb-config', type: 'shell', privileged: false, path: 'provision/32-ddb-config.sh', env: env, run: 'always'
 
   config.vm.provision 'node', type: 'shell', privileged: false, path: 'provision/46-node.sh', env: env
   config.vm.provision 'yeoman', type: 'shell', privileged: false, path: 'provision/47-yeoman.sh', env: env
