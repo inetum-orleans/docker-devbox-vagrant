@@ -18,4 +18,6 @@ certs:
 shell:
   aliases:
     dc: docker-compose
+  global_aliases:
+    - dc
 EOF
