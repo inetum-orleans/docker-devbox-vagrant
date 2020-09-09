@@ -37,3 +37,13 @@ else
 
   pip install pipenv virtualenv
 fi
+
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+poetry completions bash | sudo tee "/etc/bash_completion.d/poetry.bash-completion">/dev/null
+
+mkdir -p "$HOME/.config/fish/completions"
+poetry completions fish | sudo tee "$HOME/.config/fish/completions/poetry.fish">/dev/null
+
+mkdir -p "$HOME/.zfunc"
+poetry completions zsh | sudo tee "$HOME/.zfunc/_poetry">/dev/null
+#TODO: For zsh, you must then add the following line in your ~/.zshrc before compinit:
