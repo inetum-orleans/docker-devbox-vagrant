@@ -47,5 +47,8 @@ sudo ln -fs /run/systemd/resolve/resolv.conf /etc/resolvconf/resolv.conf.d/tail
 # inotify limit
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p && sudo sysctl --system
 
+# Memory settings for ElasticSearch
+echo vm.max_map_count=262144 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p && sudo sysctl --system
+
 sudo resolvconf --enable-updates
 sudo resolvconf -u
