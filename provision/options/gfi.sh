@@ -1,13 +1,6 @@
 #!/usr/bin/env bash
-echo "## Configuration globale DDB (GFI)"
-cat <<EOF > "${HOME}/.docker-devbox/ddb.yaml"
-# =======================================================================
-# Generated file by gfi-centre-ouest/docker-devbox-vagrant on $(date +"%Y/%m/%d")
-# Do not modify. To override, create a ddb.local.yaml file.
-# =======================================================================
-docker:
-  debug:
-    host: ${HOST_IP}
+echo "## Configuration locale DDB (GFI)"
+cat <<EOF > "${HOME}/.docker-devbox/ddb.local.yaml"
 certs:
   cfssl:
     server:
