@@ -22,7 +22,7 @@ EOF
   xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
   
   pyenv latest install -s
-  pyenv latest local
+  pyenv latest shell
   
   pip install pipenv virtualenv
 else
@@ -33,7 +33,7 @@ else
   pyenv update
 
   pyenv latest install -s
-  pyenv latest local
+  pyenv latest shell
 
   pip install pipenv virtualenv
 fi
