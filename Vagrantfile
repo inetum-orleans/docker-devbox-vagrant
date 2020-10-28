@@ -266,7 +266,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     run = "never" 
     option = File.basename(file, ".*" )
     if provision_options.include? option
-      run = nil
+      run = "once"
     end
     config.vm.provision option, type: 'shell', privileged: false, path: file, env: env, run: run
   end
