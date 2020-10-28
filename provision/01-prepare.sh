@@ -50,5 +50,7 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo s
 # Memory settings for ElasticSearch
 echo vm.max_map_count=262144 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p && sudo sysctl --system
 
+sudo awk '!NF || !seen[$0]++' /etc/sysctl.conf>/tmp/sysctl.conf && sudo mv /tmp/sysctl.conf /etc/sysctl.conf
+
 sudo resolvconf --enable-updates
 sudo resolvconf -u
