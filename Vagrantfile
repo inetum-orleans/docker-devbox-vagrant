@@ -59,12 +59,14 @@ box_monitor_count = config_file['box_monitor_count']
 disksize = config_file['disksize']
 ip_address = config_file['ip_address'] || '192.168.99.100'
 host_ip_address = config_file['host_ip_address'] || get_host_ip(ip_address)
+dns_servers = config_file['dns_servers']
 desktop = config_file['desktop'] || false
 gui = desktop || config_file['gui'] || false
 provision_options = config_file['provision_options'] || []
 
 env['HOST_IP'] = host_ip_address
 env['LOCAL_IP'] = ip_address
+env['DNS_SERVERS'] = dns_servers
 
 # All Vagrant configuration is done below. The '2' in Vagrant.configure
 # configures the configuration version (we support older styles for
