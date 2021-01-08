@@ -272,7 +272,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # Restart docker.socket service because of unknown failure on vagrant startup or reload ...
-  config.vm.provision "shell", privileged: true, inline: "systemctl restart docker.socket", env: env, run: 'always'
+  # config.vm.provision "shell", privileged: true, inline: "systemctl restart docker.socket", env: env, run: 'always'
 
   # Disable vagrant default share
   config.vm.synced_folder '.', '/vagrant', disabled: true
