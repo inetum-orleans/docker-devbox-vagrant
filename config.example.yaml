@@ -28,10 +28,10 @@ env:
 synced_folders:
   user:
     source: 'C:\Users\user' # absolute or relative path from Vagrantfile
-    target: '/C/Users/user' # absolute or relative path from home of VM
+    target: '/c/Users/user' # absolute or relative path from home of VM
   projects:
     source: 'D:\projects' # absolute or relative path from Vagrantfile
-    target: '/D/projects' # absolute or relative path from home of VM
+    target: '/d/projects' # absolute or relative path from home of VM
 #persistent_storage:
 #  location: 'D:\persistent_storage.vdi'
 #  size_in_gb: 100
