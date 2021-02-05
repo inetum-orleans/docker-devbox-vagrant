@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-#DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep 'tag_name' | cut -d\" -f4)
-# Avoid 1.28+ as it fails on ubuntu 18.04
-DOCKER_COMPOSE_VERSION="1.27.4"
+DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep 'tag_name' | cut -d\" -f4)
 docker-compose --version | grep "docker-compose version $DOCKER_COMPOSE_VERSION"
 VERSION_MATCH=$?
 if [ "$VERSION_MATCH" != "0" ]; then
