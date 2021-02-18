@@ -1,28 +1,26 @@
 #!/usr/bin/env bash
 echo "## Environment variables configuration"
 
+add_variable_to_profile () {
+  var="$1"
+  val="$2"
+  label="$3"
+
+  echo "$var: $val ($label)"
+
+  if grep -q "$var=" "${HOME}/.profile"; then
+    sed -i "s|.*$var=.*|export $var=$val|" "${HOME}/.profile"
+  else
+    echo -e>>"${HOME}/.profile"
+    echo "# $label">>"${HOME}/.profile"
+    echo "export $var=\"$val\"">>"${HOME}/.profile"
+  fi
+}
+
 HOST_IP="${HOST_IP:=127.0.0.1}"
-echo "HOST_IP: ${HOST_IP} (Host IP Address)"
-
-if grep -q "HOST_IP=" "${HOME}/.profile"; then
-  sed -i "s|.*HOST_IP=.*|export HOST_IP=${HOST_IP}|" "${HOME}/.profile"
-else
-  echo -e>>"${HOME}/.profile"
-  echo "# Host IP Address">>"${HOME}/.profile"
-  echo "export HOST_IP=${HOST_IP}">>"${HOME}/.profile"
-fi
-
+add_variable_to_profile "HOST_IP" "$HOST_IP" "Host IP Address"
 export HOST_IP=${HOST_IP}
 
 LOCAL_IP="${LOCAL_IP:=127.0.0.1}"
-echo "LOCAL_IP: ${LOCAL_IP} (Local IP Address)"
-
-if grep -q "LOCAL_IP=" "${HOME}/.profile"; then
-  sed -i "s|.*LOCAL_IP=.*|export LOCAL_IP=${LOCAL_IP}|" "${HOME}/.profile"
-else
-  echo -e>>"${HOME}/.profile"
-  echo "# Local IP Address">>"${HOME}/.profile"
-  echo "export LOCAL_IP=${LOCAL_IP}">>"${HOME}/.profile"
-fi
-
+add_variable_to_profile "LOCAL_IP" "$LOCAL_IP" "Local IP Address"
 export LOCAL_IP=${LOCAL_IP}
