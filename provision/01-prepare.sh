@@ -2,10 +2,10 @@
 export DEBIAN_FRONTEND=noninteractive
 
 echo "## sources Ubuntu FR"
-sudo sed -i 's|http://security.ubuntu.com|https://archive.ubuntu.com|g' /etc/apt/sources.list
+sudo sed -i 's|http://security.ubuntu.com|https://fr.archive.ubuntu.com|g' /etc/apt/sources.list
 sudo sed -i 's|http://archive.ubuntu.com|https://fr.archive.ubuntu.com|g' /etc/apt/sources.list
-sudo sed -i 's|http://security.ubuntu.com|https://archive.ubuntu.com|g' /etc/apt/sources.list
-sudo sed -i 's|http://archive.ubuntu.com|https://fr.archive.ubuntu.com|g' /etc/apt/sources.list
+sudo sed -i 's|https://security.ubuntu.com|https://fr.archive.ubuntu.com|g' /etc/apt/sources.list
+sudo sed -i 's|https://archive.ubuntu.com|https://fr.archive.ubuntu.com|g' /etc/apt/sources.list
 
 # sudo sed -i -e "s|http\:\/\/|https\:\/\/|g" /etc/apt/sources.list
 
