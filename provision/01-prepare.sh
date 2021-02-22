@@ -40,7 +40,7 @@ if (dpkg -l avahi-daemon); then
 fi
 
 # Install tools missing from minimal distribution
-sudo apt-get install -y curl net-tools
+sudo apt-get install -y curl net-tools unzip
 
 # Use dnsmasq for .test domains and fix .local domains by bypassing systemd-resolved with resolvconf
 sudo apt-get install -y dnsmasq resolvconf
