@@ -5,6 +5,8 @@ cat <<EOF > "${HOME}/.docker-devbox/ddb.yaml"
 # Generated file by gfi-centre-ouest/docker-devbox-vagrant on $(date +"%Y/%m/%d")
 # Do not modify. To override, create a ddb.local.yaml file.
 # =======================================================================
+core:
+  release_asset_name: ddb-linux-older-glibc
 docker:
   ip: ${LOCAL_IP}
   debug:
