@@ -15,6 +15,12 @@ ExecStart=
 ExecStart=/usr/bin/dockerd -H unix:// -H tcp://$IP_ADDRESS:2375 -H tcp://127.0.0.1:2375
 EOF
 
+cat << EOF > /etc/docker/daemon.json
+{
+ "default-address-pools": [{"base":"10.199.0.0/16", "size":24}]
+}
+EOF
+
 echo "## Rechargement du daemon"
 systemctl daemon-reload
 
