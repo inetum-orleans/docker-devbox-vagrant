@@ -25,13 +25,13 @@ env:
 #desktop: false # Install KDE Plasma and enable gui
 ## Configure folders to share here
 ## Use this naming convention to match docker for windows and allow docker PHPStorm support
-synced_folders:
-  user:
-    source: 'C:\Users\user' # absolute or relative path from Vagrantfile
-    target: '/c/Users/user' # absolute or relative path from home of VM
-  projects:
-    source: 'D:\projects' # absolute or relative path from Vagrantfile
-    target: '/d/projects' # absolute or relative path from home of VM
+#synced_folders:
+#  user:
+#    source: 'C:\Users\user' # absolute or relative path from Vagrantfile
+#    target: '/c/Users/user' # absolute or relative path from home of VM
+#  projects:
+#    source: 'D:\projects' # absolute or relative path from Vagrantfile
+#    target: '/d/projects' # absolute or relative path from home of VM
 #persistent_storage:
 #  location: 'D:\persistent_storage.vdi'
 #  size_in_gb: 100
