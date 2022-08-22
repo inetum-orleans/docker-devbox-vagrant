@@ -239,7 +239,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision 'ddb-config', type: 'shell', privileged: false, path: 'provision/32-ddb-config.sh', env: env, run: 'always'
 
   config.vm.provision 'node', type: 'shell', privileged: false, path: 'provision/46-node.sh', env: env
-  config.vm.provision 'yeoman', type: 'shell', privileged: false, path: 'provision/47-yeoman.sh', env: env
+  #config.vm.provision 'yeoman', type: 'shell', privileged: false, path: 'provision/47-yeoman.sh', env: env
 
   config.vm.provision 'gitconfig', type: 'shell', path: 'provision/55-gitconfig.sh', env: env
 
