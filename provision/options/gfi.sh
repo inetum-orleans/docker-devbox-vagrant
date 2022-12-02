@@ -4,7 +4,7 @@ cat <<EOF > "${HOME}/.docker-devbox/ddb.local.yaml"
 certs:
   cfssl:
     server:
-      host: cfssl.etudes.local
+      host: inetum-cfssl.azurewebsites.net
       port: 443
       ssl: true
       verify_cert: true
