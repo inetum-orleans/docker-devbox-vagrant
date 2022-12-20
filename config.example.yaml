@@ -5,7 +5,7 @@ box_video_ram: 16
 disksize: "60GB"
 ip_address: "192.168.99.100"
 host_network: ~ # If vagrant ask for a network device, you may define it's label here.
-#host_ip_address: "192.168.1.1"
+host_ip_address: "192.168.99.1"
 ca_certificates:
   ca_certs_file: ~ # Path where ca-certificates.crt is stored (C:/Users/USER/ca-certificates.crt)
   ca_certs_glob: ~ # Set to a glob expression where CA certificates are stored (C:/Users/USER/.ca-certificates/{GFI_Informatique*.crt,fwca.annuaire.groupe.local.crt})
@@ -17,7 +17,6 @@ env:
   COMPOSE_DOCKER_CLI_BUILD: 1  # Delegates builds to docker CLI
   DOCKER_BUILDKIT: 1  # Enable buildkit support for docker CLI
 #  DOCKER_DEVBOX_CA_CERTIFICATES: /etc/ssl/certs/GFI_Informatique*.pem /etc/ssl/certs/fwca.annuaire.groupe.local.pem
-#  CFSSL_URL: https://cfssl.etudes.local
 #provision_options: ['vpnc', 'azure-cli', 'vsftpd', 'gfi']  # Provisionning options (To provision additional scripts from provision/options directory)
 #synced_folders_plugin: ~ # "nfs4j", "winnfsd", or "vagrant". If null, it will find the best available plugin.
 #box_monitor_count: 1 # Number of screen
