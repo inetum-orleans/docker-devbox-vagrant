@@ -36,7 +36,6 @@ EOF
 
   phpenv latest install -s
   phpenv latest global
-  composer global require hirak/prestissimo
 else
   export PHPENV_ROOT="$HOME/.phpenv"
   export PATH="$HOME/.phpenv/bin:${PATH}"
