@@ -50,7 +50,7 @@ end
 ###############################
 # General project settings
 # -----------------------------
-box_name = config_file['box_name'] || 'ubuntu/bionic64'
+box_name = config_file['box_name'] || 'ubuntu/jammy64'
 box_memory = config_file['box_memory']
 box_cpus = config_file['box_cpus']
 box_cpu_max_exec_cap = config_file['box_cpu_max_exec_cap']
@@ -237,9 +237,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'docker-devbox', type: 'shell', privileged: false, path: 'provision/31-docker-devbox.sh', env: env
   config.vm.provision 'ddb-config', type: 'shell', privileged: false, path: 'provision/32-ddb-config.sh', env: env, run: 'always'
-
-  #config.vm.provision 'node', type: 'shell', privileged: false, path: 'provision/46-node.sh', env: env
-  #config.vm.provision 'yeoman', type: 'shell', privileged: false, path: 'provision/47-yeoman.sh', env: env
 
   config.vm.provision 'gitconfig', type: 'shell', path: 'provision/55-gitconfig.sh', env: env
 
