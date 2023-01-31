@@ -16,6 +16,9 @@ env:
   SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
   COMPOSE_DOCKER_CLI_BUILD: 1  # Delegates builds to docker CLI
   DOCKER_BUILDKIT: 1  # Enable buildkit support for docker CLI
+  AZ_USERNAME: azure-user-name
+  AZ_PASSWORD: "azure-password"
+  AZ_TENANT: azure-tenant
 #  DOCKER_DEVBOX_CA_CERTIFICATES: /etc/ssl/certs/GFI_Informatique*.pem /etc/ssl/certs/fwca.annuaire.groupe.local.pem
 #provision_options: ['vpnc', 'azure-cli', 'vsftpd', 'gfi']  # Provisionning options (To provision additional scripts from provision/options directory)
 #synced_folders_plugin: ~ # "nfs4j", "winnfsd", or "vagrant". If null, it will find the best available plugin.
