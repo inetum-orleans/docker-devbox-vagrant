@@ -175,15 +175,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # config.vm.provision "shell", inline: <<-SHELL
   # SHELL
 
-  # Workaround for https://github.com/dotless-de/vagrant-vbguest/issues/337
-  if Vagrant.has_plugin?("vagrant-vbguest")
-    # Check for and install VB Guest Additions only on the very first provision
-    # To update virtualbox guest additions, run "vagrant vbguest --do install"
-    # Waiting for next release, it should be fixed 0.17.3 or 0.18.0
-    # See https://github.com/dotless-de/vagrant-vbguest/pull/334
-    config.vbguest.auto_update = !Dir['.vagrant/machines/default/*/action_provision'].any?
-  end
-
   # CA Certificates configuration
   # vagrant-certificates is a fork of default vagrant-ca-certificates, fixing and issue for vagrant >= 2.2.4
   # https://github.com/gfi-centre-ouest/vagrant-certificates
