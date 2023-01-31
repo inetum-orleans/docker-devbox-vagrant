@@ -1,5 +1,5 @@
-box_memory: 4096
-box_cpus: 2
+box_memory: 8192
+box_cpus: 4
 box_cpu_max_exec_cap: "90"
 box_video_ram: 16
 disksize: "60GB"
