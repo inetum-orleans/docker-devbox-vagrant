@@ -16,7 +16,7 @@ s'execute le daemon docker pour monter le volumes locaux dans le container. Cel�
 
 - VM Docker (Ubuntu Xenial).
 - Vagrant pour provisionner Docker, Docker Compose et [nginx-proxy](https://github.com/jwilder/nginx-proxy).
-- [nfs4j-daemon](https://github.com/gfi-centre-ouest/nfs4j-daemon) pour partager les fichiers entre l'hôte sous windows et la VM Docker.
+- [nfs4j-daemon](https://github.com/inetum-orleans/nfs4j-daemon) pour partager les fichiers entre l'hôte sous windows et la VM Docker.
 - [Smartcd](https://github.com/cxreg/smartcd) (Activation/Désactivation automatique d'alias lors de l'entrée/sortie dans un dossier)
 
 Cette solution est construite de zéro ce qui permet de garder une bonne flexibilité sur l'environnement technique de la VM.
@@ -27,9 +27,9 @@ Cette solution est construite de zéro ce qui permet de garder une bonne flexibi
 - [VirtualBox](https://www.virtualbox.org/) (**/!\\** La virtualisation doit être activé dans le BIOS)
 - [Vagrant](https://www.vagrantup.com/)
 - [Vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) (`vagrant plugin install vagrant-vbguest`)
-- [Vagrant-nfs4j](https://github.com/gfi-centre-ouest/vagrant-nfs4j) (`vagrant plugin install vagrant-nfs4j`)
+- [Vagrant-nfs4j](https://github.com/inetum-orleans/vagrant-nfs4j) (`vagrant plugin install vagrant-nfs4j`)
 - [vagrant-disksize](https://github.com/sprotheroe/vagrant-disksize) (`vagrant plugin install vagrant-disksize`)
-- [vagrant-certificates](https://github.com/gfi-centre-ouest/vagrant-certificates) (Optionnel, `vagrant plugin install vagrant-certificates`)
+- [vagrant-certificates](https://github.com/inetum-orleans/vagrant-certificates) (Optionnel, `vagrant plugin install vagrant-certificates`)
 - [vagrant-persistent-storage](https://github.com/kusnier/vagrant-persistent-storage) (Optionnel, `vagrant plugin install vagrant-persistent-storage`)
 - [Acrylic DNS Proxy](https://sourceforge.net/projects/acrylic) (Optionnel, [Aide d'installation sur StackOverflow](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file#answer-9695861), Proxy DNS local pour rediriger `*.test` vers 
 l'environnement docker, identique au fichier `/etc/hosts` mais supporte les wildcard `*`)
@@ -39,7 +39,7 @@ l'environnement docker, identique au fichier `/etc/hosts` mais supporte les wild
 - Cloner le repository
 
 ```bash
-git clone https://github.com/gfi-centre-ouest/docker-devbox-vagrant
+git clone https://github.com/inetum-orleans/docker-devbox-vagrant
 cd docker-devbox-vagrant
 ```
 
@@ -161,7 +161,7 @@ synced_folders:
 Lorsque la section `synced_folders` est renseignée dans le fichier de configuration, Vagrant va automatiquement 
 lancer nfs4j-daemon pour monter les dossiers spécifiés via NFS.
 
-Pour supporter les liens symboliques, il est nécessaire de configurer la [Stratégie de Sécurité Locale pour autoriser la création de liens symboliques](https://github.com/gfi-centre-ouest/nfs4j-daemon#symbolic-links-support-on-windows) 
+Pour supporter les liens symboliques, il est nécessaire de configurer la [Stratégie de Sécurité Locale pour autoriser la création de liens symboliques](https://github.com/inetum-orleans/nfs4j-daemon#symbolic-links-support-on-windows) 
 pour votre utilisateur.
 
 ### Libérer de l'espace disque

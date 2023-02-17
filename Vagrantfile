@@ -177,7 +177,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # CA Certificates configuration
   # vagrant-certificates is a fork of default vagrant-ca-certificates, fixing and issue for vagrant >= 2.2.4
-  # https://github.com/gfi-centre-ouest/vagrant-certificates
+  # https://github.com/inetum-orleans/vagrant-certificates
   if (Vagrant.has_plugin?('vagrant-certificates') or Vagrant.has_plugin?('vagrant-ca-certificates')) and not config_file['ca_certificates'].nil?
     ca_certificates_config = Vagrant.has_plugin?('vagrant-ca-certificates') ? config.ca_certificates : config.certificates
 
