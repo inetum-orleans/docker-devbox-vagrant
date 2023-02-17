@@ -229,7 +229,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision 'docker-devbox', type: 'shell', privileged: false, path: 'provision/31-docker-devbox.sh', env: env
   config.vm.provision 'ddb-config', type: 'shell', privileged: false, path: 'provision/32-ddb-config.sh', env: env, run: 'always'
 
-  config.vm.provision 'gitconfig', type: 'shell', path: 'provision/55-gitconfig.sh', env: env
+  config.vm.provision 'gitconfig', type: 'shell', privileged: false, path: 'provision/55-gitconfig.sh', env: env
 
   if File.file?(File.join(Dir.home, '.ssh/id_rsa.pub')) or File.file?(File.join(Dir.home, '.ssh/id_rsa'))
     config.vm.provision 'ssh-keys-private', type: 'file', source: '~/.ssh/id_rsa', destination: "/home/#{ssh_username}/.provision/id_rsa", run: "always"
