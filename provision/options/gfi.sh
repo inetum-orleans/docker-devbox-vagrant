@@ -10,7 +10,7 @@ certs:
       verify_cert: true
 shell:
   aliases:
-    dc: docker-compose
+    dc: docker compose
   global_aliases:
     - dc
 EOF
