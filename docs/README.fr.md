@@ -14,7 +14,7 @@ s'execute le daemon docker pour monter le volumes locaux dans le container. Cel�
 
 ## Solution
 
-- Machine vitruelle Oracle (Ubuntu).
+- Machine virtuelle Oracle (Ubuntu).
 - Vagrant pour provisionner votre machine virtuelle, notamment avec Docker et Docker Compose.
 - Traefik : solution de reverse proxy pour la prise en charge de DNS locaux pour l'accès à vos projets web.
 - Mutagen pour synchoniser vos fichiers entre votre workspace Windows et votre machine virtuelle.
