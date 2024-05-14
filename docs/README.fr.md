@@ -166,7 +166,7 @@ Une fois connecté à la machine, vérifier que Mutagen est bien lancé avec un 
 - Si vous n'avez pas installé les scripts de lancement alors lancez la commande suivante dans un terminal : 
 
 ````
-mutagen sync create C:\\workspace\\projects\\demo root@192.169.99.100:/home/vagrant/projects/demo --sync-mode two-way-resolved --default-file-mode-beta 664 --default-directory-mode-beta 775 --default-owner-beta vagrant --default-group-beta vagrant
+mutagen sync create C:\\workspace\\projects\\demo root@192.168.99.100:/home/vagrant/projects/demo --sync-mode two-way-resolved --default-file-mode-beta 664 --default-directory-mode-beta 775 --default-owner-beta vagrant --default-group-beta vagrant
 ````
 
 Une fois connecté à la machine, vérifier que Mutagen est bien lancé en effectuant la commande :
