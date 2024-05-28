@@ -28,6 +28,6 @@ Docker for Windows and Docker Toolbox are using VirtualBox/Hyper-V between the W
 
 ## Installation guides
 
-[English](docs/README.en.md)
+[English](docs/installation guides/Installation Guide.md)
 
-[Français](docs/README.fr.md)
+[Français](docs/installation guides/Guide d'installation.md)
