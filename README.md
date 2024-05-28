@@ -13,7 +13,7 @@ Docker for Windows and Docker Toolbox are using VirtualBox/Hyper-V between the W
 
 ## Solution
 
-- Oracle virtual machine (Ubuntu)
+- VirtualBox virtual machine (Ubuntu)
 - Vagrant : provision your virtual machine, including Docker and Docker Compose.
 - Traefik : acts as a reverse proxy to resolve local DNS to your web projects.
 - Mutagen : synchronizes your Windows workspace with your virtual machine.
@@ -25,9 +25,9 @@ Docker for Windows and Docker Toolbox are using VirtualBox/Hyper-V between the W
 - Windows > 10
 - RAM 16 Go minimum
 - SSD with 60 Go free
+- Administrator privileges to install VirtualBox , Vagrant, Acrylic (or modify the hosts file), node.js and git for Windows
+- The autorization to create symlinks in Windows (see the [installation documentation](docs/installation guides/Install.en.md), step 2)
 
 ## Installation guides
 
-[English](docs/installation guides/Installation Guide.md)
-
-[Français](docs/installation guides/Guide d'installation.md)
+[Step by step install guide](docs/installation guides/Install.en.md)

@@ -2,7 +2,7 @@
 
 ## Etape 1 : Organiser les répertoires de travail
 - Privilégiez les disques SSD pour plus de de performances
-- Créez les répertoires de la manière suivante, **pensez à changer les chemins si ```c:\``` n'est pas votre volume cible** :
+- Créez les répertoires de la manière suivante, **pensez à adapter les chemins partout si vous n'utilisez pas ces valeurs par défaut** :
 
 ```
 c:\workspace
@@ -11,8 +11,8 @@ c:\workspace\projects
 
 ## Etape 2 : Ajouter une permission de créer des liens symboliques
 
-- Ouvrir l'application Stratégie de sécurité locale **en tant qu'administrateur** : 
-C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Administrative Tools
+- Ouvrir l'application Stratégie de sécurité locale **en tant qu'administrateur** :
+  `C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Administrative Tools`
 - Ajouter dans ```Stratégies locale > Attribution des droits utilisateur > Créer des liens symboliques``` le groupe utilisateur ```Utilisateurs authentifiés``` comme ci-dessous
 
 ![strat_secu_local.png](../captures/strat_secu_local.png)
@@ -59,18 +59,22 @@ git config --global --replace-all http.version HTTP/1.1
 ## Etape 7 : Installer Docker Devbox Vagrant
 
 - Utiliser un terminal en étant placé dans ```c:\workspace```
-- Cloner le repo github public du projet ```git clone https://github.com/gfi-centre-ouest/docker-devbox-vagrant docker-devbox```
+- Cloner le repo github public du projet ```git clone https://github.com/inetum-orleans/docker-devbox-vagrant docker-devbox```
 - Se placer dans le répertoire ```docker-devbox```
 - Copier-coller le fichier ```config.example.yaml``` en le renommant ```config.yaml``` et adapter les valeurs en fonction du besoin.
-Dans `env` vont se trouver des variables utilisées dans les scripts shell de provision de votre VM.
-Le tableau `provision_options` va servir à appeler des scripts supplémentaires présents dans `/provision/options`
+Dans `env` vont se trouver des variables utilisées dans les scripts shell de provision de votre VM. Le tableau `provision_options` va servir à appeler des scripts supplémentaires présents dans `/provision/options`
+
+Par exemple, ici, les variables AZ_* nous servent à nous connecter au dépôt Azure d'images Docker d'Inetum. Nous ajoutons l'installation de python et php directement dans la machine virtuelle via les scripts de provision optionnels.
 ```
 env:
   AZ_USERNAME: username Azure
   AZ_PASSWORD: password Azure
   AZ_TENANT: tenant Azure
-provision_options: ['mon-script']
+provision_options: ['python', 'php']
 ```
+*Pour les collaborateurs Inetum, vous pouvez trouver les variables d'environnement Azure dans la documentation Interne.*
+
+Si vous avez mis en place un script additionnel, n'hésitez pas à contribuer via une Pull Request.
 
 ## Etape 8 : Créer une clé SSH
 
@@ -112,8 +116,8 @@ mutagen daemon register  # Start automatically on windows session startup
 - Ouvrir un terminal en étant placé dans ```c:\workspace\docker-devbox```
 - Lancer la commande suivante (en tant qu'administrateur si c'est la première fois) : ```vagrant up``` (l'exécution de cette commande peut prendre plusieurs minutes, donc patience)
 
-## Etape 13 : Installer les scripts de lancement de ddb
-Coming soon
+## Etape 13 (recommandée): Installer les scripts de lancement avec windows terminal
+Suivre les instructions présentes dans le README du projet [devbox-scripts](https://github.com/inetum-orleans/devbox-scripts)
 
 ## Etape 14 : Valider le bon fonctionnement
 
@@ -132,6 +136,7 @@ La commande vagrant SSH permet de se connecter en SSH dans votre machine virtuel
 - Lancer le script ```openWt.mjs``` qui lui même va exécuter ```mutagenStart.mjs```.
 
 Une fois connecté à la machine, vérifier que Mutagen est bien lancé avec un Alpha et un Beta :
+
 ![mutagen_validate.png](../captures/mutagen_validate.png)
 
 - Si vous n'avez pas installé les scripts de lancement alors lancez la commande suivante dans un terminal : 
@@ -144,6 +149,7 @@ Une fois connecté à la machine, vérifier que Mutagen est bien lancé en effec
 `mutagen sync list`
 
 - Vérifier que le fichier test.txt est bien présent sur votre VM avec la commande ```ls -al projects/demo```
+
 ![mutagen_validate_2.png](../captures/mutagen_validate_2.png)
 
 ### Valider le provisionning de votre VM
@@ -173,7 +179,7 @@ Afin d'accéder aux IHM de certains de ces services, il faut renseigner au sein 
 ```
 
 ## Etape 16 : Installer et configurer Acrylic (optionnel)
-[Guide d'installation d'Acrylic](../misc/Acrylic config.fr)
+[Guide d'installation d'Acrylic](../misc/Acrylic config.fr.md)
 
 ## Etape 17 : Certificats SSL (optionnel)
 Coming soon

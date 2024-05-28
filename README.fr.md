@@ -14,7 +14,7 @@ s'execute le daemon docker pour monter le volumes locaux dans le container. Cel�
 
 ## Solution
 
-- Machine virtuelle Oracle (Ubuntu).
+- Machine virtuelle VirtualBox (Ubuntu).
 - Vagrant pour provisionner votre machine virtuelle, notamment avec Docker et Docker Compose.
 - Traefik : solution de reverse proxy pour la prise en charge de DNS locaux pour l'accès à vos projets web.
 - Mutagen pour synchoniser vos fichiers entre votre workspace Windows et votre machine virtuelle.
@@ -26,9 +26,9 @@ s'execute le daemon docker pour monter le volumes locaux dans le container. Cel�
 - Windows > 10
 - RAM 16 Go minimum
 - SSD 60 Go libres
+- Privilèges d'administration pour installer VirtualBox, Vagrant, Acrylic (ou modifier le fichier hosts), node.js et git for Windows
+- L'autorisation des liens symboliques dans Windows (voir la [documentation d'installation](docs/installation guides/Install.fr.md), étape 2)
 
 ## Guides d'installation
 
-[English](docs/installation guides/Installation Guide.md)
-
-[Français](docs/installation guides/Guide d'installation.md)
+[Guide d'installation étapes par étapes](docs/installation guides/Install.fr.md)
