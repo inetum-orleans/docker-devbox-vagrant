@@ -26,8 +26,8 @@ Docker for Windows and Docker Toolbox are using VirtualBox/Hyper-V between the W
 - RAM 16 Go minimum
 - SSD with 60 Go free
 - Administrator privileges to install VirtualBox , Vagrant, Acrylic (or modify the hosts file), node.js and git for Windows
-- The autorization to create symlinks in Windows (see the [installation documentation](docs/installation guides/Install.en.md), step 2)
+- The autorization to create symlinks in Windows (see the [installation documentation](docs/installation_guides/Install.en.md), step 2)
 
 ## Installation guides
 
-[Step by step install guide](docs/installation guides/Install.en.md)
+[Step by step install guide](docs/installation_guides/Install.en.md)

@@ -27,8 +27,8 @@ s'execute le daemon docker pour monter le volumes locaux dans le container. Cel�
 - RAM 16 Go minimum
 - SSD 60 Go libres
 - Privilèges d'administration pour installer VirtualBox, Vagrant, Acrylic (ou modifier le fichier hosts), node.js et git for Windows
-- L'autorisation des liens symboliques dans Windows (voir la [documentation d'installation](docs/installation guides/Install.fr.md), étape 2)
+- L'autorisation des liens symboliques dans Windows (voir la [documentation d'installation](docs/installation_guides/Install.fr.md), étape 2)
 
 ## Guides d'installation
 
-[Guide d'installation étapes par étapes](docs/installation guides/Install.fr.md)
+[Guide d'installation étapes par étapes](docs/installation_guides/Install.fr.md)
