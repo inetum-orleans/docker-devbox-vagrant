@@ -62,15 +62,15 @@ git config --global --replace-all http.version HTTP/1.1
 - Cloner le repo github public du projet ```git clone https://github.com/inetum-orleans/docker-devbox-vagrant docker-devbox```
 - Se placer dans le répertoire ```docker-devbox```
 - Copier-coller le fichier ```config.example.yaml``` en le renommant ```config.yaml``` et adapter les valeurs en fonction du besoin.
-Dans `env` vont se trouver des variables utilisées dans les scripts shell de provision de votre VM. Le tableau `provision_options` va servir à appeler des scripts supplémentaires présents dans `/provision/options`
+Dans `env` vont se trouver des variables utilisées dans les scripts shell de provision de votre VM. Le tableau `provision_options` va servir à appeler des scripts supplémentaires présents dans `/provision/options`.
 
-Par exemple, ici, les variables AZ_* nous servent à nous connecter au dépôt Azure d'images Docker d'Inetum. Nous ajoutons l'installation de python et php directement dans la machine virtuelle via les scripts de provision optionnels.
+Par exemple, ici, les variables AZ_* nous servent à nous connecter au dépôt Azure d'images Docker d'Inetum. Nous ajoutons l'installation de git flow et azure cli directement dans la machine virtuelle via les scripts de provision optionnels.
 ```
 env:
   AZ_USERNAME: username Azure
   AZ_PASSWORD: password Azure
   AZ_TENANT: tenant Azure
-provision_options: ['python', 'php']
+provision_options: ['git-flow', 'azure-cli']
 ```
 *Pour les collaborateurs Inetum, vous pouvez trouver les variables d'environnement Azure dans la documentation Interne.*
 
