@@ -179,7 +179,7 @@ Afin d'accéder aux IHM de certains de ces services, il faut renseigner au sein 
 ```
 
 ## Etape 16 : Installer et configurer Acrylic (optionnel)
-[Guide d'installation d'Acrylic](../misc/Acrylic_config.fr)
+[Guide d'installation d'Acrylic](../misc/Acrylic_config.fr.md)
 
 ## Etape 17 : Certificats SSL (optionnel)
 Coming soon
