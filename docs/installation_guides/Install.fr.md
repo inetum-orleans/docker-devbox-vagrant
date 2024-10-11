@@ -22,6 +22,8 @@ c:\workspace\projects
 - Installer la dernière version stable pour Windows de Virtualbox : `winget install Virtualbox --version 7.0.20` (dans une console ouverte en mode administrateur)
 - Redémarrer le poste
 
+*Remarque : la version de Virtualbox est fixée temporairement à la 7.0.20 car Vagrant n'est actuellement pas compatible avec une version supérieure (7.1+)*
+
 ## Etape 4 : Installer Vagrant
 
 - Installer la dernière version stable pour Windows de Vagrant : `winget install Vagrant` (dans une console ouverte en mode administrateur)
