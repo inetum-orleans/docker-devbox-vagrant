@@ -119,6 +119,8 @@ mutagen daemon register  # Start automatically on windows session startup
 ## Etape 13 (recommandée): Installer les scripts de lancement avec windows terminal
 Suivre les instructions présentes dans le README du projet [devbox-scripts](https://github.com/inetum-orleans/devbox-scripts)
 
+**IMPORTANT** : Il est recommandé de réaliser l'étape 14 avant de lancer la devBox avec les scripts. Ceux ci lancent les commandes en mode non interactif ce qui peut poser des problèmes au moment de la première connexion SSH.
+
 ## Etape 14 : Valider le bon fonctionnement
 
 ### Valider la connexion SSH
@@ -139,7 +141,9 @@ Une fois connecté à la machine, vérifier que Mutagen est bien lancé avec un 
 
 ![mutagen_validate.png](../captures/mutagen_validate.png)
 
-- Si vous n'avez pas installé les scripts de lancement alors lancez la commande suivante dans un terminal : 
+- Lancez la commande suivante pour lancer la session de synchronisation Mutagen :
+
+Répondez ***yes*** à la question : *'Are you sure you want to continue connecting (yes/no/[fingerprint])? '*
 
 ````sh
 mutagen sync create C:\\workspace\\projects\\demo root@192.168.99.100:/home/vagrant/projects/demo --sync-mode two-way-resolved --default-file-mode-beta 664 --default-directory-mode-beta 775 --default-owner-beta vagrant --default-group-beta vagrant
