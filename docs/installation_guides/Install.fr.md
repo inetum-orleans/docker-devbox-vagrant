@@ -37,6 +37,12 @@ Vagrant failed to load a configured plugin source.`: Utilisez la commande
 ```cmd
 set SSL_CERT_FILE=C:\HashiCorp\Vagrant\embedded\cacert.pem
 ```
+
+Dans le cas de cette erreur : `/.vagrant.d/gems/3.3.6/gems/vagrant-vbguest-0.32.0/lib/vagrant-vbguest/hosts/virtualbox.rb:84:in 'block in guess_local_iso': undefined method 'exists?' for class File (NoMethodError) path && File.exists?(path)`
+
+Une issue existe est toujours ouverte => https://github.com/hashicorp/vagrant/issues/13404.
+
+La correction est simple, il suffit de vous rendre dans le dossier indiqué dans le message d'erreur (/.vagrant.d/gems/3.3.6/gems/vagrant-vbguest-0.32.0/lib/vagrant-vbguest/hosts/virtualbox.rb) et de modifier File.exists?(path) => File.exist?(path)
 ## Etape 5 : Installer Git for Windows
 
 - Lancer la commande `winget install Git.Git` (dans une console ouverte en mode administrateur tant que le ticket : https://github.com/mutagen-io/mutagen/issues/491 n'est pas résolu)
@@ -189,3 +195,17 @@ Afin d'accéder aux IHM de certains de ces services, il faut renseigner au sein 
 
 ## Etape 17 : Certificats SSL (optionnel)
 Coming soon
+
+## Etape 18 : Ajout container registry (optionnel)
+Certains projets ont besoin d'un registry autre pour pouvoir télécharger les images du container.
+
+Pour visualiser les registry : ``crontab -l``
+
+Pour editer : ``crontab -e``
+
+Utiliser l'outil d'édition de votre choix et saisir les valeurs suivantes:
+``0,15,30,45 * * * * az acr login --name [registryname]``
+
+Pour effectuer une connexion immédiatement vous pouvez utiliser la commande suivante:
+``az login --service-principal --username XXXXX --tenant YYYYY --password ZZZZZ`` 
+
