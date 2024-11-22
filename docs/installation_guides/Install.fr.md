@@ -197,15 +197,13 @@ Afin d'accéder aux IHM de certains de ces services, il faut renseigner au sein 
 Coming soon
 
 ## Etape 18 : Ajout container registry (optionnel)
-Certains projets ont besoin d'un registry autre pour pouvoir télécharger les images du container.
+Certains projets ont besoin d'un registry autre pour pouvoir télécharger les images du container. Voici les étapes à suivre :
 
-Pour visualiser les registry : ``crontab -l``
-
-Pour editer : ``crontab -e``
-
-Utiliser l'outil d'édition de votre choix et saisir les valeurs suivantes:
-``0,15,30,45 * * * * az acr login --name [registryname]``
-
-Pour effectuer une connexion immédiatement vous pouvez utiliser la commande suivante:
-``az login --service-principal --username XXXXX --tenant YYYYY --password ZZZZZ`` 
+1. initialiser une connexion :
+`az login --service-principal --username XXXXX --tenant YYYYY --password ZZZZZ`
+2. visualiser les cron permettant le renouvellement des tokens des registry : `crontab -l`
+3. éditer/ajouter un registry : `crontab -e`
+4. utiliser un outil édition et saisir les valeurs suivantes:
+`0,15,30,45 * * * * az acr login --name [registryname]`
+5. pour éviter d'attendre la prochaine quinzaine : `az login --service-principal --username`
 
